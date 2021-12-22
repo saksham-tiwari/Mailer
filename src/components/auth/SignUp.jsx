@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import google from "../../assets/google.svg"
 
-const Login = () => {
+const SignUp = () => {
     const formSubmit = (e)=>{
         e.preventDefault();
 
@@ -14,9 +14,17 @@ const Login = () => {
         <div>
             <MailGIF/>
             <div className={styles.rightBox}>
-                <h1 className={styles.heading}>Welcome Back</h1>
-                <h2 className={styles.subHeading}>Log In to your account!</h2>
+                <h1 className={styles.heading}>Let's Get Started</h1>
+                <h2 className={styles.subHeading}>Create your account!</h2>
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
+                    <Form.Group>
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control
+                        className={styles.inputAuth}
+                        placeholder='Enter your Name'
+                        type="text"/>
+                    </Form.Group>
+                    <br/>
                     <Form.Group>
                         <Form.Label>Email</Form.Label>
                         <Form.Control
@@ -25,23 +33,13 @@ const Login = () => {
                         type="email"/>
                     </Form.Group>
                     <br/>
-                    <Form.Group>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                        className={styles.inputAuth}
-                        placeholder='Enter your Email Address'
-                        type="password"/>
-                    </Form.Group>
-                    <br/>
                     <br/>
                     <Button type="submit" className={styles.authSubmitBtn}>
-                        Log In
+                        Verify Email
                     </Button>
                     <br/>
                     <br/>
-                    <div className={styles.center}>
-                        <Link to='forgot' className={styles.secondaryLink}>Forgot Password?</Link>
-                    </div>
+                    
                     <table>
                         <tr>
                             <td style={{width:"49%"}}><hr/></td>
@@ -52,21 +50,22 @@ const Login = () => {
                     <div className={styles.center}>
                         <Link to="/" className={styles.socialAuthLink}>
                             <img src={google} alt="google" style={{marginRight:"10px"}}/> 
-                            Sign In using Google
+                            Sign Up using Google
                         </Link>
                     </div>
                     <br/>
                     <br/>
                     <div className={styles.dontHave}>
-                        Don't have an account? 
-                        <Link to="/signup" className={styles.dontHaveLink}>
-                            Sign Up
+                        Already have an account? 
+                        <Link to="/login" className={styles.dontHaveLink}>
+                            Log In
                         </Link>
                     </div>
                 </Form>
             </div>
         </div>
     )
+
 }
 
-export default Login
+export default SignUp
