@@ -1,0 +1,69 @@
+.mailGif{
+    display: block;
+    position: absolute;
+    width: 50vw;
+    height: 100vh;
+}
+
+.rightBox{
+    width: 50%;
+    position: absolute;
+    right: 0;
+    height: 75vh;
+    top: 12.5vh;
+    line-height: 15px;
+}
+.heading{
+    font-size: 36px;
+    font-weight: 900;
+    text-align: center;
+
+}
+.subHeading{
+    color: #253E7EC7;
+    text-align: center;
+    letter-spacing: 1.25px;
+}
+.formAuth{
+    width: 70%;
+    position: relative;
+    left: 15%;
+    font-weight: 800;
+    top: 5%;
+}
+.inputAuth{
+    border-color: #253E7E;
+    border-width: 2px;
+}
+.authSubmitBtn{
+    width: 100%;
+    background-color: #253E7E;
+    border-color: #253E7E;
+}
+
+.authSubmitBtn:hover{
+    background-color: #2e53af;
+}
+.secondaryLink{
+    font-size: 14px;
+    color: black;
+    text-decoration: none;
+}
+.secondaryLink:hover{
+    color: #253E7E;
+}
+.center{
+    width: 100%;
+    text-align: center;
+}
+.socialAuthLink{
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+}
+.socialAuthLink:hover{
+    color: #253E7E;
+}
+.dontHaveLink{
+    color: #253E7E;
+}

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
+import Login from "./components/auth/Login";
 // import {Switch} from "react-router"
 
 function App() {
