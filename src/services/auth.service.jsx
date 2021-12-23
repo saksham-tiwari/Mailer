@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://bulk-mailer-app.herokuapp.com/";
+const API_URL = "http://bulkmailer.ap-south-1.elasticbeanstalk.com/";
 
 class AuthService {
   async login(username, password) {
