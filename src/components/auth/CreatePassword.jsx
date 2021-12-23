@@ -2,8 +2,8 @@ import React from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
 import { Button, Form } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import google from "../../assets/google.svg"
+// import { Link } from 'react-router-dom'
+// import google from "../../assets/google.svg"
 
 const CreatePassword = () => {
     const formSubmit = (e)=>{

@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
 import { Button, Form } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import google from "../../assets/google.svg"
+import { useDispatch } from 'react-redux'
+import {login} from "../../redux/actions/auth"
+
 
 const Login = () => {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState(""); 
+    const navigate = useNavigate();  
+
+    // var state = useSelector((state)=>state.auth_reducer)
+    const dispatch = useDispatch();
     const formSubmit = (e)=>{
         e.preventDefault();
-
+        dispatch(login(email, password))
+        .then(()=>{
+            navigate("/lo");
+        })
     }
     return (
         <div>
@@ -22,7 +35,10 @@ const Login = () => {
                         <Form.Control
                         className={styles.inputAuth}
                         placeholder='Enter your Email Address'
-                        type="email"/>
+                        type="email"
+                        value={email}
+                        onChange={(e)=>{setEmail(e.target.value)}}
+                        />
                     </Form.Group>
                     <br/>
                     <Form.Group>
@@ -30,7 +46,10 @@ const Login = () => {
                         <Form.Control
                         className={styles.inputAuth}
                         placeholder='Enter your Email Address'
-                        type="password"/>
+                        type="password"
+                        value={password}
+                        onChange={(e)=>{setPassword(e.target.value)}}
+                        />
                     </Form.Group>
                     <br/>
                     <br/>
