@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../../redux/actions/auth'
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
-import { setEmail } from '../../redux/actions/email'
-import { resendOtp } from '../../redux/actions/auth'
+// import { setEmail } from '../../redux/actions/email'
+import { SET_EMAIL } from '../../redux/actions/types'
+// import { resendOtp } from '../../redux/actions/auth'
 
 const SignUp = () => {
     const [name, setName] = useState("");
@@ -27,7 +28,12 @@ const SignUp = () => {
             // if(res.status!==208){
                 // }
                 
-                dispatch(setEmail(mail))
+                dispatch(
+                    {
+                        type: SET_EMAIL,
+                        payload: mail
+                    }
+                )
                 navigate("/otp")
         })
         .catch(()=>{
@@ -39,6 +45,13 @@ const SignUp = () => {
             //     })
             //     // navigate("/otp")
             // }
+            dispatch(
+                {
+                    type: SET_EMAIL,
+                    payload: mail
+                }
+            )
+
             setLoading(false);
         })
     }

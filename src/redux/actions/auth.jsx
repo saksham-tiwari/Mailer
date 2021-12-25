@@ -153,38 +153,35 @@ export const login = (username, password) => (dispatch) => {
       });
   };
 
-  export const createPassword = (username, password)=>(dispatch)=>{
-      return AuthService.createPassword(username, password)
-      .then((res)=>{
-          dispatch({
-              type: REGISTER_SUCCESS,
-              payload: { user: res.data },
-          });
-          dispatch({
-              type: SET_MESSAGE,
-              payload: res.data.message
-          });
-          return Promise.resolve();
-      })
-      .catch((error)=>{
-        const message =
-            (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-            error.message ||
-            error.toString();
+  export const createPassword = (username, password)=>async (dispatch)=>{
+      try {
+      const res = await AuthService.createPassword(username, password);
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: { user: res.data },
+      });
+      dispatch({
+        type: SET_MESSAGE,
+        payload: res.data.message
+      });
+      return await Promise.resolve();
+    } catch (error) {
+      const message = (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-        dispatch({
-            type: REGISTER_FAIL,
-        });
+      dispatch({
+        type: REGISTER_FAIL,
+      });
 
-        dispatch({
-            type: SET_MESSAGE,
-            payload: message,
-        });
-
-        return Promise.reject();
-      })
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+      return await Promise.reject();
+    }
   }
 
   export const logout = () => (dispatch) => {
