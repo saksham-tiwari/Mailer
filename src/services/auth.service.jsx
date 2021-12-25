@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://bulkmailer.ap-south-1.elasticbeanstalk.com/";
+const API_URL = "https://bulk-mailer-app.herokuapp.com/";
 
 class AuthService {
   async login(username, password) {
@@ -50,6 +50,13 @@ class AuthService {
           username,
           password
       });
+  }
+
+  async resendOtp(username){
+    return await axios
+    .post(API_URL+"signup/resend",{
+      username
+    })
   }
 }
 

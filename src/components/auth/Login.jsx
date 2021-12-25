@@ -1,27 +1,39 @@
 import React, { useState } from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
-import { Button, Form } from 'react-bootstrap'
+import { Alert, Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import google from "../../assets/google.svg"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {login} from "../../redux/actions/auth"
-
+import Loader from "react-loader-spinner";
+import { clearMessage } from '../../redux/actions/message'
+// import message from '../../redux/reducers/message'
 
 const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); 
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();  
 
-    // var state = useSelector((state)=>state.auth_reducer)
+    var state = useSelector((state)=>state.message)
     const dispatch = useDispatch();
     const formSubmit = (e)=>{
         e.preventDefault();
+        setLoading(true);
+        
         dispatch(login(email, password))
         .then(()=>{
-            navigate("/lo");
+
+            navigate("/");
         })
+        .catch(() => {
+            setLoading(false);
+        });
+    }
+    const dismiss = ()=>{
+        dispatch(clearMessage());
     }
     return (
         <div>
@@ -29,6 +41,8 @@ const Login = () => {
             <div className={styles.rightBox}>
                 <h1 className={styles.heading}>Welcome Back</h1>
                 <h2 className={styles.subHeading}>Log In to your account!</h2>
+                {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
+                {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.loader}/>:<></>}
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
                     <Form.Group>
                         <Form.Label>Email</Form.Label>
