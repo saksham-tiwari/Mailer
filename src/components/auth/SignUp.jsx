@@ -53,6 +53,8 @@ const SignUp = () => {
             )
 
             setLoading(false);
+            setTimeout(()=>dismiss(),3000)
+
         })
     }
     const dismiss = ()=>{

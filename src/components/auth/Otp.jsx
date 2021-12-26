@@ -25,18 +25,33 @@ const Otp = () => {
     const [otp, setOtp] = useState("");
     const [resendAlert, setResendAlert]= useState(false);
     const navigate = useNavigate();  
+    const [otpErr, setOtpErr]= useState(false);
+    const [alertMsg, setAlertMsg] = useState("");
+
 
     // console.log(email.mail);
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true)
-        dispatch(verifyOtp(email.mail, otp))
-        .then(()=>{
-            navigate("/create-password")
-        })
-        .catch(()=>{
+        if(otp===""){
             setLoading(false)
-        })
+            setOtpErr(true)
+            setAlertMsg("Otp cannot be empty")
+            setTimeout(() => {
+                setOtpErr(false)
+                setAlertMsg("")
+            }, 3000);
+        }
+        else{
+            dispatch(verifyOtp(email.mail, otp))
+            .then(()=>{
+                navigate("/create-password")
+            })
+            .catch(()=>{
+                setLoading(false)
+            })
+        }
+        
     } 
     const dismiss = ()=>{
         dispatch(clearMessage());
@@ -62,6 +77,8 @@ const Otp = () => {
         })
         .catch(()=>{
             setLoading(false)
+            setTimeout(()=>dismiss(),3000)
+
         });
     }
     return (
@@ -71,6 +88,14 @@ const Otp = () => {
                 <h1 className={styles.heading}>Enter Your OTP</h1>
                 {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
                 {resendAlert?<Alert variant='success' onClose={()=>{setResendAlert(false)}} className={styles.dismissAlert} dismissible>Otp Resent Successfully</Alert>:<></>}
+                {alertMsg!==""?<Alert variant='danger' 
+                    onClose={
+                        ()=>{
+                            setAlertMsg("")
+                            setOtpErr(false)
+                            }} 
+                    className={styles.dismissAlert} dismissible>{alertMsg}</Alert>:<></>}
+                
                 {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.loader}/>:<></>}
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
                     <Form.Group>
@@ -80,6 +105,7 @@ const Otp = () => {
                         placeholder='Enter your OTP'
                         type="text"
                         value={otp}
+                        style={otpErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
                         onChange={(e)=>setOtp(e.target.value)}
                         />
                     </Form.Group>

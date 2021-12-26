@@ -3,11 +3,14 @@ import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
 import { Alert, Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
+import { validEmail, validPassword } from './Regex.jsx';
 import google from "../../assets/google.svg"
 import { useDispatch, useSelector } from 'react-redux'
 import {login} from "../../redux/actions/auth"
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 // import message from '../../redux/reducers/message'
 
 const Login = () => {
@@ -16,24 +19,86 @@ const Login = () => {
     const [password, setPassword] = useState(""); 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();  
+    const [visible, setVisible] = useState(false);
+    const [alertMsg, setAlertMsg] = useState("");
+    const [emailErr, setEmailErr]= useState(false);
+    const [passErr, setPassErr]= useState(false);
+
 
     var state = useSelector((state)=>state.message)
     const dispatch = useDispatch();
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true);
-        
-        dispatch(login(email, password))
-        .then(()=>{
+        if(email===""&&password===""){
+            setEmailErr(true)
+            setPassErr(true)
+            setLoading(false)
+            setAlertMsg("Both fields are required. Cannot be empty!")
+            setTimeout(()=>{
+                setEmailErr(false)
+                setPassErr(false)
+                setAlertMsg("")
+            },3000)
+        }
+        else if(email===""){
+            setEmailErr(true)
+            setLoading(false)
+            setAlertMsg("Email field cannot be empty!")
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg("")
+            },3000)
+        } else if(password===""){
+            setPassErr(true)
+            setLoading(false)
+            setAlertMsg("Password field cannot be empty!")
+            setTimeout(()=>{
+                setPassErr(false)
+                setAlertMsg("")
+            },3000)
+        }
+        else if(!validEmail.test(email)){
+            setLoading(false)
+            setEmailErr(true)
+            setAlertMsg("Pls enter valid email");
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg("");
+            },3000)
 
-            navigate("/");
-        })
-        .catch(() => {
+            // document.getElementsByName("email")[0].style.borderColor="red"
+        } else if(!validPassword.test(password)){
             setLoading(false);
-        });
+            setPassErr(true)
+            setAlertMsg("Enter valid Password. Must contain 1 Upper case, 1 Lower case, 1 Numeric and 1 Special Character.")
+            setTimeout(()=>{
+                setPassErr(false)
+                setAlertMsg("")
+            },3000)
+        }
+        else{
+            setPassErr(false);
+            setEmailErr(false);
+            setAlertMsg("");
+            dispatch(login(email, password))
+            .then(()=>{
+    
+                navigate("/");
+            })
+            .catch(() => {
+                setLoading(false);
+                setTimeout(()=>dismiss(),3000)
+
+            });
+        }
+        
     }
     const dismiss = ()=>{
         dispatch(clearMessage());
+    }
+    const togglePassword =()=>{
+        setVisible(prev=>!prev)
     }
     return (
         <div>
@@ -42,6 +107,14 @@ const Login = () => {
                 <h1 className={styles.heading}>Welcome Back</h1>
                 <h2 className={styles.subHeading}>Log In to your account!</h2>
                 {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
+                {alertMsg!==""?<Alert variant='danger' 
+                    onClose={
+                        ()=>{
+                            setAlertMsg("")
+                            setEmailErr(false)
+                            setPassErr(false)
+                            }} 
+                    className={styles.dismissAlert} dismissible>{alertMsg}</Alert>:<></>}
                 {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.loader}/>:<></>}
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
                     <Form.Group>
@@ -51,20 +124,27 @@ const Login = () => {
                         placeholder='Enter your Email Address'
                         type="email"
                         value={email}
+                        style={emailErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
                         onChange={(e)=>{setEmail(e.target.value)}}
                         />
+                    
                     </Form.Group>
                     <br/>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                         className={styles.inputAuth}
-                        placeholder='Enter your Email Address'
-                        type="password"
+                        placeholder='Enter your Password'
+                        type={visible?"text":"password"}
                         value={password}
+                        style={passErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
                         onChange={(e)=>{setPassword(e.target.value)}}
                         />
+                        {/* <VisibilityIcon className={styles.eyePass}/>  */}
+                        {visible?<VisibilityIcon onClick={togglePassword} className={styles.eyePass}/>:<VisibilityOffIcon onClick={togglePassword} className={styles.eyePass}/>}
+
                     </Form.Group>
+                    
                     <br/>
                     <br/>
                     <Button type="submit" className={styles.authSubmitBtn}>
