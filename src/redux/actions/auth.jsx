@@ -9,6 +9,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     SET_MESSAGE,
+    SET_EMAIL,
   } from "./types";
   
 import AuthService from "../../services/auth.service";
@@ -33,7 +34,7 @@ export const login = (username, password) => (dispatch) => {
           payload: { user: res.data },
         });
   
-        return Promise.resolve();
+        return Promise.resolve({code:res.status});
     })
     .catch((error) => {
         var message =
@@ -47,6 +48,20 @@ export const login = (username, password) => (dispatch) => {
           message = "Incorrect Password. Try Again"
         } else if(error.response.status===404){
           message = "User Not Found. Pls Sign Up"
+        } else if(error.response.status===403){
+          // message = "User already exist, pls verify.";
+          dispatch(resendOtp(username))
+          dispatch({
+            type: SET_EMAIL,
+            payload: username,
+          })
+          dispatch({
+            type: SET_MESSAGE,
+            payload: "Verify needed",
+          });
+          // return Promise.resolve();
+        return Promise.reject({code:403});
+
         }
   
         dispatch({
@@ -58,7 +73,7 @@ export const login = (username, password) => (dispatch) => {
           payload: message,
         });
   
-        return Promise.reject();
+        return Promise.reject({code:error.response.status});
       }
     );
   };
@@ -74,7 +89,7 @@ export const login = (username, password) => (dispatch) => {
             type: SET_MESSAGE,
             payload:"USER ALREADY PRESENT"
           })
-          return Promise.reject();
+          return Promise.reject({code:response.status});
         }
         else{
           dispatch({
@@ -85,7 +100,7 @@ export const login = (username, password) => (dispatch) => {
             type: SET_MESSAGE,
             payload: response.data.message,
           });
-          return Promise.resolve();
+          return Promise.resolve({code:response.status});
 
         }
         
@@ -102,7 +117,7 @@ export const login = (username, password) => (dispatch) => {
         if(error.response.status===403){
           // message = "User already exist, pls verify.";
           dispatch(resendOtp(username))
-          return Promise.resolve();
+          return Promise.resolve({code:error.response.status});
         }
   
         dispatch({
@@ -114,7 +129,7 @@ export const login = (username, password) => (dispatch) => {
           payload: message,
         });
   
-        return Promise.reject();
+        return Promise.reject({code:error.response.status});
       }
     );
   };
@@ -130,7 +145,7 @@ export const login = (username, password) => (dispatch) => {
               payload: res.data.message
           });
 
-          return Promise.resolve();
+          return Promise.resolve({code:res.status});
       })
       .catch((error)=>{
         const message =
@@ -140,6 +155,17 @@ export const login = (username, password) => (dispatch) => {
             error.message ||
             error.toString();
 
+        if(error.response.status===401){
+          dispatch({
+            type: OTP_FAIL,
+          });
+
+          dispatch({
+            type: SET_MESSAGE,
+            payload: "Incorrect OTP",
+          });
+          return Promise.reject({code:error.response.status})
+        }
         dispatch({
             type: OTP_FAIL,
         });
@@ -149,7 +175,7 @@ export const login = (username, password) => (dispatch) => {
             payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject({code:error.response.status});
       });
   };
 
@@ -164,7 +190,7 @@ export const login = (username, password) => (dispatch) => {
         type: SET_MESSAGE,
         payload: res.data.message
       });
-      return await Promise.resolve();
+      return await Promise.resolve({code:res.status});
     } catch (error) {
       const message = (error.response &&
         error.response.data &&
@@ -180,7 +206,7 @@ export const login = (username, password) => (dispatch) => {
         type: SET_MESSAGE,
         payload: message,
       });
-      return await Promise.reject();
+      return await Promise.reject({code:error.response.status});
     }
   }
 
@@ -202,7 +228,7 @@ export const login = (username, password) => (dispatch) => {
         type: SET_MESSAGE,
         payload: res.data.message,
       })
-      return Promise.resolve();
+      return Promise.resolve({code:res.status});
     })
     .catch((error)=>{
       const message =
@@ -221,6 +247,39 @@ export const login = (username, password) => (dispatch) => {
           payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject({code:error.response.status});
+    })
+  }
+
+  export const forgot = (email)=>(dispatch)=>{
+    return AuthService.forgot(email)
+    .then((res)=>{
+      dispatch({
+        type:OTP_SEND_SUCCESS,
+      })
+      dispatch({
+        type: SET_MESSAGE,
+        payload: res.data.message,
+      })
+      return Promise.resolve({code:res.status});
+    })
+    .catch((error)=>{
+      const message =
+          (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+      dispatch({
+          type: OTP_SEND_FAIL,
+      });
+
+      dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+      });
+
+      return Promise.reject({code:error.response.status});
     })
   }

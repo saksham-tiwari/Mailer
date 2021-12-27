@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
 import { Alert, Button, Form } from 'react-bootstrap'
@@ -11,6 +11,7 @@ import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { SET_MESSAGE } from '../../redux/actions/types'
 // import message from '../../redux/reducers/message'
 
 const Login = () => {
@@ -27,6 +28,13 @@ const Login = () => {
 
     var state = useSelector((state)=>state.message)
     const dispatch = useDispatch();
+    const auth = useSelector((state)=>state.auth)
+
+    useEffect(()=>{
+        if(auth.isLoggedIn){
+            navigate("/")
+        }
+    })
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true);
@@ -83,13 +91,21 @@ const Login = () => {
             setAlertMsg("");
             dispatch(login(email, password))
             .then(()=>{
-    
-                navigate("/");
+                // else{
+                    navigate("/");
+                // }
             })
-            .catch(() => {
+            .catch((err) => {
                 setLoading(false);
+                // console.log(err)
+                if(err.code===403){
+                    navigate("/otp")
+                    dispatch({
+                        type: SET_MESSAGE,
+                        payload: "Verification needed",
+                      });
+                }
                 setTimeout(()=>dismiss(),3000)
-
             });
         }
         
@@ -153,7 +169,7 @@ const Login = () => {
                     <br/>
                     <br/>
                     <div className={styles.center}>
-                        <Link to='forgot' className={styles.secondaryLink}>Forgot Password?</Link>
+                        <Link to='/forgot-pass' className={styles.secondaryLink}>Forgot Password?</Link>
                     </div>
                     <table>
                         <tr>

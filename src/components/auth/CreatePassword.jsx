@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
 import { Alert, Button, Form } from 'react-bootstrap'
@@ -26,8 +26,17 @@ const CreatePassword = () => {
     const [alertMsg, setAlertMsg] = useState("");
 
 
+
     var state = useSelector((state)=>state.message)
     var email = useSelector((state)=>state.email)
+
+    const auth = useSelector((state)=>state.auth)
+
+    useEffect(()=>{
+        if(auth.isLoggedIn){
+            navigate("/")
+        }
+    })
 
     const formSubmit = (e)=>{
         e.preventDefault();

@@ -58,6 +58,13 @@ class AuthService {
       username
     })
   }
+
+  async forgot(username){
+    return await axios
+    .post(API_URL+"signup/forgot",{
+      username
+    })
+  }
 }
 
 export default new AuthService();

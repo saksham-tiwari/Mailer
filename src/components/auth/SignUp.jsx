@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
 import { Alert, Button, Form } from 'react-bootstrap'
@@ -10,6 +10,7 @@ import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 // import { setEmail } from '../../redux/actions/email'
 import { SET_EMAIL } from '../../redux/actions/types'
+import { validEmail } from './Regex'
 // import { resendOtp } from '../../redux/actions/auth'
 
 const SignUp = () => {
@@ -17,45 +18,92 @@ const SignUp = () => {
     const [mail, setMail] = useState("");
     const [loading, setLoading ] = useState(false);
     var state = useSelector((state)=>state.message)
+    const [alertMsg, setAlertMsg] = useState("");
+    const [emailErr, setEmailErr]= useState(false);
+    const [nameErr, setNameErr]= useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const auth = useSelector((state)=>state.auth)
+
+    useEffect(()=>{
+        if(auth.isLoggedIn){
+            navigate("/")
+        }
+    })
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true);
-        dispatch(register(name, mail))
-        .then(()=>{
-            // if(res.status!==208){
+        if(name===""&&mail===""){
+            setLoading(false)
+            setEmailErr(true)
+            setNameErr(true)
+            setAlertMsg("Both fields are required. Cannot be empty!")
+            setTimeout(()=>{
+                setEmailErr(false)
+                setNameErr(false)
+                setAlertMsg("")
+            },3000)
+        } else if(name===""){
+            setLoading(false);
+            setNameErr(true);
+            setAlertMsg("Name field cannot be empty!")
+            setTimeout(() => {
+                setNameErr(false);
+                setAlertMsg("")
+            }, 3000);
+        } else if(mail===""){
+            setLoading(false);
+            setEmailErr(true);
+            setAlertMsg("Email field cannot be empty!");
+            setTimeout(() => {
+                setEmailErr(false);
+                setAlertMsg("");
+            }, 3000);
+        } else if(!validEmail.test(mail)){
+            setLoading(false);
+            setEmailErr(true);
+            setAlertMsg("Enter a valid email!");
+            setTimeout(() => {
+                setEmailErr(false);
+                setAlertMsg("");
+            }, 3000);
+        }
+        else {
+            dispatch(register(name, mail))
+            .then(()=>{
+                // if(res.status!==208){
+                    // }
+                    
+                    dispatch(
+                        {
+                            type: SET_EMAIL,
+                            payload: mail
+                        }
+                    )
+                    navigate("/otp")
+            })
+            .catch(()=>{
+                // if(state.message==="User already exist, pls verify."){
+                //     // setTimeout(()=>{navigate("/otp")},1000);
+                //     dispatch(resendOtp(mail))
+                //     .then(()=>{
+                //         navigate("/otp")
+                //     })
+                //     // navigate("/otp")
                 // }
-                
                 dispatch(
                     {
                         type: SET_EMAIL,
                         payload: mail
                     }
                 )
-                navigate("/otp")
-        })
-        .catch(()=>{
-            // if(state.message==="User already exist, pls verify."){
-            //     // setTimeout(()=>{navigate("/otp")},1000);
-            //     dispatch(resendOtp(mail))
-            //     .then(()=>{
-            //         navigate("/otp")
-            //     })
-            //     // navigate("/otp")
-            // }
-            dispatch(
-                {
-                    type: SET_EMAIL,
-                    payload: mail
-                }
-            )
 
-            setLoading(false);
-            setTimeout(()=>dismiss(),3000)
+                setLoading(false);
+                setTimeout(()=>dismiss(),3000)
 
-        })
+            })
+        }
     }
     const dismiss = ()=>{
         dispatch(clearMessage());
@@ -67,6 +115,14 @@ const SignUp = () => {
                 <h1 className={styles.heading}>Let's Get Started</h1>
                 <h2 className={styles.subHeading}>Create your account!</h2>
                 {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
+                {alertMsg!==""?<Alert variant='danger' 
+                    onClose={
+                        ()=>{
+                            setAlertMsg("")
+                            setEmailErr(false)
+                            setNameErr(false)
+                            }} 
+                    className={styles.dismissAlert} dismissible>{alertMsg}</Alert>:<></>}
                 {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.loader}/>:<></>}
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
                     <Form.Group>
@@ -76,6 +132,7 @@ const SignUp = () => {
                         placeholder='Enter your Name'
                         type="text"
                         value={name}
+                        style={nameErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
                         onChange={(e)=>{setName(e.target.value)}}
                         />
                     </Form.Group>
@@ -87,6 +144,7 @@ const SignUp = () => {
                         placeholder='Enter your Email Address'
                         type="email"
                         value={mail}
+                        style={emailErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
                         onChange={(e)=>setMail(e.target.value)}
                         />
                     </Form.Group>

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import MailGIF from "./MailGIF"
 import styles from './authstyles.module.css'
-import { Alert, Button, Form } from 'react-bootstrap'
+import { Alert, Button, Form, FormControl, InputGroup } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { verifyOtp } from "../../redux/actions/auth"
+import { forgot, verifyOtp } from "../../redux/actions/auth"
 import { resendOtp } from '../../redux/actions/auth'
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 import { useNavigate } from 'react-router'
+import { validEmail } from './Regex'
+import { SET_EMAIL } from '../../redux/actions/types'
 // import MyTimer from "./Timer"
 // import { Link } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
@@ -17,16 +19,19 @@ const Otp = () => {
     // let time= new Date();
 
     var state = useSelector((state)=>state.message)
-    var email = useSelector((state)=>state.email)
+    // var email = useSelector((state)=>state.email)    
     // const seconds = 30;
     // const [timerBtn, setTimerBtn] = useState(true);
     const [loading, setLoading ] = useState(false);
     const dispatch = useDispatch();
     const [otp, setOtp] = useState("");
+    const [mail, setMail] = useState("");
     const [resendAlert, setResendAlert]= useState(false);
     const navigate = useNavigate();  
     const [otpErr, setOtpErr]= useState(false);
+    const [emailErr, setEmailErr]= useState(false);
     const [alertMsg, setAlertMsg] = useState("");
+    const [otpEmail, setOtpEmail] = useState(false);
 
     const auth = useSelector((state)=>state.auth)
 
@@ -35,6 +40,7 @@ const Otp = () => {
             navigate("/")
         }
     })
+
     // console.log(email.mail);
     const formSubmit = (e)=>{
         e.preventDefault();
@@ -49,7 +55,7 @@ const Otp = () => {
             }, 3000);
         }
         else{
-            dispatch(verifyOtp(email.mail, otp))
+            dispatch(verifyOtp(mail, otp))
             .then(()=>{
                 navigate("/create-password")
             })
@@ -74,7 +80,7 @@ const Otp = () => {
     const resendOTP = ()=>{
         setCounter(30)
         setLoading(true)
-        dispatch(resendOtp(email.mail))
+        dispatch(resendOtp(mail))
         .then(()=>{
             // alert("resend")
             setResendAlert(true)
@@ -87,11 +93,48 @@ const Otp = () => {
 
         });
     }
+    const sendOtp = ()=>{
+        setLoading(true);
+        if(mail===""){
+            setLoading(false);
+            setEmailErr(true);
+            setAlertMsg("Email field cannot be empty!");
+            setTimeout(() => {
+                setEmailErr(false);
+                setAlertMsg("");
+            }, 3000);
+        } else if(!validEmail.test(mail)){
+            setLoading(false);
+            setEmailErr(true);
+            setAlertMsg("Enter a valid email!");
+            setTimeout(() => {
+                setEmailErr(false);
+                setAlertMsg("");
+            }, 3000);
+        } else{
+            dispatch(forgot(mail))
+            .then(()=>{
+                setLoading(false)
+                setOtpEmail(true);
+                dispatch(
+                    {
+                        type: SET_EMAIL,
+                        payload: mail
+                    }
+                )
+
+            })
+            .catch(()=>{
+                setLoading(false)
+                setTimeout(()=>dismiss(),3000)
+            })
+        }
+    }
     return (
         <div>
             <MailGIF/>
             <div className={styles.rightBox} style={{top:"25%"}}>
-                <h1 className={styles.heading}>Enter Your OTP</h1>
+                <h1 className={styles.heading}>Forgot Password?</h1>
                 {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
                 {resendAlert?<Alert variant='success' onClose={()=>{setResendAlert(false)}} className={styles.dismissAlert} dismissible>Otp Resent Successfully</Alert>:<></>}
                 {alertMsg!==""?<Alert variant='danger' 
@@ -104,6 +147,20 @@ const Otp = () => {
                 
                 {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.loader}/>:<></>}
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
+                <InputGroup className="mb-3">
+                    <FormControl
+                    type="email"
+                    placeholder="Enter your Email Id"
+                    className={styles.inputAuth}
+                    value={mail}
+                    style={emailErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
+                    onChange={(e)=>setMail(e.target.value)}
+                    />
+                    <Button className = {styles.otpEmailBtn} onClick = {sendOtp} disabled={otpEmail}>
+                    Send OTP
+                    </Button>
+                </InputGroup>
+
                     <Form.Group>
                         <Form.Label>OTP</Form.Label>
                         <Form.Control
