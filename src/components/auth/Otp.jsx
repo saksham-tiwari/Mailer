@@ -33,18 +33,21 @@ const Otp = () => {
     const auth = useSelector((state)=>state.auth)
 
     useEffect(()=>{
+        console.log(permission);
         if(auth.isLoggedIn){
             navigate("/")
         } 
-        if(permission===true){
+        if(permission.permission===true){
             dispatch({
                 type: SET_PERMISSION,
                 payload: false,
             })
+            console.log("run")
         } else{
             navigate("/")
         }
-    })
+        // if(permission===false)
+    },[])
     // console.log(email.mail);
     const formSubmit = (e)=>{
         e.preventDefault();

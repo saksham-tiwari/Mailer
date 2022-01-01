@@ -1,6 +1,8 @@
 import { SET_PERMISSION } from "../actions/types";
 
-const initialState = {};
+const initialState = {
+    permission: false
+};
 
 const permission = (state=initialState, action)=>{
     const { type, payload } = action;

@@ -40,15 +40,7 @@ const Otp = () => {
         if(auth.isLoggedIn){
             navigate("/")
         }
-        if(permission===true){
-            dispatch({
-                type: SET_PERMISSION,
-                payload: false,
-            })
-        } else{
-            navigate("/")
-        }
-    })
+    },[])
 
     // console.log(email.mail);
     const formSubmit = (e)=>{

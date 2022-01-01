@@ -12,10 +12,12 @@ import { clearMessage } from '../../redux/actions/message'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { validPassword } from './Regex'
+import { SET_PERMISSION } from '../../redux/actions/types'
 
 const CreatePassword = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
     const [password, setPassword] = useState("");
     const [confPass, setConfPass] = useState("");
     const [loading, setLoading ] = useState(false);
@@ -24,19 +26,29 @@ const CreatePassword = () => {
     const [pass1Err, setPass1Err]= useState(false);
     const [pass2Err, setPass2Err]= useState(false);
     const [alertMsg, setAlertMsg] = useState("");
-
-
-
+    
+    
+    
     var state = useSelector((state)=>state.message)
     var email = useSelector((state)=>state.email)
-
+    var permission = useSelector((state)=>state.permission)    
     const auth = useSelector((state)=>state.auth)
 
     useEffect(()=>{
+        console.log(permission);
         if(auth.isLoggedIn){
             navigate("/")
         }
-    })
+        if(permission.permission===true){
+            dispatch({
+                type: SET_PERMISSION,
+                payload: false,
+            })
+            console.log("run");
+        } else{
+            navigate("/")
+        }
+    },[])
 
     const formSubmit = (e)=>{
         e.preventDefault();
