@@ -112,6 +112,11 @@
     background-color: #2e53af;
 
 }
+
+.oneTap{
+    margin-left: 100px;
+    height: 10vh;
+}
 @media only screen and (max-width: 786px) {
     .mailGif{
         width: 70%;

@@ -9,7 +9,7 @@ import { register } from '../../redux/actions/auth'
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 // import { setEmail } from '../../redux/actions/email'
-import { SET_EMAIL } from '../../redux/actions/types'
+import { SET_EMAIL, SET_PERMISSION } from '../../redux/actions/types'
 import { validEmail } from './Regex'
 // import { resendOtp } from '../../redux/actions/auth'
 
@@ -81,6 +81,10 @@ const SignUp = () => {
                             payload: mail
                         }
                     )
+                    dispatch({
+                        type: SET_PERMISSION,
+                        payload: true,
+                    })
                     navigate("/otp")
             })
             .catch(()=>{
@@ -98,6 +102,10 @@ const SignUp = () => {
                         payload: mail
                     }
                 )
+                dispatch({
+                    type: SET_PERMISSION,
+                    payload: true,
+                })
 
                 setLoading(false);
                 setTimeout(()=>dismiss(),3000)

@@ -9,7 +9,7 @@ import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 import { useNavigate } from 'react-router'
 import { validEmail } from './Regex'
-import { SET_EMAIL } from '../../redux/actions/types'
+import { SET_EMAIL, SET_PERMISSION } from '../../redux/actions/types'
 // import MyTimer from "./Timer"
 // import { Link } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
@@ -22,6 +22,7 @@ const Otp = () => {
     // var email = useSelector((state)=>state.email)    
     // const seconds = 30;
     // const [timerBtn, setTimerBtn] = useState(true);
+    var permission = useSelector((state)=>state.permission)
     const [loading, setLoading ] = useState(false);
     const dispatch = useDispatch();
     const [otp, setOtp] = useState("");
@@ -37,6 +38,14 @@ const Otp = () => {
 
     useEffect(()=>{
         if(auth.isLoggedIn){
+            navigate("/")
+        }
+        if(permission===true){
+            dispatch({
+                type: SET_PERMISSION,
+                payload: false,
+            })
+        } else{
             navigate("/")
         }
     })

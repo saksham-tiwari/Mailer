@@ -8,6 +8,7 @@ import { resendOtp } from '../../redux/actions/auth'
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 import { useNavigate } from 'react-router'
+import { SET_PERMISSION } from '../../redux/actions/types'
 // import MyTimer from "./Timer"
 // import { Link } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
@@ -18,6 +19,7 @@ const Otp = () => {
 
     var state = useSelector((state)=>state.message)
     var email = useSelector((state)=>state.email)
+    var permission = useSelector((state)=>state.permission)
     // const seconds = 30;
     // const [timerBtn, setTimerBtn] = useState(true);
     const [loading, setLoading ] = useState(false);
@@ -32,6 +34,14 @@ const Otp = () => {
 
     useEffect(()=>{
         if(auth.isLoggedIn){
+            navigate("/")
+        } 
+        if(permission===true){
+            dispatch({
+                type: SET_PERMISSION,
+                payload: false,
+            })
+        } else{
             navigate("/")
         }
     })
@@ -51,6 +61,10 @@ const Otp = () => {
         else{
             dispatch(verifyOtp(email.mail, otp))
             .then(()=>{
+                dispatch({
+                    type: SET_PERMISSION,
+                    payload: true,
+                })
                 navigate("/create-password")
             })
             .catch(()=>{
