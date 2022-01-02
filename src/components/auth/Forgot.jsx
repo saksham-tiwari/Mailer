@@ -33,6 +33,7 @@ const Otp = () => {
     const [emailErr, setEmailErr]= useState(false);
     const [alertMsg, setAlertMsg] = useState("");
     const [otpEmail, setOtpEmail] = useState(false);
+    const [first, setFirst] = useState(true);
 
     const auth = useSelector((state)=>state.auth)
 
@@ -69,7 +70,7 @@ const Otp = () => {
     const dismiss = ()=>{
         dispatch(clearMessage());
     }
-    const [counter, setCounter] = useState(30);
+    const [counter, setCounter] = useState(0);
     useEffect(()=>{
         const timer = counter>0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
@@ -117,6 +118,9 @@ const Otp = () => {
             .then(()=>{
                 setLoading(false)
                 setOtpEmail(true);
+                setFirst(false);
+                setCounter(30);
+
                 dispatch(
                     {
                         type: SET_EMAIL,
@@ -180,7 +184,7 @@ const Otp = () => {
                     </Button>
                     <br/>
                     <br/>
-                    <p className={styles.otpTimer}> <button onClick={resendOTP} className={styles.resendBtn} disabled={counter>0?true:false}> Resend OTP </button>  after 00:{String(counter).padStart(2, '0')} seconds </p>
+                    <p className={styles.otpTimer}> <button onClick={resendOTP} className={styles.resendBtn} disabled={(first || counter>0)?true:false}> Resend OTP </button>  after 00:{String(counter).padStart(2, '0')} seconds </p>
                     {/* <MyTimer expiryTimestamp={time.setSeconds(seconds)} onExpire={resetTimer}></MyTimer>  */}
                 </Form>
             </div>
