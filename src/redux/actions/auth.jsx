@@ -10,6 +10,7 @@ import {
     LOGOUT,
     SET_MESSAGE,
     SET_EMAIL,
+    REFRESH_SUCCESS,
   } from "./types";
   
 import AuthService from "../../services/auth.service";
@@ -281,5 +282,34 @@ export const login = (username, password) => (dispatch) => {
       });
 
       return Promise.reject({code:error.response.status});
+    })
+
+  }
+  export const refresh = ()=>(dispatch)=>{
+    return AuthService.refresh()
+    .then((res)=>{
+      console.log("here now")
+      var user = JSON.parse(localStorage.getItem("user"));
+      var payload=user;
+      if(res.status===200){
+        payload= {
+          access_token:res.data.access_token,
+          refresh_token:user.refresh_token
+        }
+        localStorage.setItem("user",JSON.stringify(payload))
+        console.log(payload);
+        dispatch({
+          type:REFRESH_SUCCESS,
+          payload
+        })
+      }
+      
+    })
+    .catch((err)=>{
+      // console.log(err.message)
+      console.log("LOGGED OUT DUE TO REFRESH TOKEN FAILURE");
+      dispatch({
+        type:LOGOUT
+      })
     })
   }

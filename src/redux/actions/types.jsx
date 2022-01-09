@@ -7,9 +7,14 @@ export const OTP_SUCCESS = "OTP_SUCCESS";
 export const OTP_FAIL = "OTP_FAIL";
 export const OTP_SEND_SUCCESS = "OTP_SEND_SUCCESS";
 export const OTP_SEND_FAIL = "OTP_SEND_FAIL";
+export const REFRESH = "REFRESH";
+export const REFRESH_SUCCESS = "REFRESH_SUCCESS";
 
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 
 export const SET_EMAIL = "SET_EMAIL";
 export const SET_PERMISSION = "SET_PERMISSION";
+
+export const CREATE_GROUP = "CREATE_GROUP";
+export const CREATE_GROUP_SUCCESS = "CREATE_GROUP_SUCCESS";

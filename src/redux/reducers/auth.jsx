@@ -8,6 +8,8 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
+    REFRESH,
+    REFRESH_SUCCESS,
   } from "../actions/types";
   
   const user = JSON.parse(localStorage.getItem("user"));
@@ -73,6 +75,14 @@ import {
                 ...state,
                 isLoggedIn: false
             };
+          
+          case REFRESH_SUCCESS:
+            return{
+              ...state,
+              isLoggedIn: true,
+              user: payload
+            }
+
         
           
           default:

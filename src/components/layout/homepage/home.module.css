@@ -1,0 +1,84 @@
+.leftBlock{
+    position: absolute;
+    margin-top: 2.5vh;
+    padding-left: 4%;
+    width: 50vw;
+    height: 95vh;
+    /* border: 1px black solid; */
+    padding-top: 10%;
+}
+
+.rightBlock{
+    position: absolute;
+    margin-left: 50vw;
+    margin-top: 2.5vh;
+    width: 50vw;
+    height: 95vh;
+    /* border: 1px black solid; */
+}
+
+.mainHead{
+    font-family: 'Red Rose', cursive;
+    font-size: 54px;
+}
+
+.paraLeft{
+    font-style: italic;
+    font-weight:lighter;
+    font-size: 26px;
+    width: 90%;
+    color: #253E7E;
+}
+
+.btnLogIn{
+    color: #253E7E;
+    border-color: #253E7E;
+    width: 40%;
+    margin: 0 2%;
+    border-radius: 4px;
+}
+
+.btnSignUp{
+    background-color: #253E7E;
+    border-color: #253E7E;
+    width: 40%;
+    margin: 0 2%;
+    border-radius: 4px;
+
+}
+
+.btnLogIn:hover{
+    background: #253E7E;
+    border-color: #253E7E;
+}
+
+.btnSignUp:hover{
+    background: white;
+    color: #253E7E;
+    border-color: #253E7E;
+
+}
+
+.GIF{
+    position: relative;
+    height: 90vh;
+    width: 50vw;
+}
+
+@media only screen and (max-width:640px) {
+    .leftBlock, .rightBlock{
+        width: 100vw;
+    }
+    .leftBlock{
+        margin-top: 50vh;
+        height: 60vh;
+    }
+    .rightBlock{
+        margin-top: -10%;
+        margin-left: 0;
+    }
+    .GIF{
+        width: 100vw;
+        height: 70vh;
+    }
+}
