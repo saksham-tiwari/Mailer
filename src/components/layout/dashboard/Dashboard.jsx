@@ -50,7 +50,7 @@ const Dashboard = () => {
         console.log(grpName)
         console.log(mails);
 
-        dispatch(createGroup(grpName,mails))
+        dispatch(createGroup(grpName,mails,mails.length))
         .then((res)=>{
             console.log(res);
         })

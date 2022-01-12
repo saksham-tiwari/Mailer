@@ -23,12 +23,17 @@ import {
       
         switch (type) {
           case REGISTER_SUCCESS:
+            console.log(payload);
+            // state.user = payload.user;
+            localStorage.setItem("user", JSON.stringify(payload.user))
             return {
               ...state,
               isLoggedIn: true,
               user: payload.user,
             };
           case REGISTER_FAIL:
+            // console.log("register_fail run");
+
             return {
               ...state,
               isLoggedIn: false,

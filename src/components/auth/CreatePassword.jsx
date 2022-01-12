@@ -104,7 +104,8 @@ const CreatePassword = () => {
         }
         else{
             dispatch(createPassword(email.mail,password))
-            .then(()=>{
+            .then((res)=>{
+                console.log(res);
                 navigate("/")
             })
             .catch(()=>{
