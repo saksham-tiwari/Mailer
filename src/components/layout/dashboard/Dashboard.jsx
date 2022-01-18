@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../navbar/Navbar'
 import ReadCsv from './readCsv';
-import Papa from "papaparse"
+// import Papa from "papaparse"
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { createGroup } from '../../../redux/actions/groups';
-import { refresh } from '../../../redux/actions/auth';
+import { createGroup, getGroups } from '../../../redux/actions/groups';
+import { logout, refresh } from '../../../redux/actions/auth';
+import GroupsSection from './GroupsSection/GroupsSection';
 // import {  } from 'bootstrap';
 
 
@@ -14,8 +15,23 @@ const Dashboard = () => {
     const [grpName, setGrpName] = useState("");
     const dispatch = useDispatch();
     useEffect(()=>{
-        console.log(mails)
-    },[mails])
+        dispatch(getGroups())
+        .then((res)=>console.log(res))
+        .catch((err)=>{
+            if(err.refresh==='required'){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(getGroups)
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                    }
+                })
+            }
+        })
+    },[])
+
     // function Upload() {
     //     var fileUpload = document.getElementById("fileUpload");
     //     var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
@@ -59,10 +75,12 @@ const Dashboard = () => {
             if(err.refresh==='required'){
                 dispatch(refresh())
                 .then(()=>{
-                    console.log("here now guys")
+                    dispatch(createGroup(grpName,mails,mails.length))
                 })
-                .catch(()=>{
-                    console.log("fatt gii");
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                    }
                 })
             }
         })
@@ -70,6 +88,7 @@ const Dashboard = () => {
     return (
         <>
             <Navbar/>
+            <GroupsSection/>
             <div>Create a new Group:</div>
             <Form onSubmit={(e)=>createGrpFormSubmit(e)}>
                 <Form.Group>
@@ -81,6 +100,7 @@ const Dashboard = () => {
                 <Button type="submit">Submit</Button>
                 {/* <Button variant="primary">Primary</Button> */}
             </Form>
+
             {/* <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />  */}
             {/* <input type="file" id="fileUpload" />
             <input type="button" id="upload" value="Upload" onClick={Upload} />

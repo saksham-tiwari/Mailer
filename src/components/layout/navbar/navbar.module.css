@@ -47,7 +47,50 @@
     right: 10%;
     top: 12px;
 }
-
+.hamburger{
+    background-color: #253E7E;
+    border: none;
+    color: white;
+    position: absolute;
+    right: 10%;
+    top: 0%;
+    height: 100%;
+    visibility: hidden;
+}
+.menuHam{
+    width: 100%;
+    height: 30vh;
+    background-color: #253e7ead;
+    position: absolute;
+    top: 8vh;
+    opacity: 0;
+    padding: 5%;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+}
+.menu2 ul{
+    /* margin-top: 4%; */
+    padding: 0;
+    text-align: center;
+    list-style-type: none;
+}
+.menuLinks2{
+    text-decoration: none;
+    color: aliceblue;
+}
+.userImg2{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.userName2{
+    margin-left: 10px;
+}
+.hrHam{
+    width: 50%;
+    margin-left: 25%;
+    opacity: 1;
+}
 @media only screen and (max-width: 794px){
     .menu{
         width: 70vw;
@@ -65,5 +108,24 @@
     }
     .userName{
         right: 6%;
+    }
+}
+
+@media only screen and (max-width: 565px){
+    .hamburger{
+        visibility: visible;
+        /* transition: visibility 0s linear 0s, opacity 300ms; */
+    }
+    .menuHam{
+        visibility: visible;
+    }
+    .menu{
+        visibility: hidden;
+    }
+    .userImg{
+        visibility: hidden;
+    }
+    .userName{
+        visibility: hidden;
     }
 }

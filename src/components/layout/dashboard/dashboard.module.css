@@ -1,0 +1,28 @@
+.dashHeading{
+    text-align: center;
+    font-weight: 600;
+    margin: 10px 0px;
+    font-size: 36px;
+}
+.btnPrimary{
+    background-color: #253E7E;
+    padding: 5px 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
+    /* margin-left: 42%;     */
+    border: 1px solid #253E7E;
+
+}
+.btnPrimary:hover{
+    background-color: white;
+    color: #253E7E;
+}
+.btnPrimaryDiv{
+    height: 40px;
+}

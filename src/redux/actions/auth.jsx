@@ -303,6 +303,7 @@ export const login = (username, password) => (dispatch) => {
           type:REFRESH_SUCCESS,
           payload
         })
+        return Promise.resolve();
       }
       
     })
@@ -312,5 +313,6 @@ export const login = (username, password) => (dispatch) => {
       dispatch({
         type:LOGOUT
       })
+      return Promise.reject({msg:"Refresh Fail"})
     })
   }

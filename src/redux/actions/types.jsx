@@ -16,5 +16,5 @@ export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 export const SET_EMAIL = "SET_EMAIL";
 export const SET_PERMISSION = "SET_PERMISSION";
 
-export const CREATE_GROUP = "CREATE_GROUP";
 export const CREATE_GROUP_SUCCESS = "CREATE_GROUP_SUCCESS";
+export const GET_GROUPS = "GET_GROUPS";

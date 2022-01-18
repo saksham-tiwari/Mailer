@@ -3,10 +3,12 @@ import message from "./message";
 import auth from "./auth"
 import email from "./email"
 import permission from "./permission";
+import groups from "./groups"
 
 export default combineReducers({
     email,
     auth,
+    groups,
     message,
     permission,
 })
