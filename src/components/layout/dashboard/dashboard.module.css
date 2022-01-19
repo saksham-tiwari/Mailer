@@ -17,6 +17,7 @@
     transform: translate(-50%, 0%);
     /* margin-left: 42%;     */
     border: 1px solid #253E7E;
+    transition: all 0.5s ease;
 
 }
 .btnPrimary:hover{
@@ -25,4 +26,35 @@
 }
 .btnPrimaryDiv{
     height: 40px;
+}
+.input{
+    border-color: #253E7E;
+    border-width: 2px;
+}
+/* .custom-file-input:lang(en)~.custom-file-label::after {
+    content: "Browse";
+    background-color: #253E7E;
+} */
+
+input[type="file"] {
+    display: none;
+}
+.customFileUpload {
+    border: 2px solid #253E7E;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+
+}
+.customFileUpload:hover{
+    background-color: #253E7E;
+    color: white;
+    transition: all 0.5s ease;
+}
+.noHover{
+    pointer-events: none;
+    background-color: white;
+    color: black;
+    transition: all 0.5s ease;
 }

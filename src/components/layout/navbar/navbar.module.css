@@ -4,6 +4,7 @@
     height: 8vh;
     color: white;
     position: fixed;
+    z-index: 5;
 }
 
 .navLogo{

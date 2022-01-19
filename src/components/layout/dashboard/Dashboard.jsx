@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../navbar/Navbar'
-import ReadCsv from './readCsv';
-// import Papa from "papaparse"
-import { Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { createGroup, getGroups } from '../../../redux/actions/groups';
+import { getGroups } from '../../../redux/actions/groups';
 import { logout, refresh } from '../../../redux/actions/auth';
 import GroupsSection from './GroupsSection/GroupsSection';
 // import {  } from 'bootstrap';
 
 
 const Dashboard = () => {
-    const [mails,setMails] = useState([]);
-    const [grpName, setGrpName] = useState("");
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getGroups())
@@ -61,45 +55,12 @@ const Dashboard = () => {
     //         alert("Please upload a valid CSV file.");
     //     }
     // }
-    const createGrpFormSubmit = (e)=>{
-        e.preventDefault();
-        console.log(grpName)
-        console.log(mails);
-
-        dispatch(createGroup(grpName,mails,mails.length))
-        .then((res)=>{
-            console.log(res);
-        })
-        .catch((err)=>{
-            console.log(err);
-            if(err.refresh==='required'){
-                dispatch(refresh())
-                .then(()=>{
-                    dispatch(createGroup(grpName,mails,mails.length))
-                })
-                .catch((err)=>{
-                    if(err.msg==="Refresh Fail"){
-                        dispatch(logout())
-                    }
-                })
-            }
-        })
-    }
+    
     return (
         <>
-            <Navbar/>
+            {/* <Navbar/> */}
             <GroupsSection/>
-            <div>Create a new Group:</div>
-            <Form onSubmit={(e)=>createGrpFormSubmit(e)}>
-                <Form.Group>
-                    <Form.Label>Group Name</Form.Label>
-                    <Form.Control type="Name" placeholder="Group Name" value={grpName} onChange={(e)=>setGrpName(e.target.value)}/>
-                    
-                </Form.Group>
-                <ReadCsv setMails={setMails}/>  
-                <Button type="submit">Submit</Button>
-                {/* <Button variant="primary">Primary</Button> */}
-            </Form>
+            
 
             {/* <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />  */}
             {/* <input type="file" id="fileUpload" />

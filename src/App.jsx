@@ -7,12 +7,15 @@ import CreatePassword from "./components/auth/CreatePassword";
 import Forgot from "./components/auth/Forgot"
 import Home from "./components/layout/homepage/Home";
 import Dashboard from "./components/layout/dashboard/Dashboard";
+import Navbar from "./components/layout/navbar/Navbar";
+import CreateGroup from "./components/layout/CreateGroup/CreateGroup";
 
 // import {Switch} from "react-router"
 
 function App() {
   return (
     <Router>
+      <Navbar/>
       <Routes>
       <Route exact path="/" element={<Home/>}/>
       <Route exact path="/login" element={<Login/>}/>
@@ -22,6 +25,8 @@ function App() {
       <Route exact path="/create-password" element={<CreatePassword/>}/>
       <Route exact path="/forgot-pass" element={<Forgot/>}/>
       <Route exact path="/dashboard" element={<Dashboard/>}/>
+      <Route exact path="/create-group" element={<CreateGroup/>}/>
+
 
 
 
