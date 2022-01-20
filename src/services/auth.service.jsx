@@ -1,12 +1,13 @@
 import axios from "axios";
 import refreshHeader from "./refresh-header";
+import { BaseUrl } from './BaseUrl';
 
-const API_URL = "https://bulk-mailer-app.herokuapp.com/";
+
 
 class AuthService {
   async login(username, password) {
     return await axios
-      .post(API_URL + "authenticate", { username, password })
+      .post(BaseUrl() + "authenticate", { username, password })
       .then((response) => {
         if (response.data.access_token) {
           localStorage.setItem("user", JSON.stringify(response.data));
@@ -22,7 +23,7 @@ class AuthService {
 
   async register(name, username) {
     return await axios
-    .post(API_URL + "signup/register", {
+    .post(BaseUrl() + "signup/register", {
       name,
       username
     });
@@ -30,7 +31,7 @@ class AuthService {
 
   async verifyOtp(username, userOtp){
       return await axios
-      .post(API_URL+"signup/verifyOtp",{
+      .post(BaseUrl()+"signup/verifyOtp",{
           username,
           userOtp
       });
@@ -38,7 +39,7 @@ class AuthService {
   
   async createPassword(username, password){
       return await axios
-      .post(API_URL+"signup/setPassword",{
+      .post(BaseUrl()+"signup/setPassword",{
           username,
           password
       });
@@ -46,14 +47,14 @@ class AuthService {
 
   async resendOtp(username){
     return await axios
-    .post(API_URL+"signup/resend",{
+    .post(BaseUrl()+"signup/resend",{
       username
     })
   }
 
   async forgot(username){
     return await axios
-    .post(API_URL+"signup/forgot",{
+    .post(BaseUrl()+"signup/forgot",{
       username
     })
   }
@@ -61,13 +62,13 @@ class AuthService {
     return await axios
     .request({
       method: 'POST',
-      url: API_URL+"refreshToken",
+      url: BaseUrl()+"refreshToken",
       headers: refreshHeader(),
     
     })
   }
   // axios
-  //   .post(API_URL+"refreshToken",{
+  //   .post(BaseUrl()+"refreshToken",{
   //     headers: {
   //       'refresh_token':'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqaXZlbGVnMzA3QHd1c2VoZS5jb20iLCJleHAiOjE2NDIzNDE3NDgsImlhdCI6MTY0MTczNjk0OH0.SfxYKQH9-jSw2uwi54noxarXoR6JFP9DjRvY3rVg5gBVjhtl0gpEE-23pWeY-NdcTiP7thKwZaubxZ5Nz5aZ0Q',
   //     }

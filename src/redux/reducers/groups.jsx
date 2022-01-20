@@ -1,6 +1,6 @@
-import {CREATE_GROUP_SUCCESS, GET_GROUPS} from "../actions/types";
+import {CREATE_GROUP_SUCCESS, GET_EMAILS, GET_GROUPS} from "../actions/types";
 
-const initialState = {groups:[{name:"demo",count:1}]};
+const initialState = {groups:[{name:"demo",count:1,id:1}],emails:[{id:1,email:"sakshamt234@gmail.com"}]};
 
 const groupsReducer = (state = initialState, action)=>{
     const {type, payload} = action;
@@ -17,6 +17,11 @@ const groupsReducer = (state = initialState, action)=>{
             return{
                 ...state,
                 groups: payload
+            }
+        case GET_EMAILS:
+            return{
+                ...state,
+                emails: payload
             }
          default:
              return state;

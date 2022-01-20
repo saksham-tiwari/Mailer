@@ -5,6 +5,7 @@ import { logout, refresh } from '../../../redux/actions/auth';
 import { createGroup } from '../../../redux/actions/groups';
 import stylesDash from "../dashboard/dashboard.module.css"
 import ReadCsv from '../dashboard/readCsv';
+import ListComponent from '../ListComponent/ListComponent';
 import styles from "./creategrp.module.css"
 
 const CreateGroup = () => {
@@ -83,7 +84,7 @@ const CreateGroup = () => {
             </Form>
             <h1 className={stylesDash.dashHeading}>Members Added:</h1>
 
-            <div className={styles.listBlock}>
+            {/* <div className={styles.listBlock}>
                 {mails.length===0?<div>No members entered yet.</div>:<></>}
                 {mails.map((mail)=>{
                     return(
@@ -97,7 +98,8 @@ const CreateGroup = () => {
                         </>
                     )
                 })}
-                </div>
+                </div> */}
+            <ListComponent mails={mails} delMail={delMail}/>
         </div>
     )
 }

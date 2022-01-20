@@ -9,6 +9,7 @@ const GroupsSection = () => {
     const groups = useSelector((state)=>state.groups)
     const grpArr = groups.groups
     const navigate = useNavigate();  
+    let count=0;
     // console.log(grpArr);
     return (
         <>
@@ -17,7 +18,11 @@ const GroupsSection = () => {
             <div className={styles.seeall}><Link to="/">See All...</Link></div>
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap"}}>
                 {grpArr.map((grp)=>{
-                    return(<Capsule name={grp.name} count={grp.count}/>)
+                    count++;
+                    if(count>6){
+                        return null;
+                    }
+                    return(<Capsule group={grp}/>)
                 })}           
             </div>
         </>

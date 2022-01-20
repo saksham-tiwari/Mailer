@@ -1,13 +1,13 @@
 import axios from "axios";
+import { BaseUrl } from './BaseUrl';
 import authHeader from "./auth-header";
 
-const API_URL = "https://bulk-mailer-app.herokuapp.com/";
 
 class GroupsService{
     async createGroup(name,emails){
 
         return await axios
-        .post(API_URL+"groups/add",{
+        .post(BaseUrl()+"groups/add",{
             name,emails
         },{
             headers:authHeader()
@@ -15,25 +15,25 @@ class GroupsService{
     }
     async getGroups(){
         return await axios
-        .get(API_URL+"groups/getAllGroups",{
+        .get(BaseUrl()+"groups/getAllGroups",{
             headers:authHeader()
         })
     }
     async getEmails(id){
         return await axios
-        .get(API_URL+"groups/getEmails/"+id,{
+        .get(BaseUrl()+"groups/getEmails/"+id,{
             headers:authHeader()
         })
     }
     async deleteEmail(id){
         return await axios
-        .delete(API_URL+"groups/deleteEmail/"+id,{
+        .delete(BaseUrl()+"groups/deleteEmail/"+id,{
             headers:authHeader()
         })
     }
     async deleteGroup(id){
         return await axios
-        .delete(API_URL+"groups/deleteGroup/"+id,{
+        .delete(BaseUrl()+"groups/deleteGroup/"+id,{
             headers:authHeader()
         })
     }
