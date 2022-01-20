@@ -25,6 +25,7 @@
     width: 60%;
     margin-left: 20%;
     margin-bottom: 50px;
+    padding-bottom: 10px;
 }
 .listElem{
     padding: 15px 30px;
@@ -43,4 +44,27 @@
     font-size: x-large;
     background-color: rgba(255, 255, 255, 0);
     border-left: 1px gray solid;
+}
+.submitBtn{
+    background-color: #253E7E;
+    border: #253E7E solid 1px;
+    border-radius: 4px;
+    width: 100%;
+    padding: 6px 12px;
+    color: white;
+}
+@media only screen and (max-width:830px){
+    .formCreate{
+        width: 60%;
+        margin-left: 20%;
+    }
+    .listBlock{
+        width: 80%;
+        margin-left: 10%;
+    }
+}
+@media only screen and (max-width:482px){
+    .formCreate{
+        font-size: 14px;
+    }
 }

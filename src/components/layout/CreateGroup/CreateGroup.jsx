@@ -79,7 +79,7 @@ const CreateGroup = () => {
                 <ReadCsv setMails={setMails} active={active}/>
                 
 
-                <Button type="submit">Submit</Button>
+                <button type="submit" className={styles.submitBtn}>Submit</button>
                 {/* <Button variant="primary">Primary</Button> */}
             </Form>
             <h1 className={stylesDash.dashHeading}>Members Added:</h1>

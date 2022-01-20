@@ -5,7 +5,7 @@ import styles from "../CreateGroup/creategrp.module.css"
 const ListComponent = (props) => {
   return (
       <>
-          <div className={styles.listBlock}>
+            <div className={styles.listBlock}>
                 {props.mails.length===0?<div>No members entered yet.</div>:<></>}
                 {props.mails.map((mail)=>{
                     return(
@@ -19,7 +19,7 @@ const ListComponent = (props) => {
                         </>
                     )
                 })}
-                </div>
+            </div>
       </>
   );
 };

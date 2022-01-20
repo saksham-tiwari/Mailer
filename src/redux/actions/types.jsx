@@ -19,3 +19,4 @@ export const SET_PERMISSION = "SET_PERMISSION";
 export const CREATE_GROUP_SUCCESS = "CREATE_GROUP_SUCCESS";
 export const GET_GROUPS = "GET_GROUPS";
 export const GET_EMAILS = "GET_EMAILS";
+export const DELETE_EMAIL = "DELETE_EMAIL";

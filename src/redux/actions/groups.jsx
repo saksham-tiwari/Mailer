@@ -1,5 +1,5 @@
 import GroupsService from "../../services/group.service";
-import { CREATE_GROUP_SUCCESS, GET_EMAILS, GET_GROUPS, REFRESH } from "./types";
+import { CREATE_GROUP_SUCCESS, DELETE_EMAIL, GET_EMAILS, GET_GROUPS, REFRESH } from "./types";
 
 export const createGroup = (name,emails,count)=>(dispatch)=>{
     return GroupsService.createGroup(name,emails)
@@ -66,10 +66,13 @@ export const getEmails = (id)=>(dispatch)=>{
     })
 }
 
-export const deleteEmail = ()=>(dispatch)=>{
-    return GroupsService.deleteEmail()
+export const deleteEmail = (id)=>(dispatch)=>{
+    return GroupsService.deleteEmail(id)
     .then((res)=>{
-
+        dispatch({
+            type: DELETE_EMAIL,
+            payload: id
+        })
     })
     .catch((err)=>{
         

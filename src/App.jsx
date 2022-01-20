@@ -10,6 +10,7 @@ import Dashboard from "./components/layout/dashboard/Dashboard";
 import Navbar from "./components/layout/navbar/Navbar";
 import CreateGroup from "./components/layout/CreateGroup/CreateGroup";
 import ViewGroup from "./components/layout/ViewGroup/ViewGroup";
+import ViewAllGroups from "./components/layout/ViewAllGroups/ViewAllGroups";
 
 // import {Switch} from "react-router"
 
@@ -28,6 +29,7 @@ function App() {
       <Route exact path="/dashboard" element={<Dashboard/>}/>
       <Route exact path="/create-group" element={<CreateGroup/>}/>
       <Route exact path="/view-group/:id" element={<ViewGroup/>}/>
+      <Route exact path="/view-all-groups" element={<ViewAllGroups/>}/>
 
 
 

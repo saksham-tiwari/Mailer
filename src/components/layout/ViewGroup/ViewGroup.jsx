@@ -7,6 +7,10 @@ import { logout, refresh } from '../../../redux/actions/auth';
 import { getEmails } from '../../../redux/actions/groups';
 import ListComponent from '../ListComponent/ListComponent';
 import FullPageLoader from '../Loaders/FullPageLoader';
+import styles from "../dashboard/dashboard.module.css"
+import styles2 from "../CreateGroup/creategrp.module.css"
+
+
 
 const ViewGroup = (props) => {
     // console.log(props.match.params.id)
@@ -40,10 +44,29 @@ const ViewGroup = (props) => {
             }
         })
     },[])
+    const delMail = (id)=>{
+        console.log(id);
+    }
   return (
         <>
             <FullPageLoader condition={condition}/>
-            {/* <ListComponent  */}
+            <h1 className={styles.dashHeading}>Groups</h1>
+            {/* <ListComponent mails={emails} delMail={delMail}/> */}
+            <div className={styles2.listBlock}>
+                {emails.length===0?<div>No members entered yet.</div>:<></>}
+                {emails.map((mail)=>{
+                    return(
+                        <>
+                        
+                            <div className={styles2.listElem}>
+                                {mail.email}
+                                <button className={styles2.delBtn} onClick={()=>props.delMail(mail.id)}>X</button>
+                            </div>
+
+                        </>
+                    )
+                })}
+            </div>
         </>
     );
 };
