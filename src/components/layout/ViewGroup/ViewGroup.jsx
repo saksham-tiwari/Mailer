@@ -9,6 +9,7 @@ import ListComponent from '../ListComponent/ListComponent';
 import FullPageLoader from '../Loaders/FullPageLoader';
 import styles from "../dashboard/dashboard.module.css"
 import styles2 from "../CreateGroup/creategrp.module.css"
+import styles3 from "./viewgrp.module.css"
 
 
 
@@ -47,11 +48,22 @@ const ViewGroup = (props) => {
     const delMail = (id)=>{
         console.log(id);
     }
+    const handleAdd = ()=>{
+        
+    }
   return (
         <>
             <FullPageLoader condition={condition}/>
-            <h1 className={styles.dashHeading}>Groups</h1>
+            <h1 className={styles.dashHeading}>GRP NAME</h1>
             {/* <ListComponent mails={emails} delMail={delMail}/> */}
+            <button onClick={handleAdd} className={styles3.btnAdd}>Add New Member +</button>
+            <div className="modal">
+                
+            </div>
+            <div className='overlay'></div>
+            <br></br>
+            {/* <br></br> */}
+
             <div className={styles2.listBlock}>
                 {emails.length===0?<div>No members entered yet.</div>:<></>}
                 {emails.map((mail)=>{
@@ -60,7 +72,7 @@ const ViewGroup = (props) => {
                         
                             <div className={styles2.listElem}>
                                 {mail.email}
-                                <button className={styles2.delBtn} onClick={()=>props.delMail(mail.id)}>X</button>
+                                <button className={styles2.delBtn} onClick={()=>props.delMail(mail.id)}>&times;</button>
                             </div>
 
                         </>

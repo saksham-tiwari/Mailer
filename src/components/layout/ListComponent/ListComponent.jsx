@@ -13,7 +13,7 @@ const ListComponent = (props) => {
                         
                             <div className={styles.listElem}>
                                 {mail}
-                                <button className={styles.delBtn} onClick={()=>props.delMail(mail)}>X</button>
+                                <button className={styles.delBtn} onClick={()=>props.delMail(mail)}>&times;</button>
                             </div>
 
                         </>
