@@ -7,23 +7,37 @@ import stylesDash from "../dashboard/dashboard.module.css"
 import ReadCsv from '../dashboard/readCsv';
 import ListComponent from '../ListComponent/ListComponent';
 import styles from "./creategrp.module.css"
+import { useNavigate } from 'react-router'
+import styles3 from "../ViewGroup/viewgrp.module.css"
+import FullPageLoader from '../Loaders/FullPageLoader';
+
 
 const CreateGroup = () => {
     const [mails,setMails] = useState([]);
     const [mail,setMail] = useState("");
     const [active,setActive] = useState(true);
+    const [loader, setLoader]= useState(false);
+    let navigate = useNavigate();
 
     const dispatch = useDispatch();
 
     const [grpName, setGrpName] = useState("");
     const createGrpFormSubmit = (e)=>{
+        setLoader(true);
         e.preventDefault();
         console.log(grpName)
         console.log(mails);
-
+        if(grpName===""){
+            openModal()
+            setLoader(false)
+        }
+        else{
         dispatch(createGroup(grpName,mails,mails.length))
         .then((res)=>{
-            console.log(res);
+            // console.log(res);
+            setLoader(false);
+            navigate("/dashboard");
+            
         })
         .catch((err)=>{
             console.log(err);
@@ -31,6 +45,12 @@ const CreateGroup = () => {
                 dispatch(refresh())
                 .then(()=>{
                     dispatch(createGroup(grpName,mails,mails.length))
+                    .then((res)=>{
+                        // console.log(res);
+                        setLoader(false);
+                        navigate("/dashboard");
+                        
+                    })
                 })
                 .catch((err)=>{
                     if(err.msg==="Refresh Fail"){
@@ -38,13 +58,27 @@ const CreateGroup = () => {
                     }
                 })
             }
-        })
+            else{
+                openModal();
+            }
+        })}
     }
-    
+    const openModal = ()=>{
+        document.querySelector(".modal").classList.add("active");
+        document.querySelector(".overlay").classList.add("active");
+    }
+    const closeModal = ()=>{
+        document.querySelector(".modal").classList.remove("active");
+        document.querySelector(".overlay").classList.remove("active");
+    }
     const addMail= (e)=>{
         e.preventDefault();
         if(mails.length===0){setActive(false)}
-        setMails(prev=>[...prev, mail])
+        if(mail===""){openModal()}
+        else{
+            setMails(prev=>[...prev, mail])
+
+        }
         setMail("");
     }
     const delMail = (mail)=>{
@@ -58,6 +92,7 @@ const CreateGroup = () => {
     }
     return (
         <div>
+            <FullPageLoader condition={loader}/>
             <h1 className={stylesDash.dashHeading}>Create New Group</h1>
             <Form onSubmit={(e)=>createGrpFormSubmit(e)} className={styles.formCreate}>
                 <Form.Group>
@@ -82,6 +117,15 @@ const CreateGroup = () => {
                 <button type="submit" className={styles.submitBtn}>Submit</button>
                 {/* <Button variant="primary">Primary</Button> */}
             </Form>
+            <div className="modal">
+                {/* <h2 className={styles3.heading}>Add New Member</h2>
+                <label className={styles3.label}>Email:</label>
+                <br></br>
+                <input className={styles3.input} placeholder='Enter the email of member'></input>
+                <button className={styles3.btn2}>Add</button><button className={styles3.btn1} onClick={closeModal}>Cancel</button> */}
+                <h2 className={styles3.heading}>Error!!</h2>
+            </div>
+            <div className='overlay' onClick={closeModal}></div>
             <h1 className={stylesDash.dashHeading}>Members Added:</h1>
 
             {/* <div className={styles.listBlock}>

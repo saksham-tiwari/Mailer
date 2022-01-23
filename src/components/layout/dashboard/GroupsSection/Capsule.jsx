@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 const Capsule = (props) => {
     var navigate = useNavigate();
     const viewClick = ()=>{
-        navigate("/view-group/"+props.group.id)
+        navigate("/view-group/"+props.group.name+"/"+props.group.id)
     }
     return (
         <div className={styles.capsule}>

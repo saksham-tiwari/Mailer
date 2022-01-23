@@ -16,14 +16,17 @@ code {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%)  scale(0);
   width: 500px;
   max-width: 80%;
-  max-height: 300px;
+  max-height: 260px;
   transition: 200ms ease-in-out;
-  border: 1px black solid;
   border-radius: 10px;
   background-color: #F6F8FF;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.16), inset 0px 0px 8px rgba(0, 0, 0, 0.25);
+}
+.modal.active{
+  transform: translate(-50%,-50%) scale(1);
 }
 .overlay {
   position: fixed;
@@ -35,4 +38,8 @@ code {
   bottom: 0;
   background-color: rgba(0, 0, 0, .5);
   pointer-events: none;
+}
+.overlay.active{
+  opacity: 1;
+  pointer-events: all;
 }

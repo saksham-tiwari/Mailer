@@ -16,6 +16,8 @@ import { SET_MESSAGE, SET_PERMISSION } from '../../redux/actions/types'
 // import { useGoogleOneTapLogin } from "react-google-one-tap-login"
 import GoogleOneTapLogin from 'react-google-one-tap-login';
 import axios from 'axios'
+import googleOneTap from 'google-one-tap';
+
 
 const Login = () => {
 
@@ -33,6 +35,18 @@ const Login = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state)=>state.auth)
 
+    
+    const options = {
+        client_id: '852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com', // required
+        auto_select: false, // optional
+        cancel_on_tap_outside: false, // optional
+        context: 'signin', // optional
+    };
+
+    googleOneTap(options, (response) => {
+        // Send response to server
+        console.log(response);
+    });
     // useGoogleOneTapLogin({
     //     onSuccess:(res)=>console.log(res),
     //     onError:(err)=>console.log(err),
@@ -147,8 +161,9 @@ const Login = () => {
                             }} 
                     className={styles.dismissAlert} dismissible>{alertMsg}</Alert>:<></>}
                 {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.loader}/>:<></>}
-                <GoogleOneTapLogin onError={(error) => console.log(error)} 
+                {/* <GoogleOneTapLogin onError={(error) => console.log(error)} 
                 onSuccess={async (token) => {
+
                     console.log(token)
                     setLoading(true);
                     var obj = {
@@ -166,7 +181,7 @@ const Login = () => {
                         setLoading(false);
                         console.log(err)
                     })
-                    }} googleAccountConfigs={{ client_id: "852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com" }} className={styles.oneTap} />
+                    }} googleAccountConfigs={{ client_id: "852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com" }} className={styles.oneTap} /> */}
                 <Form className={styles.formAuth} onSubmit={(e)=>formSubmit(e)}>
                     <Form.Group>
                         <Form.Label>Email</Form.Label>

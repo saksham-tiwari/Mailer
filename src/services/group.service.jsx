@@ -37,5 +37,11 @@ class GroupsService{
             headers:authHeader()
         })
     }
+    async addEmail(groupId,emails){
+        return await axios
+        .put(BaseUrl()+"groups/updateGroup/",{groupId,emails},{
+            headers:authHeader()
+        })
+    }
 }
 export default new GroupsService();

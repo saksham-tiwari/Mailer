@@ -8,3 +8,43 @@
     border-radius: 4px;
     margin-top: -20px;
 }
+.heading{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    letter-spacing: 1.25px;
+    margin-bottom: 30px;
+}
+.input, .label{
+    font-weight: bold;
+    width: 80%;
+    margin-left: 10%;
+}
+.input{
+    border: 2px solid #253E7E;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+.btn1{
+    margin-top: 23px;
+    background: none;
+    border: 0;
+    float:right;
+}
+.btn2{
+    margin-top: 20px;
+    color: white;
+    background-color: #253E7E;
+    border: 1px solid #253E7E;
+    border-radius: 4px;
+    font-size: 18px;
+    width: 90px;
+    float: right;
+    margin-right: 10%;
+}
+.alert{
+    position: absolute;
+    color: red;
+    margin-left: 10%;
+}

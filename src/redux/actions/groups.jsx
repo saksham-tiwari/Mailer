@@ -1,5 +1,5 @@
 import GroupsService from "../../services/group.service";
-import { CREATE_GROUP_SUCCESS, DELETE_EMAIL, GET_EMAILS, GET_GROUPS, REFRESH } from "./types";
+import { ADD_EMAIL, CREATE_GROUP_SUCCESS, DELETE_EMAIL, DELETE_GROUP, GET_EMAILS, GET_GROUPS, REFRESH } from "./types";
 
 export const createGroup = (name,emails,count)=>(dispatch)=>{
     return GroupsService.createGroup(name,emails)
@@ -15,7 +15,9 @@ export const createGroup = (name,emails,count)=>(dispatch)=>{
                     count
                 }
             })
-        }
+        } else if(res.status===208){
+            Promise.reject({code:208,msg:"Emails not found"});
+        } 
     })
     .catch((err)=>{
         // console.log(err);
@@ -75,16 +77,53 @@ export const deleteEmail = (id)=>(dispatch)=>{
         })
     })
     .catch((err)=>{
-        
+        if(err.response.status === 404){
+            return Promise.reject({msg:"Invalid Email Id!"})
+        } else if(err.response.status===410){
+            return Promise.reject({msg:"Refresh"})
+        }else {
+            return Promise.reject(err);
+        }
     })
 }
 
-export const deleteGroup = ()=>(dispatch)=>{
-    return GroupsService.deleteGroup()
+export const deleteGroup = (id)=>(dispatch)=>{
+    return GroupsService.deleteGroup(id)
     .then((res)=>{
-
+        dispatch({
+            type: DELETE_GROUP,
+            payload: id
+        })
     })
     .catch((err)=>{
-        
+        if(err.response.status === 404){
+            return Promise.reject({msg:"Invalid Group Id!"})
+        } else if(err.response.status===410){
+            return Promise.reject({msg:"Refresh"})
+        } else {
+            return Promise.reject(err);
+        }
+    })
+}
+
+export const addEmail = (groupId,emails)=>(dispatch)=>{
+    return GroupsService.addEmail(groupId,emails)
+    .then((res)=>{
+        if(res.status===200){
+            dispatch({
+                type:ADD_EMAIL,
+                payload: emails[0]
+            })
+            return Promise.resolve();
+        }
+    })
+    .catch((err)=>{
+        if(err.status.code===404){
+            return Promise.reject({code:404,msg:"Group Not Found"})
+        }else if(err.response.status===410){
+            return Promise.reject({msg:"Refresh"})
+        } else {
+            return Promise.reject({err})
+        }
     })
 }

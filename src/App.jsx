@@ -28,7 +28,7 @@ function App() {
       <Route exact path="/forgot-pass" element={<Forgot/>}/>
       <Route exact path="/dashboard" element={<Dashboard/>}/>
       <Route exact path="/create-group" element={<CreateGroup/>}/>
-      <Route exact path="/view-group/:id" element={<ViewGroup/>}/>
+      <Route exact path="/view-group/:name/:id" element={<ViewGroup/>}/>
       <Route exact path="/view-all-groups" element={<ViewAllGroups/>}/>
 
 
