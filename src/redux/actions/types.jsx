@@ -22,3 +22,5 @@ export const GET_EMAILS = "GET_EMAILS";
 export const DELETE_EMAIL = "DELETE_EMAIL";
 export const ADD_EMAIL = "ADD_EMAIL";
 export const DELETE_GROUP = "DELETE_GROUP";
+
+export const MAIL_SENT = "MAIL_SENT";

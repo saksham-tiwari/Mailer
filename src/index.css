@@ -43,3 +43,18 @@ code {
   opacity: 1;
   pointer-events: all;
 }
+.mailPopup{
+  position: fixed;
+  bottom: 0;
+  right: 10px;
+  border-radius: 4px 4px 0px 0px;
+  z-index: 100;
+  width: 450px;
+  height: 480px;
+  background: white;
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
+  transition: all 600ms ease;
+}
+.mailPopup.close {
+  height: 0;
+}

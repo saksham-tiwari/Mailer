@@ -50,13 +50,32 @@ const ViewGroup = (props) => {
             }
         })
     },[])
-    const delMail = ()=>{
+    const delMail = (mailid)=>{
         setCondition(true)
-        dispatch(deleteEmail(id))
+        dispatch(deleteEmail(mailid))
         .then(()=>{setCondition(false)})
         .catch((err)=>{
-            console.log(err,id)
-            setCondition(false)
+            // console.log(err,id)
+            if(err.msg==="Refresh"){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(deleteEmail(mailid))
+                    .then(()=>{
+                        setCondition(false)
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                        setCondition(false)
+                    })
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                        setCondition(false)
+                    }
+                })
+            }
+            
         })
     }
     const addMail = ()=>{

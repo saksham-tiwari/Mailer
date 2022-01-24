@@ -14,6 +14,7 @@ class GroupsService{
         });
     }
     async getGroups(){
+        console.log(authHeader());
         return await axios
         .get(BaseUrl()+"groups/getAllGroups",{
             headers:authHeader()

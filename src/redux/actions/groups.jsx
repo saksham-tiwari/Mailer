@@ -112,8 +112,10 @@ export const addEmail = (groupId,emails)=>(dispatch)=>{
         if(res.status===200){
             dispatch({
                 type:ADD_EMAIL,
-                payload: emails[0]
+                payload: res.data[0]
             })
+            console.log(res)
+
             return Promise.resolve();
         }
     })

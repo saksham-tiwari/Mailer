@@ -26,7 +26,7 @@ const groupsReducer = (state = initialState, action)=>{
         case ADD_EMAIL:
             return{
                 ...state,
-                emails: [...state.emails,{id:null,email:payload}]
+                emails: [...state.emails,payload]
             }
         case DELETE_EMAIL:
             return{
