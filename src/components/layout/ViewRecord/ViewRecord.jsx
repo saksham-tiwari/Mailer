@@ -46,6 +46,7 @@ const ViewRecord = () => {
             <FullPageLoader condition={loader}/>
             <h1 className={dashboardStyles.dashHeading}>Previously Sent Mails:</h1>
             <table>
+                <tbody>
                 <tr>
                     <th>Subject</th>
                     <th>Group Name</th>
@@ -63,7 +64,7 @@ const ViewRecord = () => {
                         </tr>
                     )
                 })}
-                
+                </tbody>
             </table>
             {prevMails.length===0?<p style={{textAlign:"center",width:"100%"}}>No mails sent yet.</p>:<></>}
 

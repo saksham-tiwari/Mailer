@@ -31,7 +31,7 @@ const Navbar = () => {
                             <Link to="/view-all-groups" className={styles.menuLinks}>View Groups</Link>
                         </li>
                         <li>
-                            <Link to="/" className={styles.menuLinks}>Templates</Link>
+                            <Link to="/templates" className={styles.menuLinks}>Templates</Link>
                         </li>
                         <li>
                             <Link to="/view-record" className={styles.menuLinks}>View Record</Link>
@@ -49,7 +49,7 @@ const Navbar = () => {
                                 <Link to="/view-all-groups" className={styles.menuLinks2}>View Groups</Link>
                             </li>
                             <li>
-                                <Link to="/" className={styles.menuLinks2}>Templates</Link>
+                                <Link to="/templates" className={styles.menuLinks2}>Templates</Link>
                             </li>
                             <li>
                                 <Link to="/view-record" className={styles.menuLinks2}>View Record</Link>

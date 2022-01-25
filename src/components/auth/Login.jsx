@@ -104,7 +104,7 @@ const Login = () => {
         } else if(!validPassword.test(password)){
             setLoading(false);
             setPassErr(true)
-            setAlertMsg("Enter valid Password. Must contain 1 Upper case, 1 Lower case, 1 Numeric and 1 Special Character.")
+            setAlertMsg("Incorrect Password.")
             setTimeout(()=>{
                 setPassErr(false)
                 setAlertMsg("")
