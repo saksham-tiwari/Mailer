@@ -47,7 +47,7 @@ export const previousMails = ()=>(dispatch)=>{
             type: PREV_MAILS,
             payload: res.data,
         })
-        return Promise.resolve()
+        return Promise.resolve(res)
     })
     .catch(err=>{
         if(err.response.status===410){

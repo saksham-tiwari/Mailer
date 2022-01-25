@@ -13,7 +13,7 @@ const mailsReducer = (state=initialState, action)=>{
         case PREV_MAILS:
             return{
                 ...state,
-                pervMails: payload,
+                prevMails: payload,
             }
         default:
             return state;
