@@ -12,6 +12,7 @@ import CreateGroup from "./components/layout/CreateGroup/CreateGroup";
 import ViewGroup from "./components/layout/ViewGroup/ViewGroup";
 import ViewAllGroups from "./components/layout/ViewAllGroups/ViewAllGroups";
 import ViewRecord from "./components/layout/ViewRecord/ViewRecord";
+import Templates from "./components/layout/templates/Templates";
 
 // import {Switch} from "react-router"
 
@@ -32,6 +33,8 @@ function App() {
       <Route exact path="/view-group/:name/:id" element={<ViewGroup/>}/>
       <Route exact path="/view-all-groups" element={<ViewAllGroups/>}/>
       <Route exact path="/view-record" element={<ViewRecord/>}/>
+      <Route exact path="/templates" element={<Templates/>}/>
+
 
 
 

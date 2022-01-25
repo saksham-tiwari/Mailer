@@ -38,6 +38,9 @@ const ViewRecord = () => {
         console.log(prevMails);
 
     },[prevMails])
+    const mailClick = ()=>{
+        console.log("click")
+    }
   return (
       <>
             <FullPageLoader condition={loader}/>
@@ -52,7 +55,7 @@ const ViewRecord = () => {
 
                 {prevMails.map((mail)=>{
                     return(
-                        <tr>
+                        <tr onClick={mailClick} className="hoverMail">
                             <td>{mail.subject}</td>
                             <td>{mail.groupName}</td>
                             <td>{mail.date}</td>

@@ -61,7 +61,8 @@ code {
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: 95%;
+  margin-left: 2.5%
 }
 /* 
 
@@ -75,4 +76,8 @@ th{
 }
 th,tr{
   text-align: center;
+}
+.hoverMail:hover{
+  background-color: #253E7E59;
+  cursor: pointer;
 }

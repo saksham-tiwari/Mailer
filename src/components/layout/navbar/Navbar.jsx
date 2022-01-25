@@ -28,13 +28,13 @@ const Navbar = () => {
                 <div className={styles.menu}>
                     <ul>
                         <li>
-                            <Link to="/" className={styles.menuLinks}>View Groups</Link>
+                            <Link to="/view-all-groups" className={styles.menuLinks}>View Groups</Link>
                         </li>
                         <li>
                             <Link to="/" className={styles.menuLinks}>Templates</Link>
                         </li>
                         <li>
-                            <Link to="/" className={styles.menuLinks}>View Record</Link>
+                            <Link to="/view-record" className={styles.menuLinks}>View Record</Link>
                         </li>
                     </ul>
                 </div>
@@ -46,13 +46,13 @@ const Navbar = () => {
                     <div className={styles.menu2}>
                         <ul>
                             <li>
-                                <Link to="/" className={styles.menuLinks2}>View Groups</Link>
+                                <Link to="/view-all-groups" className={styles.menuLinks2}>View Groups</Link>
                             </li>
                             <li>
                                 <Link to="/" className={styles.menuLinks2}>Templates</Link>
                             </li>
                             <li>
-                                <Link to="/" className={styles.menuLinks2}>View Record</Link>
+                                <Link to="/view-record" className={styles.menuLinks2}>View Record</Link>
                             </li>
                             <hr className={styles.hrHam}></hr>
                             <li>
