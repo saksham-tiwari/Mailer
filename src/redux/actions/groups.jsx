@@ -29,6 +29,34 @@ export const createGroup = (name,emails,count)=>(dispatch)=>{
     })
 }
 
+export const createGroupWithName = (name,nameEmail,count)=>(dispatch)=>{
+    return GroupsService.createGroup(name,nameEmail)
+    .then((res)=>{
+        console.log(res);
+        if(res.status===201){
+            //Group Created
+            dispatch({
+                type: CREATE_GROUP_SUCCESS,
+                payload: {
+                    name,
+                    count
+                }
+            })
+        } else if(res.status===208){
+            Promise.reject({code:208,msg:"Emails not found"});
+        } 
+    })
+    .catch((err)=>{
+        // console.log(err);
+        if(err.response.status===401||err.response.status===410){
+            // console.log("here");
+            return Promise.reject({refresh:"required"});
+            // dispatch({})
+
+        }
+    })
+}
+
 export const getGroups = ()=>(dispatch)=>{
     return GroupsService.getGroups()
     .then((res)=>{

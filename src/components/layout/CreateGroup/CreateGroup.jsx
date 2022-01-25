@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { logout, refresh } from '../../../redux/actions/auth';
-import { createGroup } from '../../../redux/actions/groups';
+import { createGroup, createGroupWithName } from '../../../redux/actions/groups';
 import stylesDash from "../dashboard/dashboard.module.css"
 import ReadCsv from '../dashboard/readCsv';
 import ListComponent from '../ListComponent/ListComponent';
@@ -27,42 +27,94 @@ const CreateGroup = () => {
         e.preventDefault();
         console.log(grpName)
         console.log(mails);
+        var finalArr = finalArray(mails)
         if(grpName===""){
             openModal()
             setLoader(false)
         }
         else{
-        dispatch(createGroup(grpName,mails,mails.length))
-        .then((res)=>{
-            // console.log(res);
-            setLoader(false);
-            navigate("/dashboard");
-            
-        })
-        .catch((err)=>{
-            console.log(err);
-            if(err.refresh==='required'){
-                dispatch(refresh())
-                .then(()=>{
-                    dispatch(createGroup(grpName,mails,mails.length))
-                    .then((res)=>{
-                        // console.log(res);
-                        setLoader(false);
-                        navigate("/dashboard");
-                        
-                    })
+            if (typeof(finalArr[0])==='string'){
+                dispatch(createGroup(grpName,finalArr,finalArr.length))
+                .then((res)=>{
+                    // console.log(res);
+                    setLoader(false);
+                    navigate("/dashboard");
+                    
                 })
                 .catch((err)=>{
-                    if(err.msg==="Refresh Fail"){
-                        dispatch(logout())
+                    console.log(err);
+                    if(err.refresh==='required'){
+                        dispatch(refresh())
+                        .then(()=>{
+                            dispatch(createGroup(grpName,mails,mails.length))
+                            .then((res)=>{
+                                // console.log(res);
+                                setLoader(false);
+                                navigate("/dashboard");
+                                
+                            })
+                        })
+                        .catch((err)=>{
+                            if(err.msg==="Refresh Fail"){
+                                dispatch(logout())
+                            }
+                        })
+                    }
+                    else{
+                        openModal();
+                    }
+                })
+            } else {
+                dispatch(createGroupWithName(grpName,finalArr,finalArr.length))
+                .then((res)=>{
+                    setLoader(false);
+                    navigate("/dashboard");
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    if(err.refresh==='required'){
+                        dispatch(refresh())
+                        .then(()=>{
+                            dispatch(createGroupWithName(grpName,finalArr,finalArr.length))
+                            .then((res)=>{
+                                // console.log(res);
+                                setLoader(false);
+                                navigate("/dashboard");
+                                
+                            })
+                        })
+                        .catch((err)=>{
+                            if(err.msg==="Refresh Fail"){
+                                dispatch(logout())
+                            }
+                        })
+                    }
+                    else{
+                        openModal();
                     }
                 })
             }
-            else{
-                openModal();
-            }
-        })}
+        }
     }
+
+    const finalArray = (arr)=>{
+        let finalArr = []
+        arr.forEach((mail)=>{
+            if(mail.length===2){
+                finalArr.push({name:mail[0],email:mail[1]})
+            }
+            else if(mail.length===1){
+                finalArr.push(mail[0])
+            }
+        })
+
+        return finalArr
+
+    }
+
+    useEffect(()=>{
+        console.log(mails);
+    },[mails])
     const openModal = ()=>{
         document.querySelector(".modal").classList.add("active");
         document.querySelector(".overlay").classList.add("active");
@@ -81,14 +133,14 @@ const CreateGroup = () => {
         }
         setMail("");
     }
-    const delMail = (mail)=>{
+    const delMail = (index)=>{
         let tempMails = mails;
-        let id = mails.indexOf(mail)
-        tempMails.splice(id,1)
+        // let id = mails.indexOf(mail)
+        tempMails.splice(index,1)
         // console.log(tempMails)
         // setMails(tempMails)
 
-        setMails(mails.filter(item=>mails.indexOf(item)!==id))
+        setMails(mails.filter(item=>mails.indexOf(item)!==index))
     }
     return (
         <div>
@@ -111,7 +163,7 @@ const CreateGroup = () => {
                     </InputGroup>
                 </Form.Group>
                 <p> -------OR------- </p>
-                <ReadCsv setMails={setMails} active={active}/>
+                <ReadCsv setMails={setMails} active={active}  finalArray={finalArray}/>
                 
 
                 <button type="submit" className={styles.submitBtn}>Submit</button>

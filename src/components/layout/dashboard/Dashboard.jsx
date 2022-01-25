@@ -12,7 +12,6 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { attachFile, sendMail } from '../../../redux/actions/mails';
 import FullPageLoader from '../Loaders/FullPageLoader';
 import Loader from "react-loader-spinner";
-import { BaseUrl } from '../../../services/BaseUrl';
 // import {  } from 'bootstrap';
 
 
@@ -94,8 +93,9 @@ const Dashboard = () => {
     const showMailBox = ()=>{
         document.querySelector(".mailPopup").classList.remove("close");
         document.querySelector(".mailPopup").style.height="480px"
-
-    }
+        document.querySelector(".mailPopup").style.width="450px"
+        setShow(true)
+    }   
 
     const send = ()=>{
         document.querySelector(".mailPopup").classList.add("close");
@@ -222,7 +222,6 @@ const Dashboard = () => {
                 </textarea>
                 <span>Attachments:</span>
                 {attachFiles.map(file=>{
-                    let fileUrl = file.file.replace("http://localhost:8080/",BaseUrl())
                     return (
                         <>
                             <span className={styles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]}, </span>

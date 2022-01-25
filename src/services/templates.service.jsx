@@ -23,6 +23,16 @@ class TemplatesService{
             headers: authHeader()
         });
     }
+    async sendMailWithTemplate(from,subject,attachment,logo,templateId,groupId){
+        return await axios
+        .post(BaseUrl()+"mail/sendWithName",{
+            from,subject,attachment,logo,templateId,groupId
+        },
+        {
+            headers: authHeader()
+        }
+        )
+    }
 }
 
 export default new TemplatesService();

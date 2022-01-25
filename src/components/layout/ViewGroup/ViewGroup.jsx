@@ -164,7 +164,8 @@ const ViewGroup = (props) => {
                         <>
                         
                             <div className={styles2.listElem}>
-                                {mail.email}
+                                {mail.name!==null?<>{mail.name},
+                                {mail.email}</>:<>{mail}</>}
                                 <button className={styles2.delBtn} onClick={()=>delMail(mail.id)}>&times;</button>
                             </div>
 

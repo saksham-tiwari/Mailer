@@ -23,8 +23,11 @@ const ReadCsv = (props) => {
                     Papa.parse(files[0], {
                     complete: function(results) {
                         console.log("Finished:", results.data);
-                        props.setMails(results.data[0]);
+                        props.setMails(results.data);
                         setPointer(e.target.files[0].name);
+                        
+                        let finalArr = props.finalArray(results.data);
+                        console.log(finalArr)
                     }}
                     )
                 }
