@@ -50,10 +50,10 @@ const Templates = () => {
       <>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
             
-            <label> <div className={dashboardStyles.btnPrimaryDiv}><div 
-            className={dashboardStyles.btnPrimary} style={{textAlign:"center"}}
-            // onClick={()=>navigate("/create-group")}
-             >+ Upload Template</div></div>
+          <label> 
+            <div className={dashboardStyles.btnPrimaryDiv}>
+            <div className={dashboardStyles.btnPrimary} style={{textAlign:"center"}}>+ Upload Template</div>
+            </div>
                     <input
                         type="file" 
                         className={dashboardStyles.input}
@@ -61,7 +61,7 @@ const Templates = () => {
                         onChange={e=>templateUpload(e)}
                         accept=".html,.ftl"
                     />
-                    </label>
+            </label>
       </>
   );
 };
