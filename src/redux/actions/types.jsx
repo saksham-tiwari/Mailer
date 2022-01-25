@@ -28,3 +28,4 @@ export const ADD_ATTACHMENT = "ADD_ATTACHMENT";
 export const PREV_MAILS = "PREV_MAILS";
 
 export const ADD_TEMPLATE = "ADD_TEMPLATE";
+export const GET_TEMPLATES = "GET_TEMPLATES";

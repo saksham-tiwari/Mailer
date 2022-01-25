@@ -1,5 +1,5 @@
 import TemplatesService from "../../services/templates.service";
-import { ADD_TEMPLATE } from "./types";
+import { ADD_TEMPLATE, GET_TEMPLATES } from "./types";
 
 export const uploadTemplate = (fd)=>(dispatch)=>{
     return TemplatesService.uploadTemplate(fd)
@@ -15,6 +15,24 @@ export const uploadTemplate = (fd)=>(dispatch)=>{
         if(err.response.status===400){
             return Promise.reject({code:400,msg:"Cannot upload template. Try again later!"})
         } else if(err.response.status===410){
+            return Promise.reject({msg:"Refresh"});
+        } else {
+            console.log(err.response);
+        }
+    })
+}
+export const getTemplates = ()=>(dispatch)=>{
+    return TemplatesService.getTemplates()
+    .then((res)=>{
+        console.log(res);
+        
+        dispatch({
+            type: GET_TEMPLATES,
+            payload: res.data
+        })
+    })
+    .catch((err)=>{
+        if(err.response.status===410){
             return Promise.reject({msg:"Refresh"});
         } else {
             console.log(err.response);

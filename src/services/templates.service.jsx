@@ -16,6 +16,13 @@ class TemplatesService{
              }
         })
     }
+    async getTemplates(){
+        return await axios
+        .get(BaseUrl()+"mail/get/templates",
+        {
+            headers: authHeader()
+        });
+    }
 }
 
 export default new TemplatesService();

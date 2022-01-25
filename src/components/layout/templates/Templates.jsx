@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import dashboardStyles from "../dashboard/dashboard.module.css"
-import { uploadTemplate } from '../../../redux/actions/templates';
+import { uploadTemplate, getTemplates } from '../../../redux/actions/templates';
 import { logout, refresh } from '../../../redux/actions/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Templates = () => {
   var date = new Date();
   const dispatch = useDispatch();
+  const templates = useSelector(state=>state.templates).templates;
+  // const groups = useSelector((state)=>state.groups)
+
   const templateUpload = (e)=>{
     e.preventDefault();
     // setLoading(true)
@@ -40,12 +43,39 @@ const Templates = () => {
                     dispatch(logout())
                 }
             })
+        } else{
+          console.log(err);
         }
-    console.log(err);
+    
     
 
 })
 }
+
+  useEffect(()=>{
+    dispatch(getTemplates())
+    .then(()=>{
+      console.log(templates)
+    })
+    .catch((err)=>{
+      if(err.msg==='Refresh'){
+        dispatch(refresh())
+        .then(()=>{
+            dispatch(getTemplates())
+            .then((res)=>{
+              // console.log("uploaded")
+            })
+        })
+        .catch((err)=>{
+            if(err.msg==="Refresh Fail"){
+                dispatch(logout())
+            }
+        })
+    } else{
+      console.log(err);
+    }
+    })
+  },[])
   return (
       <>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
@@ -62,6 +92,9 @@ const Templates = () => {
                         accept=".html,.ftl"
                     />
             </label>
+            {templates.map((template)=>{
+              return <p>{template.name}</p>
+            })}
       </>
   );
 };

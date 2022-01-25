@@ -1,4 +1,4 @@
-import { ADD_TEMPLATE } from "../actions/types";
+import { ADD_TEMPLATE, GET_TEMPLATES } from "../actions/types";
 
 const initialState = {templates:[]}
 
@@ -9,6 +9,11 @@ const templatesReducer=(state=initialState,action)=>{
             return{
                 ...state,
                 templates:[...state.templates,{id:null,name:payload}]
+            }
+        case GET_TEMPLATES:
+            return{
+                ...state,
+                templates:payload,
             }
         default:
             return state
