@@ -15,6 +15,9 @@ import { attachFile, sendMail } from '../../../redux/actions/mails';
 import Loader from "react-loader-spinner";
 import FullPageLoader from '../Loaders/FullPageLoader';
 import { useNavigate } from 'react-router';
+import Modal, { closeModal, openModal } from '../Modal/Modal';
+import success from "../../../assets/success.png"
+
 
 const Templates = () => {
   var date = new Date();
@@ -134,13 +137,24 @@ const send = ()=>{
     dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId))
     .then(()=>{
         setLoader(false)
+        openModal()
+        setTimeout(()=>{
+          closeModal()
+        },2000)
     })
     .catch((err)=>{
         if(err.refresh==='required'){
             dispatch(refresh())
             .then(()=>{
                 dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId))
-                setLoader(false)
+                .then(()=>{
+                  openModal()
+                  setTimeout(()=>{
+                    closeModal()
+                  },2000)
+                  setLoader(false)
+
+                })
             })
             .catch((err)=>{
                 if(err.msg==="Refresh Fail"){
@@ -223,6 +237,11 @@ const logoUpload = (e)=>{
       <>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
             <FullPageLoader condition={loader}/>
+            <Modal>
+            <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+
+                <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
+            </Modal>
             
           <label> 
             <div className={dashboardStyles.btnPrimaryDiv}>
