@@ -13,13 +13,16 @@ import ViewGroup from "./components/layout/ViewGroup/ViewGroup";
 import ViewAllGroups from "./components/layout/ViewAllGroups/ViewAllGroups";
 import ViewRecord from "./components/layout/ViewRecord/ViewRecord";
 import Templates from "./components/layout/templates/Templates";
+import { useSelector } from "react-redux";
+import NavbarLogout from "./components/layout/navbar/NavbarLogout";
 
 // import {Switch} from "react-router"
 
 function App() {
+  const auth = useSelector((state)=>state.auth)
   return (
     <Router>
-      <Navbar/>
+      {auth.isLoggedIn?<Navbar/>:<NavbarLogout/>}
       <Routes>
       <Route exact path="/" element={<Home/>}/>
       <Route exact path="/login" element={<Login/>}/>

@@ -14,6 +14,7 @@ import { attachFile, sendMail } from '../../../redux/actions/mails';
 // import FullPageLoader from '../Loaders/FullPageLoader';
 import Loader from "react-loader-spinner";
 import FullPageLoader from '../Loaders/FullPageLoader';
+import { useNavigate } from 'react-router';
 
 const Templates = () => {
   var date = new Date();
@@ -31,6 +32,9 @@ const Templates = () => {
   const [attachFiles,setAttachFiles] = useState([]);
   const [pointer, setPointer] = useState("Insert Logo (optional)")
   const [logo,setLogo] = useState("");
+  const auth = useSelector((state)=>state.auth)
+  const navigate = useNavigate();
+
   // const groups = useSelector((state)=>state.groups)
 
   const templateUpload = (e)=>{
@@ -76,6 +80,9 @@ const Templates = () => {
 }
 
   useEffect(()=>{
+    if(!auth.isLoggedIn){
+      navigate("/")
+  } 
     dispatch(getTemplates())
     .then(()=>{
       console.log(templates)
@@ -98,7 +105,7 @@ const Templates = () => {
       console.log(err);
     }
     })
-  },[])
+  },[auth.isLoggedIn])
 
   const showMailBox = ()=>{
     document.querySelector(".mailPopup").classList.remove("close");

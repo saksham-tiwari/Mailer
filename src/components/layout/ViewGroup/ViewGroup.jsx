@@ -11,6 +11,9 @@ import styles from "../dashboard/dashboard.module.css"
 import styles2 from "../CreateGroup/creategrp.module.css"
 import styles3 from "./viewgrp.module.css"
 import { Alert } from 'react-bootstrap';
+import { closeModal, openModal } from '../Modal/Modal';
+import { useNavigate } from 'react-router';
+
 
 
 
@@ -27,7 +30,12 @@ const ViewGroup = (props) => {
     var grpName = location.pathname.split("/")[2];
     grpName = grpName.replaceAll("%20", " ")
     console.log(emails);
+    const auth = useSelector((state)=>state.auth)
+    const navigate = useNavigate();
     useEffect(()=>{
+        if(!auth.isLoggedIn){
+            navigate("/")
+        } 
         console.log(id.toUpperCase());
         setCondition(true)
         dispatch(getEmails(id))
@@ -49,7 +57,7 @@ const ViewGroup = (props) => {
                 })
             }
         })
-    },[])
+    },[auth.isLoggedIn])
     const delMail = (mailid)=>{
         setCondition(true)
         dispatch(deleteEmail(mailid))
@@ -119,14 +127,6 @@ const ViewGroup = (props) => {
             }
         })}
     }
-    const openModal = ()=>{
-        document.querySelector(".modal").classList.add("active");
-        document.querySelector(".overlay").classList.add("active");
-    }
-    const closeModal = ()=>{
-        document.querySelector(".modal").classList.remove("active");
-        document.querySelector(".overlay").classList.remove("active");
-    }
     return (
         <>
             <FullPageLoader condition={condition}/>
@@ -165,7 +165,7 @@ const ViewGroup = (props) => {
                         
                             <div className={styles2.listElem}>
                                 {mail.name!==null?<>{mail.name},
-                                {mail.email}</>:<>{mail}</>}
+                                {mail.email}</>:<>{mail.email}</>}
                                 <button className={styles2.delBtn} onClick={()=>delMail(mail.id)}>&times;</button>
                             </div>
 

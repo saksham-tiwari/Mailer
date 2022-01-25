@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout, refresh } from '../../../redux/actions/auth';
 import { createGroup, createGroupWithName } from '../../../redux/actions/groups';
 import stylesDash from "../dashboard/dashboard.module.css"
@@ -10,7 +10,8 @@ import styles from "./creategrp.module.css"
 import { useNavigate } from 'react-router'
 import styles3 from "../ViewGroup/viewgrp.module.css"
 import FullPageLoader from '../Loaders/FullPageLoader';
-
+import Modal from '../Modal/Modal';
+import { openModal } from '../Modal/Modal';
 
 const CreateGroup = () => {
     const [mails,setMails] = useState([]);
@@ -18,16 +19,22 @@ const CreateGroup = () => {
     const [active,setActive] = useState(true);
     const [loader, setLoader]= useState(false);
     let navigate = useNavigate();
-
+    const auth = useSelector((state)=>state.auth)
     const dispatch = useDispatch();
 
     const [grpName, setGrpName] = useState("");
+    useEffect(()=>{
+        if(!auth.isLoggedIn){
+            navigate("/")
+        } 
+    },[auth.isLoggedIn])
     const createGrpFormSubmit = (e)=>{
         setLoader(true);
         e.preventDefault();
         console.log(grpName)
         console.log(mails);
         var finalArr = finalArray(mails)
+
         if(grpName===""){
             openModal()
             setLoader(false)
@@ -115,22 +122,14 @@ const CreateGroup = () => {
     useEffect(()=>{
         console.log(mails);
     },[mails])
-    const openModal = ()=>{
-        document.querySelector(".modal").classList.add("active");
-        document.querySelector(".overlay").classList.add("active");
-    }
-    const closeModal = ()=>{
-        document.querySelector(".modal").classList.remove("active");
-        document.querySelector(".overlay").classList.remove("active");
-    }
     const addMail= (e)=>{
         e.preventDefault();
         if(mails.length===0){setActive(false)}
         if(mail===""){openModal()}
         else{
-            setMails(prev=>[...prev, mail])
-
+            setMails(prev=>[...prev, [mail]])
         }
+
         setMail("");
     }
     const delMail = (index)=>{
@@ -169,15 +168,11 @@ const CreateGroup = () => {
                 <button type="submit" className={styles.submitBtn}>Submit</button>
                 {/* <Button variant="primary">Primary</Button> */}
             </Form>
-            <div className="modal">
-                {/* <h2 className={styles3.heading}>Add New Member</h2>
-                <label className={styles3.label}>Email:</label>
-                <br></br>
-                <input className={styles3.input} placeholder='Enter the email of member'></input>
-                <button className={styles3.btn2}>Add</button><button className={styles3.btn1} onClick={closeModal}>Cancel</button> */}
+                <Modal>
                 <h2 className={styles3.heading}>Error!!</h2>
-            </div>
-            <div className='overlay' onClick={closeModal}></div>
+                {/* <p>Group Name can't be empty</p> */}
+
+                </Modal>
             <h1 className={stylesDash.dashHeading}>Members Added:</h1>
 
             {/* <div className={styles.listBlock}>

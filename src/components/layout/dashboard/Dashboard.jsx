@@ -12,6 +12,9 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { attachFile, sendMail } from '../../../redux/actions/mails';
 import FullPageLoader from '../Loaders/FullPageLoader';
 import Loader from "react-loader-spinner";
+import Modal, { openModal, closeModal } from '../Modal/Modal';
+import success from "../../../assets/success.png"
+import { useNavigate } from 'react-router';
 // import {  } from 'bootstrap';
 
 
@@ -27,8 +30,14 @@ const Dashboard = () => {
     const [attachments,setAttachments] = useState([]);
     const [attachFiles,setAttachFiles] = useState([]);
     var date = new Date();
+    const auth = useSelector((state)=>state.auth)
+    const navigate = useNavigate();
+
 
     useEffect(()=>{
+        if(!auth.isLoggedIn){
+            navigate("/")
+        } 
         setLoader(true)
         dispatch(getGroups())
         .then((res)=>{
@@ -50,7 +59,7 @@ const Dashboard = () => {
                 })
             }
         })
-    },[])
+    },[auth.isLoggedIn])
     // let btnMail = document.querySelector("#compose");
     // btnMail.addEventListener("mouseover",()=>{
     //     document.getElementById("composeSpan").innerHTML="Compose Email";
@@ -108,16 +117,30 @@ const Dashboard = () => {
                 mailId= grp.id;
             }
         })
+        setAttachments([])
+        setSubject("")
+        setBody("")
+        setTo("")
         dispatch(sendMail(mailId,subject,body,attachments))
         .then(()=>{
             setLoader(false)
+            openModal();
+            setTimeout(()=>{
+               closeModal(); 
+            },2000)
         })
         .catch((err)=>{
             if(err.refresh==='required'){
                 dispatch(refresh())
                 .then(()=>{
                     dispatch(sendMail(mailId,subject,body,attachments))
-                    setLoader(false)
+                    .then(()=>{
+                        setLoader(false)
+                        openModal();
+                        setTimeout(()=>{
+                           closeModal(); 
+                        },2000)
+                    })
                 })
                 .catch((err)=>{
                     if(err.msg==="Refresh Fail"){
@@ -171,6 +194,11 @@ const Dashboard = () => {
             {/* <Navbar/> */}
             <GroupsSection/>
             <FullPageLoader condition={loader}/>
+            <Modal>
+            <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+
+                <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
+            </Modal>
 
             <button className={styles.compose} onClick={showMailBox} id="compose"> <AddIcon fontSize="large"/> <span className={styles.composeSpan} id="composeSpan"></span></button>
             <div className="mailPopup close" id="mailPopup">

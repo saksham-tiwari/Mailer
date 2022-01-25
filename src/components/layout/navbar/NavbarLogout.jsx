@@ -9,8 +9,8 @@ import { logout } from '../../../redux/actions/auth';
 // import { Collapse } from "reactstrap";
 
 
-const Navbar = () => {
-    const dispatch = useDispatch()
+const NavbarLogout = () => {
+    // const dispatch = useDispatch()
     // const [isCollapse, setIsCollapse]= useState(false)
     const toggle = ()=>{
         var elem = document.getElementById("collapse-menu");
@@ -32,43 +32,22 @@ const Navbar = () => {
                 <div className={styles.menu}>
                     <ul>
                         <li>
-                            <Link to="/view-all-groups" className={styles.menuLinks}>View Groups</Link>
+                            <Link to="/login" className={styles.menuLinks}>Login</Link>
                         </li>
                         <li>
-                            <Link to="/templates" className={styles.menuLinks}>Templates</Link>
-                        </li>
-                        <li>
-                            <Link to="/view-record" className={styles.menuLinks}>View Record</Link>
+                            <Link to="/signup" className={styles.menuLinks}>Signup</Link>
                         </li>
                     </ul>
                 </div>
-                <img src={userImg} className={styles.userImg} alt="user"/>
-                <div className={styles.dropdown}>
-                    <div className={styles.dropbtn}>
-                        <p>Name</p>
-                    </div>
-                    <div className={styles.dropdownContent}>
-                        <button onClick={()=>{dispatch(logout())}} className={styles.logoutbtn}>Logout</button>
-                    </div>
-                </div>
                 {/* Ham Menu */}
-                <div className={styles.menuHam} id="collapse-menu">
+                <div className={styles.menuHamLogout} id="collapse-menu">
                     <div className={styles.menu2}>
                         <ul>
                             <li>
-                                <Link to="/view-all-groups" className={styles.menuLinks2}>View Groups</Link>
+                                <Link to="/login" className={styles.menuLinks2}>Login</Link>
                             </li>
                             <li>
-                                <Link to="/templates" className={styles.menuLinks2}>Templates</Link>
-                            </li>
-                            <li>
-                                <Link to="/view-record" className={styles.menuLinks2}>View Record</Link>
-                            </li>
-                            <hr className={styles.hrHam}></hr>
-                            <li>
-                            <img src={userImg} className={styles.userImg2} alt="user"/>
-                            <span className={styles.userName2}>Name</span>
-                            <div className={styles.logoutDiv} onClick={()=>{dispatch(logout())}}>Logout</div>
+                                <Link to="/signup" className={styles.menuLinks2}>Signup</Link>
                             </li>
                         </ul>
                     </div>
@@ -82,4 +61,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default NavbarLogout

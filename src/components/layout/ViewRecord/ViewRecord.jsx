@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { logout, refresh } from '../../../redux/actions/auth';
 import { previousMails } from '../../../redux/actions/mails';
 import dashboardStyles from "../dashboard/dashboard.module.css"
@@ -9,7 +10,12 @@ const ViewRecord = () => {
     let dispatch = useDispatch();
     const [loader,setLoader] = useState(false)
     const prevMails = useSelector(state=>state.mails).prevMails
+    const auth = useSelector((state)=>state.auth)
+    const navigate = useNavigate();
     useEffect(()=>{
+        if(!auth.isLoggedIn){
+            navigate("/")
+        } 
         setLoader(true)
         dispatch(previousMails())
         .then((res)=>{
@@ -33,7 +39,7 @@ const ViewRecord = () => {
                 })
             }
         })
-    },[])
+    },[auth.isLoggedIn])
     useEffect(()=>{
         console.log(prevMails);
 
