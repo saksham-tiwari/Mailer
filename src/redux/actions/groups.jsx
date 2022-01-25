@@ -7,7 +7,6 @@ export const createGroup = (name,emails,count)=>(dispatch)=>{
         console.log(res);
         if(res.status===201){
             //Group Created
-            console.log("Create Group");
             dispatch({
                 type: CREATE_GROUP_SUCCESS,
                 payload: {
@@ -33,7 +32,6 @@ export const createGroup = (name,emails,count)=>(dispatch)=>{
 export const getGroups = ()=>(dispatch)=>{
     return GroupsService.getGroups()
     .then((res)=>{
-        console.log(res);
         dispatch({
             type: GET_GROUPS,
             payload: res.data
@@ -114,7 +112,6 @@ export const addEmail = (groupId,emails)=>(dispatch)=>{
                 type:ADD_EMAIL,
                 payload: res.data[0]
             })
-            console.log(res)
 
             return Promise.resolve();
         }

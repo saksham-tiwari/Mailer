@@ -14,13 +14,27 @@ class MailsService{
 
     }
     async attachFile(fd){
+    const user = JSON.parse(localStorage.getItem("user"));
+
         return await axios
-        .post(BaseUrl()+"upload/file/",{
-            fd
-        },
+        .post(BaseUrl()+"mail/upload/",fd,
         {
-            headers: authHeader()
+            
+            headers: { 
+                "Content-Type": "multipart/form-data",
+                Authorization: "Bearer " + user.access_token
+             }
         })
+
+        // return await axios({
+        //     method: "post",
+        //     url: BaseUrl()+"mail/upload/",
+        //     data: fd,
+        //     headers: { 
+        //         "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
+        //         Authorization: "Bearer " + user.access_token
+        //      },
+        //   })
     }
 }
 

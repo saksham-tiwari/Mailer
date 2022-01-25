@@ -3,28 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGroups } from '../../../redux/actions/groups';
 import { logout, refresh } from '../../../redux/actions/auth';
 import GroupsSection from './GroupsSection/GroupsSection';
-import Mails from "../mails/mails"
 import styles from "./dashboard.module.css"
 import AddIcon from '@mui/icons-material/Add';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { sendMail } from '../../../redux/actions/mails';
+import { attachFile, sendMail } from '../../../redux/actions/mails';
 import FullPageLoader from '../Loaders/FullPageLoader';
+import Loader from "react-loader-spinner";
+import { BaseUrl } from '../../../services/BaseUrl';
 // import {  } from 'bootstrap';
 
 
 const Dashboard = () => {
     const dispatch = useDispatch();
     const [show,setShow] = useState(true)
-    const [from,setFrom] = useState("");
     const [to,setTo] = useState("");
     const [body,setBody] = useState("");
     const [subject,setSubject] = useState("");
     const groups = useSelector((state)=>state.groups).groups
     const [loader,setLoader] = useState(false)
-    const [attachment,setAttachment] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [attachments,setAttachments] = useState([]);
+    const [attachFiles,setAttachFiles] = useState([]);
+    var date = new Date();
 
     useEffect(()=>{
         setLoader(true)
@@ -105,8 +108,7 @@ const Dashboard = () => {
                 mailId= grp.id;
             }
         })
-        console.log(mailId);
-        dispatch(sendMail(mailId,subject,body,attachment))
+        dispatch(sendMail(mailId,subject,body,attachments))
         .then(()=>{
             setLoader(false)
         })
@@ -114,7 +116,7 @@ const Dashboard = () => {
             if(err.refresh==='required'){
                 dispatch(refresh())
                 .then(()=>{
-                    dispatch(sendMail(mailId,subject,body,attachment))
+                    dispatch(sendMail(mailId,subject,body,attachments))
                     setLoader(false)
                 })
                 .catch((err)=>{
@@ -126,8 +128,45 @@ const Dashboard = () => {
             }
         })
     }
+
+    const fileUpload = (e)=>{
+        e.preventDefault();
+        setLoading(true)
+        let fileName = e.target.files[0].name.split(".")[0].concat(JSON.stringify(date).replace(/"/g, ""));
+        var fd = new FormData();
+        fd.append("file",e.target.files[0])
+        fd.append("fileName",fileName)
+        dispatch(attachFile(fd))
+        .then((res)=>{
+            setAttachments(prev=>[...prev,res.file.fileName])
+            setAttachFiles(prev=>[...prev,res.file])
+            setLoading(false)
+        })
+        .catch((err)=>{
+            if(err.refresh==='required'){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(attachFile(fd))
+                    .then((res)=>{
+                        setAttachments(prev=>[...prev,res.file.fileName])
+                        setAttachFiles(prev=>[...prev,res.file])
+                        console.log(attachments,attachFiles);
+                        setLoading(false)
+                    })
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                        setLoading(false)
+                    }
+                })
+            }
+        
+
+    })
+}
     
-    return (
+    return(
         <>
             {/* <Navbar/> */}
             <GroupsSection/>
@@ -135,38 +174,62 @@ const Dashboard = () => {
 
             <button className={styles.compose} onClick={showMailBox} id="compose"> <AddIcon fontSize="large"/> <span className={styles.composeSpan} id="composeSpan"></span></button>
             <div className="mailPopup close" id="mailPopup">
+            {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.mailPopupLoader}/>:<></>}
+
                 <div className={styles.headingPopup}>Compose Email <button onClick={()=>{
                     document.querySelector(".mailPopup").classList.add("close")
                     document.querySelector(".mailPopup").style.height="0px"
+                    document.querySelector(".mailPopup").style.width="450px";
+                    setShow(true)
+
 
                 }}>&times;</button> {show?<button onClick={()=>{
                     setShow(false)
                     document.querySelector(".mailPopup").style.height="35px"
+                    document.querySelector(".mailPopup").style.width="300px";
+
 
                 }}><ExpandMoreIcon/></button>:<button onClick={()=>{
                     setShow(true)
                     document.querySelector(".mailPopup").style.height="480px";
+                    document.querySelector(".mailPopup").style.width="450px";
+
                 }}><ExpandLessIcon/></button> }</div>
                 <div className={styles.popupTopBtns}>
-                    <button style={{transform: "rotate(45deg)"}}><AttachFileIcon/></button>
+                    <label className={styles.attachFile}> <AttachFileIcon/>
+                    <input
+                        type="file" 
+                        className={styles.input}
+                        name="file"
+                        onChange={e=>fileUpload(e)}
+                    />
+                    </label>
+
+                    {/* <button style={{transform: "rotate(45deg)"}}><AttachFileIcon/></button> */}
                     <button  onClick={send}><SendIcon/></button>
 
                 </div>
-                <input value={from} className={styles.fromto} placeholder='From' onChange={e=>setFrom(e.target.value)}></input>
-                <br></br>
+                
                 <input value={to} list="groups" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
                     {groups.map((grp)=>{
                         return(<option value={grp.name}/>)
                     })}
                 </datalist>
-                <input value={subject} className={styles.fromto} placeholder='Subject' onChange={e=>setSubject(e.target.value)}></input>
+                <input className={styles.fromto} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
                 <textarea value={body} placeholder='Body' className={styles.emailtextarea} onChange={e=>setBody(e.target.value)}>
 
                 </textarea>
+                <span>Attachments:</span>
+                {attachFiles.map(file=>{
+                    let fileUrl = file.file.replace("http://localhost:8080/",BaseUrl())
+                    return (
+                        <>
+                            <span className={styles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]}, </span>
+                        </>)
+                })}
 
             </div>
-            <Mails/>
 
             {/* <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />  */}
             {/* <input type="file" id="fileUpload" />

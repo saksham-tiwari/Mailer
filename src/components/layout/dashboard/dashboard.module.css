@@ -57,7 +57,7 @@ input[type="file"] {
 .noHover{
     pointer-events: none;
     background-color: white;
-    color: black;
+    color: black;   
     transition: all 0.5s ease;
 }
 .compose{
@@ -141,4 +141,27 @@ input[type="file"] {
     background: none;
     border: none;
     width: 40px;
+}
+.attachFile{
+    cursor: pointer;
+    transform: rotate(45deg)
+}
+
+.mailPopupLoader{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
+}
+
+.attachImages{
+    width: 40px;
+    height: 40px;
+}
+.attachSpan{
+    width: 75px;
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

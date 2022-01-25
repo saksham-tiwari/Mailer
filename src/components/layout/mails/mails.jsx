@@ -6,7 +6,7 @@ const Mails = () => {
     var mail = "<b>Name</b><br><h1>New Title</h1> www.google.com saksham@gami.com <br>"
   return (
     <>
-        <Linkify> { ReactHtmlParser(mail) } </Linkify>
+        <Linkify> www.google.com </Linkify>
         <Linkify> { ReactHtmlParser(mail) } </Linkify>
         <Linkify> { ReactHtmlParser(mail) } </Linkify>
         <Linkify> { ReactHtmlParser(mail) } </Linkify>

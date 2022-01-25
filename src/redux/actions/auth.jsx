@@ -289,7 +289,6 @@ export const login = (username, password) => (dispatch) => {
   export const refresh = ()=>(dispatch)=>{
     return AuthService.refresh()
     .then((res)=>{
-      console.log("here now")
       var user = JSON.parse(localStorage.getItem("user"));
       var payload=user;
       if(res.status===200){
@@ -298,7 +297,6 @@ export const login = (username, password) => (dispatch) => {
           refresh_token:user.refresh_token
         }
         localStorage.setItem("user",JSON.stringify(payload))
-        console.log(payload);
         dispatch({
           type:REFRESH_SUCCESS,
           payload

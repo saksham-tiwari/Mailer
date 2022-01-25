@@ -1,4 +1,4 @@
-import { MAIL_SENT } from "../actions/types";
+import { MAIL_SENT, ADD_ATTACHMENT } from "../actions/types";
 
 const initialState = {sentMails:[]}
 
