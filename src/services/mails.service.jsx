@@ -36,6 +36,10 @@ class MailsService{
         //      },
         //   })
     }
+    async previousMails(){
+        return await axios
+        .get(BaseUrl()+"mail/get/previousMail",{headers:authHeader()});
+    }
 }
 
 export default new MailsService();

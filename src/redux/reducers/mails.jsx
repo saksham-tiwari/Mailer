@@ -1,6 +1,6 @@
-import { MAIL_SENT, ADD_ATTACHMENT } from "../actions/types";
+import { MAIL_SENT, ADD_ATTACHMENT, PREV_MAILS } from "../actions/types";
 
-const initialState = {sentMails:[]}
+const initialState = {sentMails:[],prevMails:[]}
 
 const mailsReducer = (state=initialState, action)=>{
     const {type, payload} = action;
@@ -9,6 +9,11 @@ const mailsReducer = (state=initialState, action)=>{
             return{
                 ...state,
                 sentMails: [...state.sentMails,{payload}]
+            }
+        case PREV_MAILS:
+            return{
+                ...state,
+                pervMails: payload,
             }
         default:
             return state;

@@ -1,5 +1,5 @@
 import MailsService from "../../services/mails.service";
-import { ADD_ATTACHMENT, MAIL_SENT } from "./types";
+import { ADD_ATTACHMENT, MAIL_SENT, PREV_MAILS } from "./types";
 
 export const sendMail = (groupId,subject,body,attachment)=>(dispatch)=>{
     return MailsService.sendMail(groupId,subject,body,attachment)
@@ -36,6 +36,22 @@ export const attachFile = (fd)=>(dispatch)=>{
             return Promise.reject({refresh:"required"});
         } else {
             console.log(err.response);
+        }
+    })
+}
+
+export const previousMails = ()=>(dispatch)=>{
+    return MailsService.previousMails()
+    .then(res=>{
+        dispatch({
+            type: PREV_MAILS,
+            payload: res.data,
+        })
+        return Promise.resolve()
+    })
+    .catch(err=>{
+        if(err.response.status===410){
+            return Promise.reject({refresh:"required"});
         }
     })
 }

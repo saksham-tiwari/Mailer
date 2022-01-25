@@ -25,3 +25,4 @@ export const DELETE_GROUP = "DELETE_GROUP";
 
 export const MAIL_SENT = "MAIL_SENT";
 export const ADD_ATTACHMENT = "ADD_ATTACHMENT";
+export const PREV_MAILS = "PREV_MAILS";
