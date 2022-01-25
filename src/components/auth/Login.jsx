@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { validEmail, validPassword } from './Regex.jsx';
 import google from "../../assets/google.svg"
 import { useDispatch, useSelector } from 'react-redux'
-import {login} from "../../redux/actions/auth"
+import {getUserInfo, login} from "../../redux/actions/auth"
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -117,6 +117,7 @@ const Login = () => {
             dispatch(login(email, password))
             .then(()=>{
                 // else{
+                    dispatch(getUserInfo())
                     navigate("/");
                 // }
             })

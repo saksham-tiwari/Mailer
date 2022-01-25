@@ -1,6 +1,7 @@
 import axios from "axios";
 import refreshHeader from "./refresh-header";
 import { BaseUrl } from './BaseUrl';
+import authHeader from "./auth-header";
 
 
 
@@ -65,6 +66,12 @@ class AuthService {
       url: BaseUrl()+"refreshToken",
       headers: refreshHeader(),
     
+    })
+  }
+  async getUserInfo(){
+    return await axios
+    .get(BaseUrl()+"getUser",{
+      headers:authHeader()
     })
   }
   // axios

@@ -9,6 +9,7 @@ export const OTP_SEND_SUCCESS = "OTP_SEND_SUCCESS";
 export const OTP_SEND_FAIL = "OTP_SEND_FAIL";
 export const REFRESH = "REFRESH";
 export const REFRESH_SUCCESS = "REFRESH_SUCCESS";
+export const SET_USER = "SET_USER";
 
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";

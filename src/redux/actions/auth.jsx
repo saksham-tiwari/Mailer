@@ -11,6 +11,7 @@ import {
     SET_MESSAGE,
     SET_EMAIL,
     REFRESH_SUCCESS,
+    SET_USER,
   } from "./types";
   
 import AuthService from "../../services/auth.service";
@@ -312,5 +313,15 @@ export const login = (username, password) => (dispatch) => {
         type:LOGOUT
       })
       return Promise.reject({msg:"Refresh Fail"})
+    })
+  }
+
+  export const getUserInfo = ()=>(dispatch)=>{
+    return AuthService.getUserInfo()
+    .then(res=>{
+      dispatch({
+        type: SET_USER,
+        payload: res.data
+      })
     })
   }

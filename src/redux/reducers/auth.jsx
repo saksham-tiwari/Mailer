@@ -10,13 +10,14 @@ import {
     LOGOUT,
     REFRESH,
     REFRESH_SUCCESS,
+    SET_USER,
   } from "../actions/types";
   
   const user = JSON.parse(localStorage.getItem("user"));
   
   const initialState = user
-    ? { isLoggedIn: true, user }
-    : { isLoggedIn: false, user: null };
+    ? { isLoggedIn: true, user, info:{name:"name"}}
+    : { isLoggedIn: false, user: null, info:{name:"name"}};
 
     const auth_reducer = (state = initialState, action)=> {
         const { type, payload } = action;
@@ -87,7 +88,11 @@ import {
               isLoggedIn: true,
               user: payload
             }
-
+          case SET_USER:
+            return{
+              ...state,
+              info:payload
+            }
         
           
           default:

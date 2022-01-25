@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import userImg from "../../../assets/userImg.png"
 import MenuIcon from '@mui/icons-material/Menu';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import logo from "../../../assets/logo.png"
 import { logout } from '../../../redux/actions/auth';
 // import { Collapse } from "reactstrap";
@@ -11,6 +11,7 @@ import { logout } from '../../../redux/actions/auth';
 
 const Navbar = () => {
     const dispatch = useDispatch()
+    const name = useSelector(state=>state.auth).info.name
     // const [isCollapse, setIsCollapse]= useState(false)
     const toggle = ()=>{
         var elem = document.getElementById("collapse-menu");
@@ -45,7 +46,7 @@ const Navbar = () => {
                 <img src={userImg} className={styles.userImg} alt="user"/>
                 <div className={styles.dropdown}>
                     <div className={styles.dropbtn}>
-                        <p>Name</p>
+                        <p>{name}</p>
                     </div>
                     <div className={styles.dropdownContent}>
                         <button onClick={()=>{dispatch(logout())}} className={styles.logoutbtn}>Logout</button>
