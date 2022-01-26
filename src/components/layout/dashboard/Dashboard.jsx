@@ -29,6 +29,8 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
     const [attachments,setAttachments] = useState([]);
     const [attachFiles,setAttachFiles] = useState([]);
+    const [from,setFrom] = useState("");
+
     var date = new Date();
     const auth = useSelector((state)=>state.auth)
     const navigate = useNavigate();
@@ -102,7 +104,7 @@ const Dashboard = () => {
     const showMailBox = ()=>{
         document.querySelector(".mailPopup").classList.remove("close");
         document.querySelector(".mailPopup").style.height="480px"
-        document.querySelector(".mailPopup").style.width="450px"
+        document.querySelector(".mailPopup").style.width="500px"
         setShow(true)
     }   
 
@@ -121,7 +123,7 @@ const Dashboard = () => {
         setSubject("")
         setBody("")
         setTo("")
-        dispatch(sendMail(mailId,subject,body,attachments))
+        dispatch(sendMail(from,mailId,subject,body,attachments))
         .then(()=>{
             setLoader(false)
             openModal();
@@ -133,7 +135,7 @@ const Dashboard = () => {
             if(err.refresh==='required'){
                 dispatch(refresh())
                 .then(()=>{
-                    dispatch(sendMail(mailId,subject,body,attachments))
+                    dispatch(sendMail(from,mailId,subject,body,attachments))
                     .then(()=>{
                         setLoader(false)
                         openModal();
@@ -207,7 +209,7 @@ const Dashboard = () => {
                 <div className={styles.headingPopup}>Compose Email <button onClick={()=>{
                     document.querySelector(".mailPopup").classList.add("close")
                     document.querySelector(".mailPopup").style.height="0px"
-                    document.querySelector(".mailPopup").style.width="450px";
+                    document.querySelector(".mailPopup").style.width="500px";
                     setShow(true)
 
 
@@ -220,7 +222,7 @@ const Dashboard = () => {
                 }}><ExpandMoreIcon/></button>:<button onClick={()=>{
                     setShow(true)
                     document.querySelector(".mailPopup").style.height="480px";
-                    document.querySelector(".mailPopup").style.width="450px";
+                    document.querySelector(".mailPopup").style.width="500px";
 
                 }}><ExpandLessIcon/></button> }</div>
                 <div className={styles.popupTopBtns}>
@@ -237,7 +239,7 @@ const Dashboard = () => {
                     <button  onClick={send}><SendIcon/></button>
 
                 </div>
-                
+                <input className={styles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
                 <input value={to} list="groups" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
                     {groups.map((grp)=>{

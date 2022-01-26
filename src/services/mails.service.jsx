@@ -3,10 +3,10 @@ import { BaseUrl } from './BaseUrl';
 import authHeader from "./auth-header"
 
 class MailsService{
-    async sendMail(groupId,subject,body,attachment){
+    async sendMail(from,groupId,subject,body,attachment){
         return await axios
         .post(BaseUrl()+"mail/sendMail",{
-            groupId,subject,body,attachment
+            from,groupId,subject,body,attachment
         },{
             headers: authHeader()
         });

@@ -1,8 +1,8 @@
 import MailsService from "../../services/mails.service";
 import { ADD_ATTACHMENT, MAIL_SENT, PREV_MAILS } from "./types";
 
-export const sendMail = (groupId,subject,body,attachment)=>(dispatch)=>{
-    return MailsService.sendMail(groupId,subject,body,attachment)
+export const sendMail = (from,groupId,subject,body,attachment)=>(dispatch)=>{
+    return MailsService.sendMail(from,groupId,subject,body,attachment)
     .then(res=>{
         dispatch({
             type: MAIL_SENT,

@@ -127,7 +127,7 @@ input[type="file"] {
     margin-top: 10px;
     width: 95%;
     margin-left: 2.5%;
-    height: 60%;
+    height: 55%;
 }
 .emailtextarea:focus{
     outline-color: gray;
