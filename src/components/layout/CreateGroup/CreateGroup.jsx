@@ -12,6 +12,8 @@ import styles3 from "../ViewGroup/viewgrp.module.css"
 import FullPageLoader from '../Loaders/FullPageLoader';
 import Modal from '../Modal/Modal';
 import { openModal } from '../Modal/Modal';
+import { validEmail } from '../../auth/Regex.jsx';
+
 
 const CreateGroup = () => {
     const [mails,setMails] = useState([]);
@@ -21,6 +23,8 @@ const CreateGroup = () => {
     let navigate = useNavigate();
     const auth = useSelector((state)=>state.auth)
     const dispatch = useDispatch();
+    const [modalCond, setModalCond] = useState("");
+
 
     const [grpName, setGrpName] = useState("");
     useEffect(()=>{
@@ -36,6 +40,12 @@ const CreateGroup = () => {
         var finalArr = finalArray(mails)
 
         if(grpName===""){
+            setModalCond("Name")
+            openModal()
+            setLoader(false)
+        }
+        else if(mails.length===0){
+            setModalCond("Empty")
             openModal()
             setLoader(false)
         }
@@ -125,7 +135,10 @@ const CreateGroup = () => {
     const addMail= (e)=>{
         e.preventDefault();
         if(mails.length===0){setActive(false)}
-        if(mail===""){openModal()}
+        if(mail===""||!validEmail.test(mail)){
+            setModalCond("Email")
+            openModal()
+        }
         else{
             setMails(prev=>[...prev, [mail]])
         }
@@ -141,9 +154,42 @@ const CreateGroup = () => {
 
         setMails(mails.filter(item=>mails.indexOf(item)!==index))
     }
+
+    const switchModal = ()=>{
+        switch(modalCond){
+            case "Name":
+                return(
+                    <>
+                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
+                    <p style={{textAlign:"center"}}>Name of the group cannot be empty.</p>
+                    </>
+                )
+            case "Email":
+                return(
+                    <>
+                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
+                    <p style={{textAlign:"center"}}>Please enter a valid email.</p>
+
+                    </>
+                )
+            case "Empty":
+                return(
+                    <>
+                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
+                    <p style={{textAlign:"center"}}>Group must have at least 1 member</p>
+
+                    </>
+                )
+            default :
+            return <></>
+        }
+    }
     return (
         <div>
             <FullPageLoader condition={loader}/>
+            <Modal>
+            {switchModal()}
+            </Modal>
             <h1 className={stylesDash.dashHeading}>Create New Group</h1>
             <Form onSubmit={(e)=>createGrpFormSubmit(e)} className={styles.formCreate}>
                 <Form.Group>
@@ -162,7 +208,7 @@ const CreateGroup = () => {
                     </InputGroup>
                 </Form.Group>
                 <p> -------OR------- </p>
-                <ReadCsv setMails={setMails} active={active}  finalArray={finalArray}/>
+                <ReadCsv setMails={setMails} active={(mails.length>0)?false:true}  finalArray={finalArray}/>
                 
 
                 <button type="submit" className={styles.submitBtn}>Submit</button>

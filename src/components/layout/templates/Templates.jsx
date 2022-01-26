@@ -112,7 +112,7 @@ const Templates = () => {
 
   const showMailBox = ()=>{
     document.querySelector(".mailPopup").classList.remove("close");
-    document.querySelector(".mailPopup").style.height="300px"
+    document.querySelector(".mailPopup").style.height="480px"
     document.querySelector(".mailPopup").style.width="450px"
     setShow(true)
 }   
@@ -282,7 +282,7 @@ const logoUpload = (e)=>{
 
                 }}><ExpandMoreIcon/></button>:<button onClick={()=>{
                     setShow(true)
-                    document.querySelector(".mailPopup").style.height="300px";
+                    document.querySelector(".mailPopup").style.height="480px";
                     document.querySelector(".mailPopup").style.width="450px";
 
                 }}><ExpandLessIcon/></button> }</div>

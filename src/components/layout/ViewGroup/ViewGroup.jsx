@@ -164,19 +164,12 @@ const ViewGroup = (props) => {
                 return(
                     <>
                         <h2 className={styles3.heading}>Add New Member</h2>
-                        {/* {alertMsg!==""?<Alert variant='danger' 
-                                onClose={
-                                    ()=>{
-                                        setEmailErr(false)
-                                        }} 
-                                className={styles3.dismissAlert} dismissible>{alertMsg}</Alert>:<></>} */}
                         <label className={styles3.label}>Email:</label>
                         <br></br>
                         <input className={styles3.input} value={email} placeholder='Enter the email of member' onChange={e=>{
                         setEmail(e.target.value)
                         }}
-                        style={emailErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}
-                        ></input>
+                        style={emailErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}></input>
                         <p className={styles3.alert}>{alertMsg}</p>
                         <button className={styles3.btn2} onClick={addMail}>Add</button><button className={styles3.btn1} onClick={closeModal}>Cancel</button>
                     </>
@@ -196,7 +189,7 @@ const ViewGroup = (props) => {
                     </>
                 )
             default :
-            return null
+            return <></>
         }
     }
     return (
