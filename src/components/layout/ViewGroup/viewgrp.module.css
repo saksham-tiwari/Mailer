@@ -48,3 +48,25 @@
     color: red;
     margin-left: 10%;
 }
+.delete{
+    background-color: red;
+    border: 1px red solid;
+    border-radius: 4px;
+    color: white;
+    padding: 4px 10px;
+    transition: all 0.3s ease-out;
+    font-size: small;
+    /* min-width: 200px;
+    width: 16%;
+    margin-left: 42%; */
+    position: relative;
+    left: 50%;
+    top: -10px;
+    transform: translate(-50%);
+
+}
+
+.delete:hover{
+    background-color: white;
+    color: red;
+}

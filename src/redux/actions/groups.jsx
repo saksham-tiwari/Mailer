@@ -120,6 +120,7 @@ export const deleteGroup = (id)=>(dispatch)=>{
             type: DELETE_GROUP,
             payload: id
         })
+        return Promise.resolve({code:res.status,res})
     })
     .catch((err)=>{
         if(err.response.status === 404){

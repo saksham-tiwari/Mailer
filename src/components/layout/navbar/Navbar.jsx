@@ -68,7 +68,7 @@ const Navbar = () => {
                             <hr className={styles.hrHam}></hr>
                             <li>
                             <img src={userImg} className={styles.userImg2} alt="user"/>
-                            <span className={styles.userName2}>Name</span>
+                            <span className={styles.userName2}>{name}   </span>
                             <div className={styles.logoutDiv} onClick={()=>{dispatch(logout())}}>Logout</div>
                             </li>
                         </ul>
