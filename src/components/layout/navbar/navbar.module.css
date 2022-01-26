@@ -154,12 +154,18 @@
   
   /* .dropdown:hover .dropbtn {background-color: #3e8e41;} */
 
+@media only screen and (max-width: 1000px){
+    .dropdown{
+        right: 9%;
+    }
+}
+
 @media only screen and (max-width: 794px){
     .menu{
         width: 70vw;
         left: 10vw;
     }
-    .userName{
+    .dropdown{
         right: 8%;
     }
 }
@@ -189,6 +195,9 @@
         visibility: hidden;
     }
     .userName{
+        visibility: hidden;
+    }
+    .dropdown{
         visibility: hidden;
     }
 }
