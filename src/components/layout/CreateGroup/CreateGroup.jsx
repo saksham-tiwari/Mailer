@@ -53,7 +53,7 @@ const CreateGroup = () => {
                     if(err.refresh==='required'){
                         dispatch(refresh())
                         .then(()=>{
-                            dispatch(createGroup(grpName,mails,mails.length))
+                            dispatch(createGroup(grpName,finalArr,finalArr.length))
                             .then((res)=>{
                                 // console.log(res);
                                 setLoader(false);
@@ -71,7 +71,7 @@ const CreateGroup = () => {
                         openModal();
                     }
                 })
-            } else {
+            } else if(typeof(finalArr[0])==="object"){
                 dispatch(createGroupWithName(grpName,finalArr,finalArr.length))
                 .then((res)=>{
                     setLoader(false);

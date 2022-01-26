@@ -30,7 +30,7 @@ export const createGroup = (name,emails,count)=>(dispatch)=>{
 }
 
 export const createGroupWithName = (name,nameEmail,count)=>(dispatch)=>{
-    return GroupsService.createGroup(name,nameEmail)
+    return GroupsService.createGroupWithName(name,nameEmail)
     .then((res)=>{
         console.log(res);
         if(res.status===201){
