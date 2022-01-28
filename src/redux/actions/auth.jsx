@@ -326,6 +326,7 @@ export const login = (username, password) => (dispatch) => {
   export const getUserInfo = ()=>(dispatch)=>{
     return AuthService.getUserInfo()
     .then(res=>{
+      localStorage.setItem("user-info",JSON.stringify(res.data))
       dispatch({
         type: SET_USER,
         payload: res.data

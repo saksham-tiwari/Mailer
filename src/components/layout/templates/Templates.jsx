@@ -17,6 +17,7 @@ import FullPageLoader from '../Loaders/FullPageLoader';
 import { useNavigate } from 'react-router';
 import Modal, { closeModal, openModal } from '../Modal/Modal';
 import success from "../../../assets/success.png"
+import { getGroups } from '../../../redux/actions/groups';
 
 
 const Templates = () => {
@@ -83,12 +84,33 @@ const Templates = () => {
 }
 
   useEffect(()=>{
+      setLoader(true)
     if(!auth.isLoggedIn){
       navigate("/")
   } 
     dispatch(getTemplates())
     .then(()=>{
       console.log(templates)
+      dispatch(getGroups())
+        .then((res)=>{
+            setLoader(false)
+        }
+        )
+        .catch((err)=>{
+            if(err.refresh==='required'){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(getGroups())
+                    setLoader(false)
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                        setLoader(false)
+                    }
+                })
+            }
+        })
     })
     .catch((err)=>{
       if(err.msg==='Refresh'){
@@ -96,7 +118,26 @@ const Templates = () => {
         .then(()=>{
             dispatch(getTemplates())
             .then((res)=>{
-              // console.log("uploaded")
+                dispatch(getGroups())
+                .then((res)=>{
+                    setLoader(false)
+                }
+                )
+                .catch((err)=>{
+                    if(err.refresh==='required'){
+                        dispatch(refresh())
+                        .then(()=>{
+                            dispatch(getGroups())
+                            setLoader(false)
+                        })
+                        .catch((err)=>{
+                            if(err.msg==="Refresh Fail"){
+                                dispatch(logout())
+                                setLoader(false)
+                            }
+                        })
+                    }
+                })
             })
         })
         .catch((err)=>{
@@ -106,6 +147,7 @@ const Templates = () => {
         })
     } else{
       console.log(err);
+      setLoader(false)
     }
     })
   },[auth.isLoggedIn])

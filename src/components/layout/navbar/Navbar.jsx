@@ -11,7 +11,7 @@ import { logout } from '../../../redux/actions/auth';
 
 const Navbar = () => {
     const dispatch = useDispatch()
-    const name = useSelector(state=>state.auth).info.name
+    const name = JSON.parse(localStorage.getItem("user-info")).name
     // const [isCollapse, setIsCollapse]= useState(false)
     const toggle = ()=>{
         var elem = document.getElementById("collapse-menu");
