@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { logout, refresh } from '../../../redux/actions/auth';
 import { previousMails } from '../../../redux/actions/mails';
+import { source } from '../../../services/source';
 import dashboardStyles from "../dashboard/dashboard.module.css"
 import FullPageLoader from '../Loaders/FullPageLoader';
 
@@ -39,6 +40,9 @@ const ViewRecord = () => {
                 })
             }
         })
+        return () => {
+            source.cancel()
+        };
     },[auth.isLoggedIn])
     useEffect(()=>{
         console.log(prevMails);

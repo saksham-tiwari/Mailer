@@ -15,6 +15,7 @@ import Loader from "react-loader-spinner";
 import Modal, { openModal, closeModal } from '../Modal/Modal';
 import success from "../../../assets/success.png"
 import { useNavigate } from 'react-router';
+import { source } from '../../../services/source';
 // import {  } from 'bootstrap';
 
 
@@ -61,6 +62,9 @@ const Dashboard = () => {
                 })
             }
         })
+        return () => {
+            source.cancel()
+        };
     },[auth.isLoggedIn])
     // let btnMail = document.querySelector("#compose");
     // btnMail.addEventListener("mouseover",()=>{

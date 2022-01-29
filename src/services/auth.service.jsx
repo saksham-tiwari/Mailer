@@ -20,6 +20,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("user");
+    localStorage.removeItem("info")
   }
 
   async register(name, username) {
@@ -43,6 +44,13 @@ class AuthService {
       .post(BaseUrl()+"signup/setPassword",{
           username,
           password
+      })
+      .then((response) => {
+        if (response.data.access_token) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+
+        return response.data;
       });
   }
 
@@ -72,6 +80,16 @@ class AuthService {
     return await axios
     .get(BaseUrl()+"getUser",{
       headers:authHeader()
+    })
+    .then((response) => {
+      if (response.data.name) {
+        localStorage.setItem("info", JSON.stringify(response.data));
+      }
+
+      return response.data;
+    })
+    .catch(err=>{
+      console.log(err);
     })
   }
   // axios

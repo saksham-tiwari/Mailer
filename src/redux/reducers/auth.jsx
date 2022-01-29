@@ -24,9 +24,6 @@ import {
       
         switch (type) {
           case REGISTER_SUCCESS:
-            console.log(payload);
-            // state.user = payload.user;
-            localStorage.setItem("user", JSON.stringify(payload.user))
             return {
               ...state,
               isLoggedIn: true,
@@ -89,6 +86,7 @@ import {
               user: payload
             }
           case SET_USER:
+            localStorage.setItem("info",JSON.stringify(payload))
             return{
               ...state,
               info:payload

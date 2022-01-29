@@ -17,6 +17,7 @@ import { SET_MESSAGE, SET_PERMISSION } from '../../redux/actions/types'
 import GoogleOneTapLogin from 'react-google-one-tap-login';
 import axios from 'axios'
 import googleOneTap from 'google-one-tap';
+import { source } from '../../services/source'
 
 
 const Login = () => {
@@ -59,6 +60,9 @@ const Login = () => {
         if(auth.isLoggedIn){
             navigate("/")
         }
+        return () => {
+            source.cancel()
+        };
     })
     const formSubmit = (e)=>{
         e.preventDefault();
@@ -116,9 +120,18 @@ const Login = () => {
             setAlertMsg("");
             dispatch(login(email, password))
             .then(()=>{
+                // navigate("/");
+                setTimeout(()=>{navigate("/")},2000)
                 // else{
-                    dispatch(getUserInfo())
-                    navigate("/");
+                    // dispatch(getUserInfo())
+                    // .then(()=>{
+                    //     console.log("in then");
+
+                    //     navigate("/");
+                    // })
+                    // .catch(()=>{
+                    //     console.log("in catch");
+                    // })
                 // }
             })
             .catch((err) => {

@@ -15,6 +15,7 @@ import Modal, { closeModal, openModal } from '../Modal/Modal';
 import { useNavigate } from 'react-router';
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import { source } from '../../../services/source';
 
 
 
@@ -59,6 +60,9 @@ const ViewGroup = (props) => {
                 })
             }
         })
+        return () => {
+            source.cancel()
+        };
     },[auth.isLoggedIn])
     const delMail = (mailid)=>{
         setCondition(true)

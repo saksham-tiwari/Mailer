@@ -30,7 +30,7 @@ const CreateGroup = () => {
     useEffect(()=>{
         if(!auth.isLoggedIn){
             navigate("/")
-        } 
+        }
     },[auth.isLoggedIn])
     const createGrpFormSubmit = (e)=>{
         setLoader(true);

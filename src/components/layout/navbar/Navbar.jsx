@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import userImg from "../../../assets/userImg.png"
@@ -11,7 +11,8 @@ import { logout } from '../../../redux/actions/auth';
 
 const Navbar = () => {
     const dispatch = useDispatch()
-    const name = JSON.parse(localStorage.getItem("user-info")).name
+    const name = JSON.parse(localStorage.getItem("info"))
+    // const name ="/name"
     // const [isCollapse, setIsCollapse]= useState(false)
     const toggle = ()=>{
         var elem = document.getElementById("collapse-menu");
@@ -46,7 +47,7 @@ const Navbar = () => {
                 <img src={userImg} className={styles.userImg} alt="user"/>
                 <div className={styles.dropdown}>
                     <div className={styles.dropbtn}>
-                        <p>{name}</p>
+                        <p>{name?name.name:"name"}</p>
                     </div>
                     <div className={styles.dropdownContent}>
                         <button onClick={()=>{dispatch(logout())}} className={styles.logoutbtn}>Logout</button>
@@ -68,7 +69,7 @@ const Navbar = () => {
                             <hr className={styles.hrHam}></hr>
                             <li>
                             <img src={userImg} className={styles.userImg2} alt="user"/>
-                            <span className={styles.userName2}>{name}   </span>
+                            <span className={styles.userName2}>{name?name.name:"name"}   </span>
                             <div className={styles.logoutDiv} onClick={()=>{dispatch(logout())}}>Logout</div>
                             </li>
                         </ul>

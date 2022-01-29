@@ -31,10 +31,14 @@ import AuthService from "../../services/auth.service";
 export const login = (username, password) => (dispatch) => {
     return AuthService.login(username, password)
     .then((res) => {
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: { user: res.data },
-        });
+        AuthService.getUserInfo()
+        .then(()=>{
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: { user: res },
+          });
+        })
+        
   
         return Promise.resolve({code:res.status});
     })
@@ -184,10 +188,14 @@ export const login = (username, password) => (dispatch) => {
   export const createPassword = (username, password)=>(dispatch)=>{
        return AuthService.createPassword(username, password)
       .then((res)=>{
-        dispatch({
-          type: REGISTER_SUCCESS,
-          payload: { user: res.data },
-        });
+        AuthService.getUserInfo()
+        .then(()=>{
+          dispatch({
+            type: REGISTER_SUCCESS,
+            payload: { user: res },
+          });
+        })
+        
         // dispatch({
         //   type: SET_MESSAGE,
         //   payload: res.data.message
@@ -326,10 +334,11 @@ export const login = (username, password) => (dispatch) => {
   export const getUserInfo = ()=>(dispatch)=>{
     return AuthService.getUserInfo()
     .then(res=>{
-      localStorage.setItem("user-info",JSON.stringify(res.data))
-      dispatch({
-        type: SET_USER,
-        payload: res.data
-      })
+      console.log("called");
+      console.log(res);
+      return Promise.resolve();
+    })
+    .catch(err=>{
+      console.log(err);
     })
   }

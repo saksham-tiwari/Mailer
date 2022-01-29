@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router';
 import Modal, { closeModal, openModal } from '../Modal/Modal';
 import success from "../../../assets/success.png"
 import { getGroups } from '../../../redux/actions/groups';
+import { source } from '../../../services/source';
 
 
 const Templates = () => {
@@ -150,6 +151,9 @@ const Templates = () => {
       setLoader(false)
     }
     })
+    return () => {
+        source.cancel()
+    };
   },[auth.isLoggedIn])
 
   const showMailBox = ()=>{

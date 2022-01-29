@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { logout, refresh } from '../../../redux/actions/auth';
 import { getGroups } from '../../../redux/actions/groups';
+import { source } from '../../../services/source';
 import styles from "../dashboard/dashboard.module.css"
 import Capsule from '../dashboard/GroupsSection/Capsule';
 import FullPageLoader from '../Loaders/FullPageLoader';
@@ -40,6 +41,9 @@ const ViewAllGroups = () => {
                 })
             }
         })
+        return () => {
+            source.cancel()
+        };
     },[auth.isLoggedIn])
     const groups = useSelector((state)=>state.groups)
     const grpArr = groups.groups

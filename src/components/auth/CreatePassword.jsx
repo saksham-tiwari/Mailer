@@ -106,9 +106,9 @@ const CreatePassword = () => {
             dispatch(createPassword(email.mail,password))
             .then((res)=>{
                 console.log(res);
-                dispatch(getUserInfo())
+                // dispatch(getUserInfo())
+                setTimeout(()=>{navigate("/")},2000)
 
-                navigate("/")
             })
             .catch(()=>{
                 setLoading(false);
