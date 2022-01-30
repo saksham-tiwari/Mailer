@@ -53,7 +53,7 @@ const ViewAllGroups = () => {
 
             <h1 className={styles.dashHeading}>Groups</h1>
             <div className={styles.btnPrimaryDiv}><button className={styles.btnPrimary} onClick={()=>navigate("/create-group")} >+ Create New Group</button></div>
-            <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap"}}>
+            <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap", marginTop:"20px"}}>
                 {grpArr.map((grp)=>{
                     return(<Capsule group={grp}/>)
                 })}           

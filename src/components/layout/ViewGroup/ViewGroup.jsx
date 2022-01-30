@@ -200,6 +200,7 @@ const ViewGroup = (props) => {
         <>
             <FullPageLoader condition={condition}/>
             <h1 className={styles.dashHeading}>{grpName}</h1>
+            <br></br>
             <button className={styles3.delete} onClick={()=>{
                 setModalCond("DeleteGroup")
                 openModal();
@@ -219,7 +220,7 @@ const ViewGroup = (props) => {
             {/* <br></br> */}
 
             <div className={styles2.listBlock}>
-                {emails.length===0?<div>No members entered yet.</div>:<></>}
+                {emails.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No members entered yet.</div>:<></>}
                 {emails.map((mail)=>{
                     return(
                         <>

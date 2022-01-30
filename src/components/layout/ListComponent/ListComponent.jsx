@@ -6,7 +6,7 @@ const ListComponent = (props) => {
   return (
       <>
             <div className={styles.listBlock}>
-                {props.mails.length===0?<div>No members entered yet.</div>:<></>}
+                {props.mails.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No members entered yet.</div>:<></>}
                 {props.mails.map((mail,index)=>{
                     return(
                         <>

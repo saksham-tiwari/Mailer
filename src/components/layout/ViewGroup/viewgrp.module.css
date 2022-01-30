@@ -49,8 +49,8 @@
     margin-left: 10%;
 }
 .delete{
-    background-color: red;
-    border: 1px red solid;
+    background-color: #CD0000;
+    border: 1px #CD0000 solid;
     border-radius: 4px;
     color: white;
     padding: 4px 10px;
@@ -61,12 +61,12 @@
     margin-left: 42%; */
     position: relative;
     left: 50%;
-    top: -10px;
+    top: -20px;
     transform: translate(-50%);
 
 }
 
 .delete:hover{
     background-color: white;
-    color: red;
+    color: #CD0000;
 }

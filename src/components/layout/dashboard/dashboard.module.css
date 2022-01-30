@@ -18,7 +18,6 @@
     /* margin-left: 42%;     */
     border: 1px solid #253E7E;
     transition: all 0.5s ease;
-
 }
 .btnPrimary:hover{
     background-color: white;

@@ -250,7 +250,7 @@ const CreateGroup = () => {
                     <Form.Label>Group Name</Form.Label>
                     <Form.Control type="Name" placeholder="Enter the name of group" value={grpName} onChange={(e)=>setGrpName(e.target.value)} className={styles.input}/>
                 </Form.Group>
-                
+                <br></br>
                 <Form.Group>
                     <Form.Label>Enter emails one by one</Form.Label>
                     <InputGroup className="mb-3">
@@ -261,7 +261,15 @@ const CreateGroup = () => {
                         </button>
                     </InputGroup>
                 </Form.Group>
-                <p> -------OR------- </p>
+                <table>
+                <tbody>
+                        <tr>
+                            <td style={{width:"49%"}}><hr/></td>
+                            <td style={{verticalAlign:"middle", textAlign: "center", color:"#000000",fontSize:"14px"}}> OR</td>
+                            <td style={{width:"49%"}}><hr/></td>
+                        </tr>
+                </tbody>
+                </table>
                 <ReadCsv setMails={setMails} active={(mails.length>0)?false:true}  finalArray={finalArray}/>
                 
 
