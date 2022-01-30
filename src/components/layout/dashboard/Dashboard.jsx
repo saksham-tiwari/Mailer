@@ -244,7 +244,7 @@ const Dashboard = () => {
 
                 </div>
                 <input className={styles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
-                <input value={to} list="groups" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
+                <input value={to} list="groups" autocomplete="off" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
                     {groups.map((grp)=>{
                         return(<option value={grp.name}/>)

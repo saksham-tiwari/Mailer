@@ -361,13 +361,13 @@ const logoUpload = (e)=>{
 
                 </div>
                 <input className={dashStyles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
-                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
+                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder='To' autocomplete="off" onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
                     {groups.map((grp)=>{
                         return(<option value={grp.name}/>)
                     })}
                 </datalist>
-                <input value={templateName} list="templates" name="templates" className={dashStyles.fromto} placeholder='Select template' onChange={e=>setTemplateName(e.target.value)}/>
+                <input value={templateName} list="templates" name="templates" autocomplete="off" className={dashStyles.fromto} placeholder='Select template' onChange={e=>setTemplateName(e.target.value)}/>
                 <datalist id="templates">
                     {templates.map((template)=>{
                         return(<option value={template.name}/>)
