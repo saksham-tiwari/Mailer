@@ -210,6 +210,13 @@ const send = ()=>{
             })
         }
     })
+    setFrom("");
+    setSubject("");
+    setAttachments([]);
+    setLogo("");
+    setTo("");
+    
+
 }
 
 const fileUpload = (e)=>{

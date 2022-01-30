@@ -310,13 +310,6 @@ export const login = (username, password) => (dispatch) => {
           type:REFRESH_SUCCESS,
           payload
         })
-        AuthService.getUserInfo()
-        .then(res=>{
-          dispatch({
-            type: SET_USER,
-            payload: res.data
-          })
-        })
         return Promise.resolve();
       }
       
