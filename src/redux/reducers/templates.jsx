@@ -8,7 +8,7 @@ const templatesReducer=(state=initialState,action)=>{
         case ADD_TEMPLATE:
             return{
                 ...state,
-                templates:[...state.templates,{id:null,name:payload}]
+                templates:[...state.templates,payload]
             }
         case GET_TEMPLATES:
             return{

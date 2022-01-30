@@ -7,7 +7,7 @@ export const uploadTemplate = (fd)=>(dispatch)=>{
         console.log(res);
         dispatch({
             type: ADD_TEMPLATE,
-            payload:res.data.fileName,
+            payload:res.data,
         })
         
     })
