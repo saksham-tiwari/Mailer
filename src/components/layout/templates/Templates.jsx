@@ -213,8 +213,15 @@ const send = ()=>{
     setFrom("");
     setSubject("");
     setAttachments([]);
+    setTemplateName("");
     setLogo("");
     setTo("");
+    document.getElementById("logoInput").value="";
+    setPointer("Insert Logo (optional)")
+
+    setTimeout(()=>{
+        setLoader(false)
+    },10000)
     
 
 }
@@ -370,6 +377,7 @@ const logoUpload = (e)=>{
                     <input
                         type="file" 
                         className={dashStyles.input}
+                        id="logoInput"
                         name="logo"
                         accept='image/*'
                         onChange={e=>logoUpload(e)}
@@ -377,7 +385,7 @@ const logoUpload = (e)=>{
                     </label>
                 <input className={dashStyles.fromto} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
                 
-                <span>Attachments:</span>
+                <span style={{marginLeft:"10px"}}>Attachments:</span>
                 {attachFiles.map(file=>{
                     return (
                         <>

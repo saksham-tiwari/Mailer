@@ -89,3 +89,8 @@ th,tr{
   font-size: 16px;
   border: none;
 }
+
+.activeNav{
+  color: white;
+  font-weight: 600;
+}

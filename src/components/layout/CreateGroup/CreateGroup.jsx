@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, refresh } from '../../../redux/actions/auth';
-import { createGroup, createGroupWithName } from '../../../redux/actions/groups';
+import { createGroup, createGroupWithName, getGroups } from '../../../redux/actions/groups';
 import stylesDash from "../dashboard/dashboard.module.css"
 import ReadCsv from '../dashboard/readCsv';
 import ListComponent from '../ListComponent/ListComponent';
@@ -13,6 +13,7 @@ import FullPageLoader from '../Loaders/FullPageLoader';
 import Modal from '../Modal/Modal';
 import { openModal } from '../Modal/Modal';
 import { validEmail } from '../../auth/Regex.jsx';
+import { source } from '../../../services/source';
 
 
 const CreateGroup = () => {
@@ -22,6 +23,8 @@ const CreateGroup = () => {
     const [loader, setLoader]= useState(false);
     let navigate = useNavigate();
     const auth = useSelector((state)=>state.auth)
+    const groups = useSelector((state)=>state.groups).groups
+
     const dispatch = useDispatch();
     const [modalCond, setModalCond] = useState("");
 
@@ -31,6 +34,29 @@ const CreateGroup = () => {
         if(!auth.isLoggedIn){
             navigate("/")
         }
+        dispatch(getGroups())
+        .then((res)=>{
+            setLoader(false)
+        }
+        )
+        .catch((err)=>{
+            if(err.refresh==='required'){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(getGroups())
+                    setLoader(false)
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                        setLoader(false)
+                    }
+                })
+            }
+        })
+        return () => {
+            source.cancel()
+        };
     },[auth.isLoggedIn])
     const createGrpFormSubmit = (e)=>{
         setLoader(true);
@@ -49,6 +75,12 @@ const CreateGroup = () => {
             openModal()
             setLoader(false)
         }
+        else if(checkName()){
+            setModalCond("GrpNameSame")
+            openModal()
+            setLoader(false)
+        }
+        
         else{
             if (typeof(finalArr[0])==='string'){
                 dispatch(createGroup(grpName,finalArr,finalArr.length))
@@ -114,6 +146,20 @@ const CreateGroup = () => {
         }
     }
 
+    const checkName = ()=>{
+        let flag = false;
+        for(let i=0;i<groups.length;i++){
+            if(groups[i].name.toUpperCase()===grpName.toUpperCase()){
+                flag = true;
+                break;
+            }
+        }
+        if(flag){
+            return true
+        }
+        else return false
+    }
+
     const finalArray = (arr)=>{
         let finalArr = []
         arr.forEach((mail)=>{
@@ -177,6 +223,14 @@ const CreateGroup = () => {
                     <>
                     <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
                     <p style={{textAlign:"center"}}>Group must have at least 1 member</p>
+
+                    </>
+                )
+            case "GrpNameSame":
+                return(
+                    <>
+                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
+                    <p style={{textAlign:"center"}}>Two groups cannot have same name.</p>
 
                     </>
                 )

@@ -254,7 +254,7 @@ const Dashboard = () => {
                 <textarea value={body} placeholder='Body' className={styles.emailtextarea} onChange={e=>setBody(e.target.value)}>
 
                 </textarea>
-                <span>Attachments:</span>
+                <span style={{marginLeft:"10px"}}>Attachments:</span>
                 {attachFiles.map(file=>{
                     return (
                         <>

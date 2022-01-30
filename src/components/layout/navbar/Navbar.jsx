@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import userImg from "../../../assets/userImg.png"
 import MenuIcon from '@mui/icons-material/Menu';
@@ -34,13 +34,13 @@ const Navbar = () => {
                 <div className={styles.menu}>
                     <ul>
                         <li>
-                            <Link to="/view-all-groups" className={styles.menuLinks}>View Groups</Link>
+                            <NavLink to="/view-all-groups" activeStyle={{ color: 'red' }} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)} >View Groups</NavLink>
                         </li>
                         <li>
-                            <Link to="/templates" className={styles.menuLinks}>Templates</Link>
+                            <NavLink to="/templates" activeStyle={{ color: 'red' }} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)}>Templates</NavLink>
                         </li>
                         <li>
-                            <Link to="/view-record" className={styles.menuLinks}>View Record</Link>
+                            <NavLink to="/view-record" activeStyle={{ color: 'red' }} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)}>View Record</NavLink>
                         </li>
                     </ul>
                 </div>
@@ -58,19 +58,22 @@ const Navbar = () => {
                     <div className={styles.menu2}>
                         <ul>
                             <li>
-                                <Link to="/view-all-groups" className={styles.menuLinks2}>View Groups</Link>
+                                <NavLink to="/view-all-groups" onClick={toggle} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks2)}>View Groups</NavLink>
                             </li>
                             <li>
-                                <Link to="/templates" className={styles.menuLinks2}>Templates</Link>
+                                <NavLink to="/templates" onClick={toggle} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks2)}>Templates</NavLink>
                             </li>
                             <li>
-                                <Link to="/view-record" className={styles.menuLinks2}>View Record</Link>
+                                <NavLink to="/view-record" onClick={toggle} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks2)}>View Record</NavLink>
                             </li>
                             <hr className={styles.hrHam}></hr>
                             <li>
                             <img src={userImg} className={styles.userImg2} alt="user"/>
                             <span className={styles.userName2}>{name?name.name:"name"}   </span>
-                            <div className={styles.logoutDiv} onClick={()=>{dispatch(logout())}}>Logout</div>
+                            <div className={styles.logoutDiv} onClick={()=>{
+                                toggle()
+                                dispatch(logout())
+                                }}>Logout</div>
                             </li>
                         </ul>
                     </div>
