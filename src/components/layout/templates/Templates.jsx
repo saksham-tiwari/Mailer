@@ -36,7 +36,7 @@ const Templates = () => {
   const [attachments,setAttachments] = useState([]);
   const [attachFiles,setAttachFiles] = useState([]);
   const [pointer, setPointer] = useState("Insert Logo (optional)")
-  const [logo,setLogo] = useState("");
+  const [logo,setLogo] = useState(null);
   const auth = useSelector((state)=>state.auth)
   const navigate = useNavigate();
 
@@ -214,7 +214,7 @@ const send = ()=>{
     setSubject("");
     setAttachments([]);
     setTemplateName("");
-    setLogo("");
+    setLogo(null);
     setTo("");
     document.getElementById("logoInput").value="";
     setPointer("Insert Logo (optional)")
