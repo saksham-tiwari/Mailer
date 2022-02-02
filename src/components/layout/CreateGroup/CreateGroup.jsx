@@ -298,7 +298,7 @@ const CreateGroup = () => {
                     )
                 })}
                 </div> */}
-            <ListComponent mails={mails} delMail={delMail}/>
+            {/* <ListComponent mails={mails} delMail={delMail}/> */}
         </div>
     )
 }

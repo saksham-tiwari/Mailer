@@ -10,6 +10,15 @@ const closeModal = ()=>{
     document.querySelector(".overlay").classList.remove("active");
 }
 
+const restrictClose = ()=>{
+    document.querySelector(".modal").classList.add("shake");
+    document.querySelector(".modal").style.border="2px red solid"
+    setTimeout(()=>{
+        document.querySelector(".modal").style.border = "none"
+        document.querySelector(".modal").classList.remove("shake");
+    },500)
+}
+
 const Modal = (props) => {
     
     
@@ -18,7 +27,7 @@ const Modal = (props) => {
             <div className="modal">
                 {props.children}
             </div>
-            <div className='overlay' onClick={closeModal}></div>
+            {!props.strict?<div className='overlay' onClick={closeModal}></div>:<div className='overlay' onClick={restrictClose}></div>}
 
       </>
   );

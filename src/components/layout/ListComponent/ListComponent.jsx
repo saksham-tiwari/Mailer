@@ -12,10 +12,13 @@ const ListComponent = (props) => {
                         <>
                         
                             <div className={styles.listElem}>
-                            {mail.length===2?<>{mail[0]},
-                                {mail[1]}</>:<>{mail}</>}
+                            {typeof(mail)==="object"?<>{mail.name},
+                                {mail.email}</>:<>{mail}</>}
                                 
-                                <button className={styles.delBtn} onClick={()=>props.delMail(index)}>&times;</button>
+                                <button className={styles.delBtn} onClick={()=>{
+                                    console.log("Called me")
+                                    props.delMail(index)
+                                    }}>&times;</button>
                             </div>
 
                         </>

@@ -5,6 +5,20 @@ import styles from "./dashboard.module.css";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const ReadCsv = (props) => {
+    const finalArray = (arr)=>{
+        let finalArr = []
+        arr.forEach((mail)=>{
+            if(mail.length===2){
+                finalArr.push({name:mail[0],email:mail[1]})
+            }
+            else if(mail.length===1){
+                finalArr.push(mail[0])
+            }
+        })
+
+        return finalArr
+
+    }
     var [pointer, setPointer] = useState("Enter emails via CSV or Excel File");
     return (
         <div>
@@ -23,11 +37,11 @@ const ReadCsv = (props) => {
                     Papa.parse(files[0], {
                     complete: function(results) {
                         console.log("Finished:", results.data);
-                        props.setMails(results.data);
+                        props.setMails(prev=>[...prev, ...finalArray(results.data)]);
                         setPointer(e.target.files[0].name);
                         
-                        let finalArr = props.finalArray(results.data);
-                        console.log(finalArr)
+                        // let finalArr = finalArray(results.data);
+                        // console.log(finalArr)
                     }}
                     )
                 }
