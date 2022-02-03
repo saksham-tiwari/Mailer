@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import userImg from "../../../assets/userImg.png"
 import MenuIcon from '@mui/icons-material/Menu';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import logo from "../../../assets/logo.png"
 import { logout } from '../../../redux/actions/auth';
 // import { Collapse } from "reactstrap";
