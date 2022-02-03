@@ -71,20 +71,15 @@ const Dashboard = () => {
     },[auth.isLoggedIn])
 
     useEffect(() => {
-        // Handler to call on window resize
         console.log("called");
         function handleResize() {
-          // Set window width/height to state
           if(window.innerWidth<565){
               setIsMobile(true)
           }
           else setIsMobile(false)
         }
-        // Add event listener
         window.addEventListener("resize", handleResize);
-        // Call handler right away so state gets updated with initial window size
         handleResize();
-        // Remove event listener on cleanup
         return () => window.removeEventListener("resize", handleResize);
       }, []); 
 

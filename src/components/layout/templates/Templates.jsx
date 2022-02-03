@@ -19,6 +19,8 @@ import Modal, { closeModal, openModal } from '../Modal/Modal';
 import success from "../../../assets/success.png"
 import { getGroups } from '../../../redux/actions/groups';
 import { source } from '../../../services/source';
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 
 
 const Templates = () => {
@@ -38,6 +40,8 @@ const Templates = () => {
   const [pointer, setPointer] = useState("Insert Logo (optional)")
   const [logo,setLogo] = useState(null);
   const auth = useSelector((state)=>state.auth)
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
   const navigate = useNavigate();
 
   // const groups = useSelector((state)=>state.groups)
@@ -155,12 +159,36 @@ const Templates = () => {
         source.cancel()
     };
   },[auth.isLoggedIn])
-
+  useEffect(() => {
+    console.log("called");
+    function handleResize() {
+      if(window.innerWidth<565){
+          setIsMobile(true)
+      }
+      else setIsMobile(false)
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); 
   const showMailBox = ()=>{
-    document.querySelector(".mailPopup").classList.remove("close");
-    document.querySelector(".mailPopup").style.height="480px"
-    document.querySelector(".mailPopup").style.width="450px"
-    setShow(true)
+    if(!isMobile){
+        document.querySelector(".mailPopup").classList.remove("close");
+        document.querySelector(".mailPopup").classList.remove("fullScreen");
+        document.querySelector(".mailPopup").style.height="480px"
+        document.querySelector(".mailPopup").style.width="500px"
+        setShow(true)
+    }
+    else{
+        document.querySelector(".mailPopup").classList.remove("close");
+        document.querySelector(".mailPopup").classList.add("fullScreen");
+        document.querySelector(".mailPopup").style.height = "85vh";
+        document.querySelector(".mailPopup").style.width = "90vw";
+        document.querySelector(".mailPopup").style.transform="translate(-5vw,-5vh)"
+
+        setShow(true)
+    }
+    
 }   
 
 const send = ()=>{
@@ -327,30 +355,73 @@ const logoUpload = (e)=>{
             <div className="mailPopup close" id="mailPopup">
             {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={dashStyles.mailPopupLoader}/>:<></>}
 
-                <div className={dashStyles.headingPopup}>Send Email with Template <button onClick={()=>{
+                <div className={dashboardStyles.headingPopup}>Send Email with Template <button onClick={()=>{
+                    document.querySelector(".mailPopup").classList.remove("fullScreen")
+                    setIsFullScreen(false)
                     document.querySelector(".mailPopup").classList.add("close")
-                    document.querySelector(".mailPopup").style.height="0px"
-                    document.querySelector(".mailPopup").style.width="450px";
+                    document.querySelector(".mailPopup").style.height="0"
+                    document.querySelector(".mailPopup").style.transform="translate(0vw,0vh)"
                     setShow(true)
+                    if(isMobile){
+                        document.querySelector(".mailPopup").style.width="90vw"
+                    } else document.querySelector(".mailPopup").style.width="500px";
+
 
 
                 }}>&times;</button> {show?<button onClick={()=>{
                     setShow(false)
                     document.querySelector(".mailPopup").style.height="35px"
                     document.querySelector(".mailPopup").style.width="300px";
+                    document.querySelector(".mailPopup").classList.remove("fullScreen")
+                    document.querySelector(".mailPopup").style.transform="translate(0,0)"
+                    setIsFullScreen(false)
+
 
 
                 }}><ExpandMoreIcon/></button>:<button onClick={()=>{
                     setShow(true)
-                    document.querySelector(".mailPopup").style.height="480px";
-                    document.querySelector(".mailPopup").style.width="450px";
+                    if(!isMobile){
+                        document.querySelector(".mailPopup").style.height="480px";
+                    document.querySelector(".mailPopup").style.width="500px";
+                    document.querySelector(".mailPopup").classList.remove("fullScreen")
+                    } else {
+                        document.querySelector(".mailPopup").style.height="85vh";
+                    document.querySelector(".mailPopup").style.width="90vw";
+                    document.querySelector(".mailPopup").classList.add("fullScreen")
+                    }
+                    if(isMobile){
+                        document.querySelector(".mailPopup").style.transform="translate(-5vw,-5vh)"
+                    }
+                    setIsFullScreen(false)
 
-                }}><ExpandLessIcon/></button> }</div>
-                <div className={dashStyles.popupTopBtns}>
-                    <label className={dashStyles.attachFile}> <AttachFileIcon/>
+                }}><ExpandLessIcon/></button> }
+                {isFullScreen?<button onClick={()=>{
+                    setIsFullScreen(false)
+                    document.querySelector(".mailPopup").style.height="480px";
+                    document.querySelector(".mailPopup").style.width="500px";
+                    document.querySelector(".mailPopup").classList.remove("fullScreen");
+                    document.querySelector(".mailPopup").style.transform="translate(0vw,0vh)"
+
+                    
+
+                }} style={isMobile?{visibility:"collapse"}:{visibility:"visible"}}><UnfoldLessIcon style={{transform:"rotate(-45deg)"}}/></button>:
+                <button onClick={()=>{
+                    setIsFullScreen(true)
+                    document.querySelector(".mailPopup").style.height = "85vh";
+                    document.querySelector(".mailPopup").style.width = "90vw";
+                    document.querySelector(".mailPopup").classList.add("fullScreen");
+                    document.querySelector(".mailPopup").style.transform="translate(-5vw,-5vh)"
+
+                    setShow(true)
+                    
+
+                }} style={isMobile?{visibility:"collapse"}:{visibility:"visible"}}><UnfoldMoreIcon style={{transform:"rotate(-45deg)"}}/></button>}
+                </div>
+                <div className={dashboardStyles.popupTopBtns}>
+                    <label className={dashboardStyles.attachFile}> <AttachFileIcon/>
                     <input
                         type="file" 
-                        className={dashStyles.input}
+                        className={styles.input}
                         name="file"
                         onChange={e=>fileUpload(e)}
                     />
