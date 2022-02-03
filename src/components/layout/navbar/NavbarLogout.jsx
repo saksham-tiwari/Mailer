@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import userImg from "../../../assets/userImg.png"
 import MenuIcon from '@mui/icons-material/Menu';
@@ -10,6 +10,10 @@ import { logout } from '../../../redux/actions/auth';
 
 
 const NavbarLogout = () => {
+    useEffect(()=>{
+        document.getElementById("collapse-menu").style.opacity="0";
+    document.getElementById("collapse-menu").style.visibility="hidden";
+    },[])
     // const dispatch = useDispatch()
     // const [isCollapse, setIsCollapse]= useState(false)
     const toggle = ()=>{
@@ -32,10 +36,10 @@ const NavbarLogout = () => {
                 <div className={styles.menu}>
                     <ul>
                         <li>
-                            <Link to="/login" className={styles.menuLinks}>Login</Link>
+                            <NavLink to="/login" className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)} >Login</NavLink>
                         </li>
                         <li>
-                            <Link to="/signup" className={styles.menuLinks}>Signup</Link>
+                            <NavLink to="/signup" className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)} >Signup</NavLink>
                         </li>
                     </ul>
                 </div>
@@ -44,10 +48,10 @@ const NavbarLogout = () => {
                     <div className={styles.menu2}>
                         <ul>
                             <li>
-                                <Link to="/login" className={styles.menuLinks2}>Login</Link>
+                                <NavLink to="/login" onClick={toggle} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks2)}>Login</NavLink>
                             </li>
                             <li>
-                                <Link to="/signup" className={styles.menuLinks2}>Signup</Link>
+                                <NavLink to="/signup" onClick={toggle} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks2)}>Signup</NavLink>
                             </li>
                         </ul>
                     </div>

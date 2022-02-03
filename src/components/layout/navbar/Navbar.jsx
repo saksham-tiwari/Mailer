@@ -38,13 +38,13 @@ const Navbar = () => {
                 <div className={styles.menu}>
                     <ul>
                         <li>
-                            <NavLink to="/view-all-groups" activeStyle={{ color: 'red' }} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)} >View Groups</NavLink>
+                            <NavLink to="/view-all-groups" className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)} >View Groups</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/templates" activeStyle={{ color: 'red' }} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)}>Templates</NavLink>
+                            <NavLink to="/templates" className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)}>Templates</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/view-record" activeStyle={{ color: 'red' }} className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)}>View Record</NavLink>
+                            <NavLink to="/view-record" className={({ isActive }) => (isActive ? "activeNav" : styles.menuLinks)}>View Record</NavLink>
                         </li>
                     </ul>
                 </div>
