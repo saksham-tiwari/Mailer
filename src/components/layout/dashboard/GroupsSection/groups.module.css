@@ -52,3 +52,15 @@
     border-radius: 4px;
     padding: 5px 10px;
 }
+.modalButtons{
+    width: 70%;
+    margin-left: 15%;
+    padding: 8px 20px;
+    font-size: large;
+    border: 1px #253E7E solid;
+    background-color: #253E7E;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 3px;
+
+}

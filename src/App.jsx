@@ -42,7 +42,7 @@ function App() {
       <Route exact path="/view-all-groups" element={<ViewAllGroups/>}/>
       <Route exact path="/view-record" element={<ViewRecord/>}/>
       <Route exact path="/templates" element={<Templates/>}/>
-      <Route exact path="/create-group" element={<CreateGroupMethods/>}/>
+      {/* <Route exact path="/create-group" element={<CreateGroupMethods/>}/> */}
       <Route exact path="/create-group/withemails" element={<WithEmails/>}/>
       <Route exact path="/create-group/withnames" element={<WithNames/>}/>
       <Route exact path="/sendMail" element={<SendSimpleMail/>}/>
