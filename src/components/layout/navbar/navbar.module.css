@@ -68,8 +68,9 @@
     top: 8vh;
     opacity: 0;
     padding: 5%;
-    visibility: hidden;
     transition: opacity 0.3s ease-in-out;
+    visibility: hidden;
+    
 }
 .menuHamLogout{
     width: 100%;
@@ -184,9 +185,9 @@
         visibility: visible;
         /* transition: visibility 0s linear 0s, opacity 300ms; */
     }
-    .menuHam{
-        visibility: visible;
-    }
+    /* .menuHam{
+        visibility: hidden;
+    } */
     .menu{
         visibility: hidden;
     }

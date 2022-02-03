@@ -12,12 +12,16 @@ import { logout } from '../../../redux/actions/auth';
 const Navbar = () => {
     const dispatch = useDispatch()
     const name = JSON.parse(localStorage.getItem("info"))
+    useEffect(()=>{
+        document.getElementById("collapse-menu").style.opacity="0";
+    document.getElementById("collapse-menu").style.visibility="hidden";
+    },[])
     // const name ="/name"
     // const [isCollapse, setIsCollapse]= useState(false)
     const toggle = ()=>{
         var elem = document.getElementById("collapse-menu");
         if(elem.style.opacity==="0"){
-            elem.style.opacity="100%"
+            elem.style.opacity="1"
             elem.style.visibility="visible"
         }
         else {
@@ -54,7 +58,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 {/* Ham Menu */}
-                <div className={styles.menuHam} id="collapse-menu">
+                <div className={styles.menuHam} id="collapse-menu" styles={{opacity:"0", visibility:"hidden"}}>
                     <div className={styles.menu2}>
                         <ul>
                             <li>

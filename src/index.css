@@ -49,14 +49,20 @@ code {
   right: 10px;
   border-radius: 4px 4px 0px 0px;
   z-index: 100;
-  width: 450px;
   height: 480px;
+  width: 500px;
   background: white;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
   transition: all 600ms ease;
 }
 .mailPopup.close {
   height: 0;
+  transform: translate(0vw,0vh);
+
+}
+.mailPopup.fullScreen{
+  transform: translate(-5vw,-5vh);
+  right: 0;
 }
 table {
   font-family: arial, sans-serif;
@@ -110,4 +116,13 @@ th,tr{
   80% { transform: translate(-50%, -50%) rotate(1deg); }
   90% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(-1deg); }
+}
+
+@media only screen and (max-width:565px){
+  .mailPopup{
+    width: 90vw;
+    height: 85vh;
+    transform: translate(-5vw,-5vh);
+    right: 0;
+  }
 }

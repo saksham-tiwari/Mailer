@@ -7,7 +7,7 @@ import stylesDash from "../../dashboard/dashboard.module.css"
 import styles from "../creategrpmethods.module.css"
 import ReadCsv from '../../dashboard/readCsv';
 import ListComponent from '../../ListComponent/ListComponent';
-import { createGroup, createGroupWithName, getGroups } from '../../../../redux/actions/groups';
+import { createGroupWithName, getGroups } from '../../../../redux/actions/groups';
 import { logout, refresh } from '../../../../redux/actions/auth';
 import { source } from '../../../../services/source';
 import { validEmail } from '../../../auth/Regex';

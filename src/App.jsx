@@ -19,6 +19,7 @@ import CreateGroupMethods from "./components/layout/CreateGroupMethods/CreateGro
 import NotFound from "./components/layout/NotFound/NotFound";
 import WithEmails from "./components/layout/CreateGroupMethods/WithEmails/WithEmails";
 import WithNames from "./components/layout/CreateGroupMethods/WithNames/WithNames";
+import SendSimpleMail from "./components/layout/SendMail/SendSimpleMail";
 
 // import {Switch} from "react-router"
 
@@ -44,6 +45,8 @@ function App() {
       <Route exact path="/create-group" element={<CreateGroupMethods/>}/>
       <Route exact path="/create-group/withemails" element={<WithEmails/>}/>
       <Route exact path="/create-group/withnames" element={<WithNames/>}/>
+      <Route exact path="/sendMail" element={<SendSimpleMail/>}/>
+
 
 
       <Route path="/404" element={<NotFound/>} />

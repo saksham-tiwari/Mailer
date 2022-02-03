@@ -16,6 +16,8 @@ import Modal, { openModal, closeModal } from '../Modal/Modal';
 import success from "../../../assets/success.png"
 import { useNavigate } from 'react-router';
 import { source } from '../../../services/source';
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 // import {  } from 'bootstrap';
 
 
@@ -31,7 +33,8 @@ const Dashboard = () => {
     const [attachments,setAttachments] = useState([]);
     const [attachFiles,setAttachFiles] = useState([]);
     const [from,setFrom] = useState("");
-
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false)
     var date = new Date();
     const auth = useSelector((state)=>state.auth)
     const navigate = useNavigate();
@@ -66,6 +69,36 @@ const Dashboard = () => {
             source.cancel()
         };
     },[auth.isLoggedIn])
+
+    useEffect(() => {
+        // Handler to call on window resize
+        console.log("called");
+        function handleResize() {
+          // Set window width/height to state
+          if(window.innerWidth<565){
+              setIsMobile(true)
+          }
+          else setIsMobile(false)
+        }
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+        // Call handler right away so state gets updated with initial window size
+        handleResize();
+        // Remove event listener on cleanup
+        return () => window.removeEventListener("resize", handleResize);
+      }, []); 
+
+
+      
+
+    // useEffect(()=>{
+    //     console.log("me called")
+    //     if(window.innerWidth<565){
+    //         setIsMobile(true)
+    //     } else{
+    //         setIsMobile(false)
+    //     }
+    // },[window.innerWidth])
     // let btnMail = document.querySelector("#compose");
     // btnMail.addEventListener("mouseover",()=>{
     //     document.getElementById("composeSpan").innerHTML="Compose Email";
@@ -106,15 +139,30 @@ const Dashboard = () => {
 
 
     const showMailBox = ()=>{
-        document.querySelector(".mailPopup").classList.remove("close");
-        document.querySelector(".mailPopup").style.height="480px"
-        document.querySelector(".mailPopup").style.width="500px"
-        setShow(true)
+        if(!isMobile){
+            document.querySelector(".mailPopup").classList.remove("close");
+            document.querySelector(".mailPopup").classList.remove("fullScreen");
+            document.querySelector(".mailPopup").style.height="480px"
+            document.querySelector(".mailPopup").style.width="500px"
+            setShow(true)
+        }
+        else{
+            document.querySelector(".mailPopup").classList.remove("close");
+            document.querySelector(".mailPopup").classList.add("fullScreen");
+            document.querySelector(".mailPopup").style.height = "85vh";
+            document.querySelector(".mailPopup").style.width = "90vw";
+            document.querySelector(".mailPopup").style.transform="translate(-5vw,-5vh)"
+
+            setShow(true)
+        }
+        
     }   
 
     const send = ()=>{
         document.querySelector(".mailPopup").classList.add("close");
         document.querySelector(".mailPopup").style.height="0px"
+        document.querySelector(".mailPopup").style.transform="translate(0vw,0vh)"
+
 
         var mailId;
         setLoader(true)
@@ -211,24 +259,67 @@ const Dashboard = () => {
             {loading?<Loader type="TailSpin" color="#00BFFF" height={40} width={40} className={styles.mailPopupLoader}/>:<></>}
 
                 <div className={styles.headingPopup}>Compose Email <button onClick={()=>{
+                    document.querySelector(".mailPopup").classList.remove("fullScreen")
+                    setIsFullScreen(false)
                     document.querySelector(".mailPopup").classList.add("close")
-                    document.querySelector(".mailPopup").style.height="0px"
-                    document.querySelector(".mailPopup").style.width="500px";
+                    document.querySelector(".mailPopup").style.height="0"
+                    document.querySelector(".mailPopup").style.transform="translate(0vw,0vh)"
                     setShow(true)
+                    if(isMobile){
+                        document.querySelector(".mailPopup").style.width="90vw"
+                    } else document.querySelector(".mailPopup").style.width="500px";
+
 
 
                 }}>&times;</button> {show?<button onClick={()=>{
                     setShow(false)
                     document.querySelector(".mailPopup").style.height="35px"
                     document.querySelector(".mailPopup").style.width="300px";
+                    document.querySelector(".mailPopup").classList.remove("fullScreen")
+                    document.querySelector(".mailPopup").style.transform="translate(0,0)"
+                    setIsFullScreen(false)
+
 
 
                 }}><ExpandMoreIcon/></button>:<button onClick={()=>{
                     setShow(true)
+                    if(!isMobile){
+                        document.querySelector(".mailPopup").style.height="480px";
+                    document.querySelector(".mailPopup").style.width="500px";
+                    document.querySelector(".mailPopup").classList.remove("fullScreen")
+                    } else {
+                        document.querySelector(".mailPopup").style.height="85vh";
+                    document.querySelector(".mailPopup").style.width="90vw";
+                    document.querySelector(".mailPopup").classList.add("fullScreen")
+                    }
+                    if(isMobile){
+                        document.querySelector(".mailPopup").style.transform="translate(-5vw,-5vh)"
+                    }
+                    setIsFullScreen(false)
+
+                }}><ExpandLessIcon/></button> }
+                {isFullScreen?<button onClick={()=>{
+                    setIsFullScreen(false)
                     document.querySelector(".mailPopup").style.height="480px";
                     document.querySelector(".mailPopup").style.width="500px";
+                    document.querySelector(".mailPopup").classList.remove("fullScreen");
+                    document.querySelector(".mailPopup").style.transform="translate(0vw,0vh)"
 
-                }}><ExpandLessIcon/></button> }</div>
+                    
+
+                }} style={isMobile?{visibility:"collapse"}:{visibility:"visible"}}><UnfoldLessIcon style={{transform:"rotate(-45deg)"}}/></button>:
+                <button onClick={()=>{
+                    setIsFullScreen(true)
+                    document.querySelector(".mailPopup").style.height = "85vh";
+                    document.querySelector(".mailPopup").style.width = "90vw";
+                    document.querySelector(".mailPopup").classList.add("fullScreen");
+                    document.querySelector(".mailPopup").style.transform="translate(-5vw,-5vh)"
+
+                    setShow(true)
+                    
+
+                }} style={isMobile?{visibility:"collapse"}:{visibility:"visible"}}><UnfoldMoreIcon style={{transform:"rotate(-45deg)"}}/></button>}
+                </div>
                 <div className={styles.popupTopBtns}>
                     <label className={styles.attachFile}> <AttachFileIcon/>
                     <input
