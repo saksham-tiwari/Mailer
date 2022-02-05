@@ -47,6 +47,7 @@
     position: absolute;
     color: red;
     margin-left: 10%;
+    font-size: 14px;
 }
 .delete{
     background-color: #CD0000;

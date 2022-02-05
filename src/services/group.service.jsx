@@ -6,7 +6,7 @@ import authHeader from "./auth-header";
 class GroupsService{
     async createGroup(name,emails){
         return await axios
-        .post(BaseUrl()+"groups/add",{
+        .post(BaseUrl()+"groups/add/false",{
             name,emails
         },{
             headers:authHeader()
@@ -14,7 +14,7 @@ class GroupsService{
     }
     async createGroupWithName(name,nameEmail){
         return await axios
-        .post(BaseUrl()+"groups/addWithName",{
+        .post(BaseUrl()+"groups/addWithName/true",{
             name,nameEmail
         },{
             headers:authHeader()
@@ -47,6 +47,12 @@ class GroupsService{
     async addEmail(groupId,emails){
         return await axios
         .put(BaseUrl()+"groups/updateGroup/",{groupId,emails},{
+            headers:authHeader()
+        })
+    }
+    async addEmailAndName(groupId,nameEmails){
+        return await axios
+        .put(BaseUrl()+"groups/updateGroupWithName/",{groupId,nameEmails},{
             headers:authHeader()
         })
     }

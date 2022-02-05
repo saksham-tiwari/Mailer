@@ -155,3 +155,23 @@ export const addEmail = (groupId,emails)=>(dispatch)=>{
         }
     })
 }
+
+export const addEmailAndName = (groupId,nameEmails)=>(dispatch)=>{
+    return GroupsService.addEmailAndName(groupId,nameEmails)
+    .then((res)=>{
+        dispatch({
+            type:ADD_EMAIL,
+            payload: res.data[0]
+        })
+        return Promise.resolve();
+    })
+    .catch((err)=>{
+        if(err.status.code===404){
+            return Promise.reject({code:404,msg:"Group Not Found"})
+        }else if(err.response.status===410){
+            return Promise.reject({msg:"Refresh"})
+        } else {
+            return Promise.reject({err})
+        }
+    })
+}

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import {withRouter} from "react-router"
 import { useLocation } from 'react-router-dom';
 import { logout, refresh } from '../../../redux/actions/auth';
-import { addEmail, deleteEmail, getEmails, deleteGroup } from '../../../redux/actions/groups';
+import { addEmail, deleteEmail, getEmails, deleteGroup, addEmailAndName } from '../../../redux/actions/groups';
 import ListComponent from '../ListComponent/ListComponent';
 import FullPageLoader from '../Loaders/FullPageLoader';
 import styles from "../dashboard/dashboard.module.css"
@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import { source } from '../../../services/source';
+import { validEmail } from '../../auth/Regex';
 
 
 
@@ -23,11 +24,15 @@ const ViewGroup = (props) => {
     // console.log(props.match.params.id)
     let location = useLocation();
     let dispatch = useDispatch();
-    const emails = useSelector((state)=>state.groups).emails;
+    const details = useSelector((state)=>state.groups).emails;
+    const emails = details.emails
     const [emailErr,setEmailErr] = useState(false);
     const [alertMsg, setAlertMsg] = useState("");
+    const [alertMsg2, setAlertMsg2] = useState("");
     const [condition, setCondition] = useState(false);
     const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [nameErr,setNameErr] = useState(false);
     const [modalCond, setModalCond] = useState("");
     const id = location.pathname.split("/")[3];
     var grpName = location.pathname.split("/")[2];
@@ -103,7 +108,15 @@ const ViewGroup = (props) => {
             },2000)
             setCondition(false)
             // return null
-        }else{
+        } else if(!validEmail.test(email)){
+            setAlertMsg("Enter valid email!");
+            setEmailErr(true);
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg('')
+            },2000)
+            setCondition(false)
+        } else{
         closeModal();
 
         dispatch(addEmail(id,[email]))
@@ -133,6 +146,65 @@ const ViewGroup = (props) => {
             }
         })}
     }
+
+    const addMailAndName = ()=>{
+        setCondition(true);
+        if(name===""){
+            setAlertMsg2("Name required!");
+            setNameErr(true);
+            setTimeout(()=>{
+                setNameErr(false)
+                setAlertMsg2('')
+            },2000)
+            setCondition(false)
+        }else if(email===""){
+            setAlertMsg("Email required!");
+            setEmailErr(true);
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg('')
+            },2000)
+            setCondition(false)
+            // return null
+        } else if(!validEmail.test(email)){
+            setAlertMsg("Enter valid email!");
+            setEmailErr(true);
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg('')
+            },2000)
+            setCondition(false)
+        } else{
+        closeModal();
+
+        dispatch(addEmailAndName(id,[{name,email}]))
+        .then(()=>{
+            setEmail("")
+            setCondition(false)
+        })
+        .catch((err)=>{
+            if(err.msg==="Refresh"){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(addEmailAndName(id,[{name,email}]))
+                    .then(()=>{
+                        setEmail("")
+                        setCondition(false)
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                        setEmail("");
+                    })
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                    }
+                })
+            }
+        })}
+    }
+
     const deleteGrp = ()=>{
         dispatch(deleteGroup(id))
         .then((res)=>{
@@ -173,9 +245,31 @@ const ViewGroup = (props) => {
                         <input className={styles3.input} value={email} placeholder='Enter the email of member' onChange={e=>{
                         setEmail(e.target.value)
                         }}
-                        style={emailErr?{borderColor:"red", borderWidth:"4px"}:{borderColor:"#253E7E"}}></input>
+                        style={emailErr?{borderColor:"red"}:{borderColor:"#253E7E"}}></input>
                         <p className={styles3.alert}>{alertMsg}</p>
                         <button className={styles3.btn2} onClick={addMail}>Add</button><button className={styles3.btn1} onClick={closeModal}>Cancel</button>
+                    </>
+                )
+            case "AddEmailAndName":
+                return(
+                    <>
+                        <h2 className={styles3.heading} style={{marginBottom:"5px", marginTop:"10px"}}>Add New Member</h2>
+                        <label className={styles3.label}>Name:</label>
+                        <br></br>
+                        <input className={styles3.input} value={name} placeholder='Enter the email of member' onChange={e=>{
+                        setName(e.target.value)
+                        }}
+                        style={nameErr?{borderColor:"red"}:{borderColor:"#253E7E"}}></input>
+                        <p className={styles3.alert}>{alertMsg2}</p>
+
+                        <label className={styles3.label} style={{marginTop:"15px"}}>Email:</label>
+                        <br></br>
+                        <input className={styles3.input} value={email} placeholder='Enter the email of member' onChange={e=>{
+                        setEmail(e.target.value)
+                        }}
+                        style={emailErr?{borderColor:"red"}:{borderColor:"#253E7E"}}></input>
+                        <p className={styles3.alert}>{alertMsg}</p>
+                        <button className={styles3.btn2} onClick={addMailAndName}>Add</button><button className={styles3.btn1} onClick={closeModal}>Cancel</button>
                     </>
                 )
             case "DeleteGroup":
@@ -209,7 +303,7 @@ const ViewGroup = (props) => {
             
             {/* <ListComponent mails={emails} delMail={delMail}/> */}
             <button onClick={()=>{
-                setModalCond("AddEmail")
+                {details.hasName?setModalCond("AddEmailAndName"):setModalCond("AddEmail")}
                 openModal();
                 }} className={styles3.btnAdd}>Add New Member +</button>
             
