@@ -23,13 +23,17 @@ const WithEmails = () => {
     const [mails,setMails] = useState([]);
     const [email, setEmail] = useState("")  
     const groups = useSelector((state)=>state.groups).groups
-
+    const [emailErr, setEmailErr]= useState(false);
+    const [nameErr, setNameErr]= useState(false);
+    const [alertMsg, setAlertMsg] = useState("");
+    const [noMailsErr, setNoMailsErr] = useState(false)
 
 
     useEffect(()=>{
         if(!auth.isLoggedIn){
             navigate("/")
         }
+        window.scrollTo(1, 1);
         dispatch(getGroups())
         .then((res)=>{
             setLoader(false)
@@ -57,37 +61,6 @@ const WithEmails = () => {
 
     const switchModal = ()=>{
         switch(modalCond){
-            case "Name":
-                return(
-                    <>
-                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
-                    <p style={{textAlign:"center"}}>Name of the group cannot be empty.</p>
-                    </>
-                )
-            case "Email":
-                return(
-                    <>
-                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
-                    <p style={{textAlign:"center"}}>Please enter a valid email.</p>
-
-                    </>
-                )
-            case "Empty":
-                return(
-                    <>
-                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
-                    <p style={{textAlign:"center"}}>Group must have at least 1 member</p>
-
-                    </>
-                )
-            case "GrpNameSame":
-                return(
-                    <>
-                    <h1 style={{textAlign:"center", marginTop:"60px"}}>Error!!!</h1>
-                    <p style={{textAlign:"center"}}>Two groups cannot have same name.</p>
-
-                    </>
-                )
             case "GrpNotForm":
                 return(
                     <>
@@ -109,19 +82,31 @@ const WithEmails = () => {
         // var finalArr = finalArray(mails)
 
         if(grpName===""){
-            setModalCond("Name")
-            openModal()
+            setNameErr(true)
+            setAlertMsg("Name Required!")
             setLoader(false)
+            setTimeout(()=>{
+                setNameErr(false)
+                setAlertMsg("")
+            },2000)
         }
         else if(mails.length===0){
-            setModalCond("Empty")
-            openModal()
             setLoader(false)
+            setNoMailsErr(true);
+            setAlertMsg("Groups must have atleast 1 member!");
+            setTimeout(()=>{
+                setNoMailsErr(false)
+                setAlertMsg("")
+            },3000)
         }
         else if(checkName()){
-            setModalCond("GrpNameSame")
-            openModal()
+            setNameErr(true)
+            setAlertMsg("Group name should be unique.")
             setLoader(false)
+            setTimeout(()=>{
+                setNameErr(false)
+                setAlertMsg("")
+            },2000)
         }
         
         else{
@@ -175,8 +160,13 @@ const WithEmails = () => {
     const singleAdd = (e)=>{
         e.preventDefault();
         if(email===""||!validEmail.test(email)){
-            setModalCond("Email")
-            openModal()
+            setEmailErr(true)
+            setAlertMsg("Enter a valid email!")
+            setLoader(false)
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg("")
+            },2000)
         }
         else{
             setMails(prev=>[...prev, email])
@@ -207,12 +197,14 @@ const WithEmails = () => {
         <h1 className={stylesDash.dashHeading}>Create New Group</h1>
         <form className={styles.formCreate} onSubmit={createGrpFormSubmit}>
             <label>Group Name:</label>
-            <input placeholder='Enter the name of group (should be unique)' type="name" value={grpName} onChange={e=>setGrpName(e.target.value)} className={styles.input}></input>
-            <label>Email</label>
+            <input placeholder='Enter the name of group (should be unique)' type="name" value={grpName} onChange={e=>setGrpName(e.target.value)} className={styles.input} style={nameErr?{borderColor:"red"}:{borderColor:"#253E7E"}}></input>
+            <p className={styles.alert}>{nameErr?alertMsg:""}</p>
+            <label style={{marginTop:"10px"}}>Email</label>
             <div style={{display:"flex"}}>
-                <input style={{borderRadius:"4px 0px 0px 4px"}} placeholder='Enter email one by one' type="email" value={email} onChange={e=>setEmail(e.target.value)} className={styles.input}></input>
+                <input placeholder='Enter email one by one' type="email" value={email} onChange={e=>setEmail(e.target.value)} className={styles.input} style={emailErr?{borderRadius:"4px 0px 0px 4px",borderColor:"red"}:{borderRadius:"4px 0px 0px 4px",borderColor:"#253E7E"}}></input>
                 <button className={styles.add} style={{borderRadius:"0px 4px 4px 0px", width:"120px"}} onClick={singleAdd} >+ ADD</button>
             </div>
+            <p className={styles.alert}>{emailErr?alertMsg:""}</p>
             <table>
                 <tbody>
                         <tr>
@@ -228,7 +220,7 @@ const WithEmails = () => {
 
         <br></br>
         <h1 className={stylesDash.dashHeading}>Members Added:</h1>
-        <ListComponent mails={mails} delMail={delMail}/>
+        <ListComponent mails={mails} delMail={delMail} styles={noMailsErr?{border:"2px red solid"}:{}} msg={noMailsErr?alertMsg:""}/>
       </>
   )
 };

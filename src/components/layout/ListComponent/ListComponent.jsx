@@ -5,8 +5,8 @@ import styles from "../CreateGroup/creategrp.module.css"
 const ListComponent = (props) => {
   return (
       <>
-            <div className={styles.listBlock}>
-                {props.mails.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No members entered yet.</div>:<></>}
+            <div className={styles.listBlock} style={props.styles}>
+                {props.mails.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>{props.msg!==""?props.msg:"No members entered yet."}</div>:<></>}
                 {props.mails.map((mail,index)=>{
                     return(
                         <>

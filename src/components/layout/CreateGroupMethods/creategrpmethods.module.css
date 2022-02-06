@@ -79,6 +79,16 @@
     padding: 6px 12px;
     color: white;
 }
+.alert{
+    position: absolute;
+    color: red;
+    position: relative;
+    margin-top: -10px;
+    /* margin-left: 10%; */
+    font-size: 14px;
+    position: absolute;
+
+}
 @media only screen and (max-width:830px){
     .formCreate{
         width: 60%;

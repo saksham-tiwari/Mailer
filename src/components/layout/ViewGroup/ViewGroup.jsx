@@ -44,6 +44,7 @@ const ViewGroup = (props) => {
         if(!auth.isLoggedIn){
             navigate("/")
         } 
+        window.scrollTo(1, 1);
         console.log(id.toUpperCase());
         setCondition(true)
         dispatch(getEmails(id))
