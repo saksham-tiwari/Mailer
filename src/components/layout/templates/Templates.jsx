@@ -61,9 +61,11 @@ const Templates = () => {
     var fd = new FormData();
     fd.append("file",newFile)
     fd.append("fileName",fileName)
+    setLoader(true)
     dispatch(uploadTemplate(fd))
     .then((res)=>{
       console.log("uploaded");
+      setLoader(false)
       
     })
     .catch((err)=>{
@@ -73,15 +75,21 @@ const Templates = () => {
                 dispatch(uploadTemplate(fd))
                 .then((res)=>{
                   console.log("uploaded")
+                  setLoader(false)
+
                 })
             })
             .catch((err)=>{
                 if(err.msg==="Refresh Fail"){
                     dispatch(logout())
+                    setLoader(false)
+
                 }
             })
         } else{
           console.log(err);
+          setLoader(false)
+
         }
     
     
