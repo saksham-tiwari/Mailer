@@ -16,6 +16,8 @@ const Home = () => {
         if(auth.isLoggedIn){
             navigate("/dashboard")
         } 
+        window.scrollTo(1, 1);
+
     },[auth.isLoggedIn])
     // const logOut = ()=>{
     //     dispatch(logout());

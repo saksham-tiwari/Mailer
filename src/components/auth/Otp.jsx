@@ -37,6 +37,8 @@ const Otp = () => {
         if(auth.isLoggedIn){
             navigate("/")
         } 
+        window.scrollTo(1, 1);
+
         if(permission.permission===true){
             dispatch({
                 type: SET_PERMISSION,

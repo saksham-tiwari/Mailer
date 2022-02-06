@@ -36,6 +36,7 @@ const CreatePassword = () => {
 
     useEffect(()=>{
         console.log(permission);
+        window.scrollTo(1, 1);
         if(auth.isLoggedIn){
             navigate("/")
         }

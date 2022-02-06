@@ -41,6 +41,8 @@ const ViewAllGroups = () => {
         if(!auth.isLoggedIn){
             navigate("/")
         } 
+        window.scrollTo(1, 1);
+
         dispatch(getGroups())
         .then((res)=>{
             setLoader(false)

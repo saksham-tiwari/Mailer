@@ -46,6 +46,8 @@ const Dashboard = () => {
         if(!auth.isLoggedIn){
             navigate("/")
         } 
+        window.scrollTo(1, 1);
+
         setLoader(true)
         dispatch(getGroups())
         .then((res)=>{

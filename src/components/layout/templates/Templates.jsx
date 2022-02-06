@@ -102,6 +102,8 @@ const Templates = () => {
     if(!auth.isLoggedIn){
       navigate("/")
   } 
+  window.scrollTo(1, 1);
+
     dispatch(getTemplates())
     .then(()=>{
       console.log(templates)

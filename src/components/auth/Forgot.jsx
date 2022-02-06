@@ -41,6 +41,8 @@ const Otp = () => {
         if(auth.isLoggedIn){
             navigate("/")
         }
+        window.scrollTo(1, 1);
+
     },[])
 
     // console.log(email.mail);

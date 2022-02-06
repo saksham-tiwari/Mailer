@@ -17,6 +17,8 @@ const ViewRecord = () => {
         if(!auth.isLoggedIn){
             navigate("/")
         } 
+        window.scrollTo(1, 1);
+
         setLoader(true)
         dispatch(previousMails())
         .then((res)=>{

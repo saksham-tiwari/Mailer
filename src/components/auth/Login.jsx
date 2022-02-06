@@ -60,6 +60,8 @@ const Login = () => {
         if(auth.isLoggedIn){
             navigate("/")
         }
+        window.scrollTo(1, 1);
+
         return () => {
             source.cancel()
         };

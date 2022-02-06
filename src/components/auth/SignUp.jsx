@@ -30,6 +30,8 @@ const SignUp = () => {
         if(auth.isLoggedIn){
             navigate("/")
         }
+        window.scrollTo(1, 1);
+
     })
     const formSubmit = (e)=>{
         e.preventDefault();
