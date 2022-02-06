@@ -21,6 +21,7 @@ import { getGroups } from '../../../redux/actions/groups';
 import { source } from '../../../services/source';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+import failed from "../../../assets/failed.png"
 
 
 const Templates = () => {
@@ -211,22 +212,33 @@ const send = ()=>{
     dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId))
     .then(()=>{
         setLoader(false)
+        setModalCond("Success")
         openModal()
         setTimeout(()=>{
           closeModal()
         },2000)
     })
     .catch((err)=>{
-        if(err.refresh==='required'){
+        if(err.code===410){
             dispatch(refresh())
             .then(()=>{
                 dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId))
                 .then(()=>{
-                  openModal()
+                setModalCond("Success")
+                openModal()
                   setTimeout(()=>{
                     closeModal()
                   },2000)
                   setLoader(false)
+
+                })
+                .catch(()=>{
+                    setLoader(false)
+                    setModalCond("Failed")
+                    openModal();
+                    setTimeout(()=>{
+                        closeModal(); 
+                     },2000)
 
                 })
             })
@@ -236,6 +248,14 @@ const send = ()=>{
                     setLoader(false)
                 }
             })
+        }
+        else{
+            setLoader(false)
+            setModalCond("Failed")
+            openModal();
+            setTimeout(()=>{
+                closeModal(); 
+             },2000)
         }
     })
     setFrom("");
@@ -321,14 +341,47 @@ const logoUpload = (e)=>{
         }
 
 })}
+
+
+    const deleteAttachment= (index)=> {
+        console.log(attachments);
+        setAttachFiles(prevFiles=>prevFiles.filter(file=>prevFiles.indexOf(file)!==index))
+        setAttachments(prevFiles=>prevFiles.filter(file=>prevFiles.indexOf(file)!==index))
+        console.log(attachments);
+
+    }
+    const [ modalCond, setModalCond ] = useState("")
+
+    const switchModal = ()=>{
+        switch(modalCond){
+            case "Success":
+                return(
+                    <>
+                        <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+
+                        <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
+
+                    </>
+                )
+            case "Failed":
+                return(
+                    <>
+                        <img src={failed} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+
+                        <h2 style={{textAlign:"center"}}>Mail cannot be sent! Please check everything and try sending again.</h2>
+
+                    </>
+                )
+            default :
+            return <></>
+        }
+    }
   return (
       <>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
             <FullPageLoader condition={loader}/>
             <Modal>
-            <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
-
-                <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
+                {switchModal()}
             </Modal>
             
           <label> 
@@ -435,7 +488,10 @@ const logoUpload = (e)=>{
                 <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder='To' autocomplete="off" onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
                     {groups.map((grp)=>{
-                        return(<option value={grp.name}/>)
+                        if(grp.hasName){
+                            return(<option value={grp.name}/>)
+                        }
+                        
                     })}
                 </datalist>
                 <input value={templateName} list="templates" name="templates" autocomplete="off" className={dashStyles.fromto} placeholder='Select template' onChange={e=>setTemplateName(e.target.value)}/>
@@ -454,13 +510,13 @@ const logoUpload = (e)=>{
                         onChange={e=>logoUpload(e)}
                     />
                     </label>
-                <input className={dashStyles.fromto} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
+                <input className={dashStyles.fromto} style={{marginBottom:"10px"}} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
                 
-                <span style={{marginLeft:"10px"}}>Attachments:</span>
-                {attachFiles.map(file=>{
+                <span style={{marginLeft:"2.5%"}}>Attachments:</span>
+                {attachFiles.map((file,index)=>{
                     return (
                         <>
-                            <span className={dashStyles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]}, </span>
+                            <span className={dashStyles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
                         </>)
                 })}
 

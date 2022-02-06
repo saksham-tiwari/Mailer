@@ -14,6 +14,7 @@ import FullPageLoader from '../Loaders/FullPageLoader';
 import Loader from "react-loader-spinner";
 import Modal, { openModal, closeModal } from '../Modal/Modal';
 import success from "../../../assets/success.png"
+import failed from "../../../assets/failed.png"
 import { useNavigate } from 'react-router';
 import { source } from '../../../services/source';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
@@ -41,6 +42,7 @@ const Dashboard = () => {
 
 
     useEffect(()=>{
+
         if(!auth.isLoggedIn){
             navigate("/")
         } 
@@ -173,22 +175,32 @@ const Dashboard = () => {
         dispatch(sendMail(from,mailId,subject,body,attachments))
         .then(()=>{
             setLoader(false)
+            setModalCond("Success")
             openModal();
             setTimeout(()=>{
                closeModal(); 
             },2000)
         })
         .catch((err)=>{
-            if(err.refresh==='required'){
+            if(err.code===410){
                 dispatch(refresh())
                 .then(()=>{
                     dispatch(sendMail(from,mailId,subject,body,attachments))
                     .then(()=>{
                         setLoader(false)
+                        setModalCond("Success")
                         openModal();
                         setTimeout(()=>{
                            closeModal(); 
                         },2000)
+                    })
+                    .catch(()=>{
+                        setLoader(false)
+                        setModalCond("Failed")
+                        openModal();
+                        setTimeout(()=>{
+                            closeModal(); 
+                         },2000)
                     })
                 })
                 .catch((err)=>{
@@ -197,6 +209,14 @@ const Dashboard = () => {
                         setLoader(false)
                     }
                 })
+            }
+            else{
+                setLoader(false)
+                setModalCond("Failed")
+                openModal();
+                setTimeout(()=>{
+                    closeModal(); 
+                 },2000)
             }
         })
     }
@@ -238,15 +258,58 @@ const Dashboard = () => {
     })
 }
     
+    const deleteAttachment= (index)=> {
+        console.log(attachments);
+        setAttachFiles(prevFiles=>prevFiles.filter(file=>prevFiles.indexOf(file)!==index))
+        setAttachments(prevFiles=>prevFiles.filter(file=>prevFiles.indexOf(file)!==index))
+        console.log(attachments);
+
+    }
+    const [ modalCond, setModalCond ] = useState("")
+
+    const switchModal = ()=>{
+        switch(modalCond){
+            case "Startup":
+                return(
+                    <>
+                    <h4 style={{textAlign:"center", marginTop:"60px", marginBottom:"12px"}}>Choose an option to create group:</h4>
+                    <button className={styles.modalButtons} onClick={()=>{
+                       navigate("/create-group/withemails")
+                    }}>With emails only</button>
+                    <button className={styles.modalButtons} onClick={()=>{
+                      navigate("/create-group/withnames")
+                    }}>With names and emails both</button>
+                    </>
+                )
+            case "Success":
+                return(
+                    <>
+                        <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+
+                        <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
+
+                    </>
+                )
+            case "Failed":
+                return(
+                    <>
+                        <img src={failed} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+
+                        <h2 style={{textAlign:"center"}}>Mail cannot be sent! Please check everything and try sending again.</h2>
+
+                    </>
+                )
+            default :
+            return <></>
+        }
+    }
     return(
         <>
             {/* <Navbar/> */}
-            <GroupsSection/>
+            <GroupsSection setModalCond = {setModalCond}/>
             <FullPageLoader condition={loader}/>
             <Modal>
-            <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
-
-                <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
+                {switchModal()}
             </Modal>
 
             <button className={styles.compose} onClick={showMailBox} id="compose"> <AddIcon fontSize="large"/> <span className={styles.composeSpan} id="composeSpan"></span></button>
@@ -341,10 +404,10 @@ const Dashboard = () => {
 
                 </textarea>
                 <span style={{marginLeft:"2.5%"}}>Attachments:</span>
-                {attachFiles.map(file=>{
+                {attachFiles.map((file,index)=>{
                     return (
                         <>
-                            <span className={styles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]}, </span>
+                            <span className={styles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
                         </>)
                 })}
 

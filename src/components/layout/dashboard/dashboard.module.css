@@ -161,8 +161,15 @@ input[type="file"] {
 .attachSpan{
     width: 75px;
     white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid black;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+.attachSpan button{
+    border: none;
+    background: none;
 }
 .modalButtons{
     width: 70%;

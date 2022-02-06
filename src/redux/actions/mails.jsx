@@ -16,9 +16,9 @@ export const sendMail = (from,groupId,subject,body,attachment)=>(dispatch)=>{
         } else if(err.response.status===406){
             return Promise.reject({code:406,msg:"Mail not sent! Try again later."})
         } else if(err.response.status===410){
-            return Promise.reject({refresh:"required"});
+            return Promise.reject({code:410, msg:"Refresh"});
         } else {
-            console.log(err.response);
+            return Promise.reject({code:err.response.status, msg:"Mail not sent"})
         }
     })
 }
