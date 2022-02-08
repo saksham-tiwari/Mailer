@@ -45,6 +45,8 @@ const Templates = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
   const [delId, setDelId] = useState(null)
+  const [formDisabled, setFormDisabled] = useState(false)
+
 
   const navigate = useNavigate();
 
@@ -288,6 +290,7 @@ const send = ()=>{
 }
 
 const fileUpload = (e)=>{
+    setFormDisabled(true)
     e.preventDefault();
     setLoading(true)
     let fileName = e.target.files[0].name.split(".")[0].concat(JSON.stringify(date).replace(/"/g, ""));
@@ -299,6 +302,7 @@ const fileUpload = (e)=>{
         setAttachments(prev=>[...prev,res.file.fileName])
         setAttachFiles(prev=>[...prev,res.file])
         setLoading(false)
+        setFormDisabled(false)
     })
     .catch((err)=>{
         if(err.refresh==='required'){
@@ -309,12 +313,14 @@ const fileUpload = (e)=>{
                     setAttachments(prev=>[...prev,res.file.fileName])
                     setAttachFiles(prev=>[...prev,res.file])
                     setLoading(false)
+                    setFormDisabled(false)
                 })
             })
             .catch((err)=>{
                 if(err.msg==="Refresh Fail"){
                     dispatch(logout())
                     setLoading(false)
+                    setFormDisabled(false)
                 }
             })
         }
@@ -325,6 +331,7 @@ const fileUpload = (e)=>{
 
 const logoUpload = (e)=>{
   e.preventDefault();
+  setFormDisabled(true)
   setPointer(e.target.files[0].name);
   let fileName = e.target.files[0].name.split(".")[0].concat(JSON.stringify(date).replace(/"/g, ""));
     var fd = new FormData();
@@ -334,6 +341,7 @@ const logoUpload = (e)=>{
     .then((res)=>{
         setLogo(res.file.fileName)
         setLoading(false)
+        setFormDisabled(false)
     })
     .catch((err)=>{
         if(err.refresh==='required'){
@@ -343,12 +351,14 @@ const logoUpload = (e)=>{
                 .then((res)=>{
                     setLogo(fileName)
                     setLoading(false)
+                    setFormDisabled(false)
                 })
             })
             .catch((err)=>{
                 if(err.msg==="Refresh Fail"){
                     dispatch(logout())
                     setLoading(false)
+                    setFormDisabled(false)
                 }
             })
         }
@@ -441,7 +451,7 @@ const logoUpload = (e)=>{
         
     }
   return (
-      <>
+      <div style={formDisabled?{pointerEvents:"none"}:{}}>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
             <FullPageLoader condition={loader}/>
             <Modal>
@@ -606,7 +616,7 @@ const logoUpload = (e)=>{
                 })}
 
             </div>
-      </>
+      </div>
   );
 };
 

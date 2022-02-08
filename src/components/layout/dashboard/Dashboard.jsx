@@ -36,6 +36,7 @@ const Dashboard = () => {
     const [from,setFrom] = useState("");
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [isMobile, setIsMobile] = useState(false)
+    const [formDisabled, setFormDisabled] = useState(false)
     var date = new Date();
     const auth = useSelector((state)=>state.auth)
     const navigate = useNavigate();
@@ -88,6 +89,11 @@ const Dashboard = () => {
       }, []); 
 
 
+    // useEffect(()=>{
+    //     console.log(document.querySelector(".mailPopup").childNodes);
+        
+    // },[])
+
       
 
     // useEffect(()=>{
@@ -135,7 +141,6 @@ const Dashboard = () => {
     //         alert("Please upload a valid CSV file.");
     //     }
     // }
-
 
     const showMailBox = ()=>{
         if(!isMobile){
@@ -222,8 +227,10 @@ const Dashboard = () => {
             }
         })
     }
+    
 
     const fileUpload = (e)=>{
+        setFormDisabled(true)
         e.preventDefault();
         setLoading(true)
         let fileName = e.target.files[0].name.split(".")[0].concat(JSON.stringify(date).replace(/"/g, ""));
@@ -235,6 +242,7 @@ const Dashboard = () => {
             setAttachments(prev=>[...prev,res.file.fileName])
             setAttachFiles(prev=>[...prev,res.file])
             setLoading(false)
+            setFormDisabled(false)
         })
         .catch((err)=>{
             if(err.refresh==='required'){
@@ -246,12 +254,14 @@ const Dashboard = () => {
                         setAttachFiles(prev=>[...prev,res.file])
                         console.log(attachments,attachFiles);
                         setLoading(false)
+                        setFormDisabled(false)
                     })
                 })
                 .catch((err)=>{
                     if(err.msg==="Refresh Fail"){
                         dispatch(logout())
                         setLoading(false)
+                        setFormDisabled(false)
                     }
                 })
             }
@@ -306,7 +316,7 @@ const Dashboard = () => {
         }
     }
     return(
-        <>
+        <div style={formDisabled?{pointerEvents:"none"}:{}}>
             {/* <Navbar/> */}
             <GroupsSection setModalCond = {setModalCond}/>
             <FullPageLoader condition={loader}/>
@@ -421,7 +431,7 @@ const Dashboard = () => {
             <hr />
             <div id="dvCSV">
             </div> */}
-        </>
+        </div>
     )
 }
 
