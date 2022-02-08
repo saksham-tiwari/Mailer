@@ -33,6 +33,12 @@ class TemplatesService{
         }
         )
     }
+    async deleteTemplate(id){
+        return await axios
+        .delete(BaseUrl()+"mail/deleteTemplate/"+id,{
+            headers: authHeader()
+        })
+    }
 }
 
 export default new TemplatesService();

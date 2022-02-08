@@ -1,5 +1,5 @@
 import TemplatesService from "../../services/templates.service";
-import { ADD_TEMPLATE, GET_TEMPLATES, MAIL_SENT } from "./types";
+import { ADD_TEMPLATE, GET_TEMPLATES, MAIL_SENT, DELETE_TEMPLATE } from "./types";
 
 export const uploadTemplate = (fd)=>(dispatch)=>{
     return TemplatesService.uploadTemplate(fd)
@@ -54,6 +54,27 @@ export const sendMailWithTemplate = (from,subject,attachment,logo,templateId,gro
             return Promise.reject({code:404,msg:"Group Not Found"})
         } else if(err.response.status===406){
             return Promise.reject({code:406,msg:"Mail not sent! Try again later."})
+        } else if(err.response.status===410){
+            return Promise.reject({code:410, msg:"Refresh"});
+        } else {
+            return Promise.reject({code:err.response.status, msg:"Mail not sent"})
+        }
+    })
+}
+
+export const deleteTemplate = (id)=>dispatch=>{
+    return TemplatesService.deleteTemplate(id)
+    .then(res=>{
+        dispatch({
+            type: DELETE_TEMPLATE,
+            payload: id
+        })
+        return Promise.resolve({code:res.status})
+
+    })
+    .catch(err=>{
+        if(err.response.status===404){
+            return Promise.reject({code:404,msg:"Template Not Found"})
         } else if(err.response.status===410){
             return Promise.reject({code:410, msg:"Refresh"});
         } else {

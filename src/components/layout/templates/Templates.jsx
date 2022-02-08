@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dashboardStyles from "../dashboard/dashboard.module.css"
-import { uploadTemplate, getTemplates, sendMailWithTemplate } from '../../../redux/actions/templates';
+import { uploadTemplate, getTemplates, sendMailWithTemplate, deleteTemplate } from '../../../redux/actions/templates';
 import { logout, refresh } from '../../../redux/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from "./templates.module.css"
@@ -22,6 +22,7 @@ import { source } from '../../../services/source';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 import failed from "../../../assets/failed.png"
+import styles2 from "../CreateGroup/creategrp.module.css"
 
 
 const Templates = () => {
@@ -43,6 +44,8 @@ const Templates = () => {
   const auth = useSelector((state)=>state.auth)
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
+  const [delId, setDelId] = useState(null)
+
   const navigate = useNavigate();
 
   // const groups = useSelector((state)=>state.groups)
@@ -382,9 +385,60 @@ const logoUpload = (e)=>{
 
                     </>
                 )
+            case "Delete":
+                return(
+                    <>
+                        <h1 style={{textAlign:"center", marginTop:"60px"}}>Are you sure you want to delete this group?</h1>
+                        <div style={{width:"100%", textAlign:"center"}}>
+                            <button 
+                            style={{border:"1px #253E7E solid", borderRadius:"4px", padding:"4px 10px", backgroundColor:"white", color:"#253E7E", marginRight:"2px"}} 
+                            onClick={()=>deleteTemp(delId)}>Yes</button> 
+                            <button 
+                            style={{border:"1px #253E7E solid", borderRadius:"4px", padding:"4px 10px", backgroundColor:"#253E7E", color: "white"}} 
+                            onClick={closeModal}>Cancel</button>
+                        </div> 
+                    </>
+                )
             default :
             return <></>
         }
+    }
+
+    const handleDel= (id)=>{
+        setDelId(id)
+        setModalCond("Delete")
+        openModal()
+    }
+    const deleteTemp = (id)=>{
+        closeModal()
+        setLoader(true)
+        dispatch(deleteTemplate(id))
+        .then(res=>{
+            setLoader(false)
+        })
+        .catch((err)=>{
+            if(err.refresh==='required'){
+                dispatch(refresh())
+                .then(()=>{
+                    dispatch(deleteTemplate(id))
+                    .then((res)=>{
+                        // setLogo(fileName)
+                        setLoader(false)
+                    })
+                })
+                .catch((err)=>{
+                    if(err.msg==="Refresh Fail"){
+                        dispatch(logout())
+                        setLoader(false)
+                    }
+                })
+            }
+            else{
+                alert("Error!")
+            }
+    
+        })
+        
     }
   return (
       <>
@@ -406,13 +460,34 @@ const logoUpload = (e)=>{
                         accept=".html,.ftl"
                     />
             </label>
-            <table className={styles.table}>
+            {/* <table className={styles.table}>
               <tbody>
               {templates.map((template)=>{
               return <p>{template.name.split("2022")[0]}</p>
             })}
               </tbody>
-            </table>
+            </table> */}
+            <div className={styles2.listBlock}>
+                {templates.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No templates created yet.</div>:<></>}
+                {templates.map((template)=>{
+                    return(
+                        <>
+                        
+                            <div className={styles2.listElem}>
+                                {template.name.split("2022")[0]}
+                                <button style={{float:"right", border:"1px solid #253e7e", background:"white", color:"#253e7e", borderRadius:"4px", marginLeft:"10px"}} onClick={()=>{handleDel(template.id)}}>Delete</button>
+                                <button style={{float:"right", border:"1px solid #253e7e", background:"#253e7e", color:"white", borderRadius:"4px", marginLeft:"10px"}} onClick={()=>{
+                                    setTemplateName(template.name)
+                                    showMailBox()
+                                }
+                                }>Use</button>
+
+                            </div>
+
+                        </>
+                    )
+                })}
+            </div>
 
             <button className={dashStyles.compose} onClick={showMailBox} id="compose"> <AddIcon fontSize="large"/> <span className={dashStyles.composeSpan} id="composeSpan"></span></button>
             <div className="mailPopup close" id="mailPopup">
@@ -531,8 +606,6 @@ const logoUpload = (e)=>{
                 })}
 
             </div>
-
-            
       </>
   );
 };
