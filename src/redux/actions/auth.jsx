@@ -335,3 +335,35 @@ export const login = (username, password) => (dispatch) => {
       console.log(err);
     })
   }
+
+  export const oneTap = (token)=>(dispatch)=>{
+    return AuthService.oneTap()
+    .then(res=>{
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: { user: res },
+      });
+      return Promise.resolve();
+    })
+    .catch(err=>{
+      if(err.response.status===401){
+        dispatch({
+          type: SET_MESSAGE,
+          payload: "Not verified, try again!",
+        }) 
+        return Promise.reject({code:401,msg:err.response.message})
+      }
+      else if(err.response.status===403){
+        dispatch({
+          type: SET_MESSAGE,
+          payload: "Authentication error, try again later.",
+        });
+        return Promise.reject({code:403,msg:err.response.message})
+      }
+      else{
+        return Promise.reject({code:err.response.status,msg:err.response.message})
+        
+      }
+
+    })
+  }

@@ -405,10 +405,15 @@ const Dashboard = () => {
 
                 </div>
                 <input className={styles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
-                <input value={to} list="groups" autocomplete="off" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
+                <input value={to} list="groups" autoComplete="off" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
-                    {groups.map((grp)=>{
-                        return(<option value={grp.name}/>)
+                {groups.map((grp, i)=>{
+                        if(!grp.hasName){
+                            return(<option value={grp.name} key={i}/>)
+                        }
+                        else{
+                            return <></>
+                        }
                     })}
                 </datalist>
                 <input className={styles.fromto} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
@@ -419,7 +424,7 @@ const Dashboard = () => {
                 {attachFiles.map((file,index)=>{
                     return (
                         <>
-                            <span className={styles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
+                            <span className={styles.attachSpan} key={index}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
                         </>)
                 })}
 

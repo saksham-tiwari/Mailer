@@ -316,11 +316,11 @@ const ViewGroup = (props) => {
 
             <div className={styles2.listBlock}>
                 {emails.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No members entered yet.</div>:<></>}
-                {emails.map((mail)=>{
+                {emails.map((mail,i)=>{
                     return(
                         <>
                         
-                            <div className={styles2.listElem}>
+                            <div className={styles2.listElem} key={i}>
                                 {mail.name!==null?<>{mail.name},
                                 {mail.email}</>:<>{mail.email}</>}
                                 <button className={styles2.delBtn} onClick={()=>delMail(mail.id)}>&times;</button>

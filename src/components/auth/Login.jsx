@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { validEmail, validPassword } from './Regex.jsx';
 import google from "../../assets/google.svg"
 import { useDispatch, useSelector } from 'react-redux'
-import {getUserInfo, login} from "../../redux/actions/auth"
+import {getUserInfo, login, oneTap} from "../../redux/actions/auth"
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -18,7 +18,7 @@ import GoogleOneTapLogin from 'react-google-one-tap-login';
 import axios from 'axios'
 import googleOneTap from 'google-one-tap';
 import { source } from '../../services/source'
-
+import FullPageLoader from "../layout/Loaders/FullPageLoader"
 
 const Login = () => {
 
@@ -30,6 +30,7 @@ const Login = () => {
     const [alertMsg, setAlertMsg] = useState("");
     const [emailErr, setEmailErr]= useState(false);
     const [passErr, setPassErr]= useState(false);
+    const [loader, setLoader] = useState(false);
 
 
     var state = useSelector((state)=>state.message)
@@ -45,8 +46,21 @@ const Login = () => {
     };
 
     googleOneTap(options, (response) => {
+        setLoader(true);
+
         // Send response to server
-        console.log(response);
+        console.log(response.credential);
+        // axios.post("https://bulk-mailer-app.herokuapp.com/signup/google", {token:response.credential})
+        dispatch(oneTap(response.credential))
+        .then((resp)=>{
+            setLoader(false);
+            setTimeout(()=>{navigate("/")},2000)
+        })
+        .catch((err)=>{
+            setLoader(false);
+            setTimeout(()=>dismiss(),3000)
+
+        })
     });
     // useGoogleOneTapLogin({
     //     onSuccess:(res)=>console.log(res),
@@ -65,7 +79,7 @@ const Login = () => {
         return () => {
             source.cancel()
         };
-    })
+    },[])
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true);
@@ -164,6 +178,7 @@ const Login = () => {
     return (
         <div>
             <MailGIF/>
+            <FullPageLoader condition={loader}/>
             <div className={styles.rightBox}>
                 <h1 className={styles.heading}>Welcome Back</h1>
                 <h2 className={styles.subHeading}>Log In to your account!</h2>

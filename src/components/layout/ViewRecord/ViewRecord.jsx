@@ -66,9 +66,9 @@ const ViewRecord = () => {
                     <th>Time</th>
                 </tr>
 
-                {prevMails.map((mail)=>{
+                {prevMails.map((mail,i)=>{
                     return(
-                        <tr onClick={mailClick} className="hoverMail">
+                        <tr onClick={mailClick} className="hoverMail" key={i}>
                             <td>{mail.subject}</td>
                             <td>{mail.groupName}</td>
                             <td>{mail.date}</td>

@@ -124,6 +124,14 @@ th,tr{
   100% { transform: translate(-50%, -50%) rotate(-1deg); }
 }
 
+.delLogo{
+  display: inline;
+  float: center;
+  background: none;
+  /* font-size: 20px; */
+  border: none;
+}
+
 @media only screen and (max-width:565px){
   .mailPopup{
     width: 90vw;

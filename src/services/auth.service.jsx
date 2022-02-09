@@ -92,6 +92,18 @@ class AuthService {
       console.log(err);
     })
   }
+
+  async oneTap(token){
+    return await axios
+    .post(BaseUrl()+"signup/google/",{token})
+    .then((response) => {
+      if (response.data.access_token) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+
+      return response.data;
+    });
+  }
   // axios
   //   .post(BaseUrl()+"refreshToken",{
   //     headers: {
@@ -99,5 +111,5 @@ class AuthService {
   //     }
   //   });
 }
-
+ 
 export default new AuthService();

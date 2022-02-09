@@ -44,12 +44,12 @@ const GroupsSection = (props) => {
             }} >+ Create New Group</button></div>
             <div className={styles.seeall}><Link to="/view-all-groups">See All...</Link></div>
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap"}}>
-                {grpArr.map((grp)=>{
+                {grpArr.map((grp,i)=>{
                     count++;
                     if(count>6){
                         return null;
                     }
-                    return(<Capsule group={grp}/>)
+                    return(<Capsule group={grp} key={i}/>)
                 })}           
             </div>
         </>

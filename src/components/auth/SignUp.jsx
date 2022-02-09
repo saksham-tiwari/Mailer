@@ -32,7 +32,7 @@ const SignUp = () => {
         }
         window.scrollTo(1, 1);
 
-    })
+    },[])
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true);

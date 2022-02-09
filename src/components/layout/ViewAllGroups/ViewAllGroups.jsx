@@ -81,8 +81,8 @@ const ViewAllGroups = () => {
                 openModal()
             }} >+ Create New Group</button></div>
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap", marginTop:"20px"}}>
-                {grpArr.map((grp)=>{
-                    return(<Capsule group={grp}/>)
+                {grpArr.map((grp, i)=>{
+                    return(<Capsule group={grp} key={i}/>)
                 })}           
             </div>
 

@@ -40,7 +40,7 @@ const Templates = () => {
   const [attachments,setAttachments] = useState([]);
   const [attachFiles,setAttachFiles] = useState([]);
   const [pointer, setPointer] = useState("Insert Logo (optional)")
-  const [logo,setLogo] = useState(null);
+  const [logo,setLogo] = useState("");
   const auth = useSelector((state)=>state.auth)
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
@@ -328,8 +328,19 @@ const fileUpload = (e)=>{
 
 })
 }
+useEffect(()=>{
+    if(document.querySelector("#logoInput").value!==""){
+        document.querySelector("#delLogo").style.display="inline"
+        document.querySelector("#delLogo").classList.add("delLogo")
+
+    } else if(logo===""){
+        document.querySelector("#delLogo").style.display="none"
+
+    }
+},[logo])
 
 const logoUpload = (e)=>{
+  setLogo(e.target.value)
   e.preventDefault();
   setFormDisabled(true)
   setPointer(e.target.files[0].name);
@@ -450,6 +461,14 @@ const logoUpload = (e)=>{
         })
         
     }
+
+    const deleteLogo=()=>{
+        document.querySelector("#delLogo").style.display="none"
+        document.querySelector("#logoInput").value=""
+        setLogo("")
+        setPointer("Insert Logo (optional)")
+        
+    }
   return (
       <div style={formDisabled?{pointerEvents:"none"}:{}}>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
@@ -470,20 +489,13 @@ const logoUpload = (e)=>{
                         accept=".html,.ftl"
                     />
             </label>
-            {/* <table className={styles.table}>
-              <tbody>
-              {templates.map((template)=>{
-              return <p>{template.name.split("2022")[0]}</p>
-            })}
-              </tbody>
-            </table> */}
             <div className={styles2.listBlock}>
                 {templates.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No templates created yet.</div>:<></>}
-                {templates.map((template)=>{
+                {templates.map((template,i)=>{
                     return(
                         <>
                         
-                            <div className={styles2.listElem}>
+                            <div className={styles2.listElem} key={i}>
                                 {template.name.split("2022")[0]}
                                 <button style={{float:"right", border:"1px solid #253e7e", background:"white", color:"#253e7e", borderRadius:"4px", marginLeft:"10px"}} onClick={()=>{handleDel(template.id)}}>Delete</button>
                                 <button style={{float:"right", border:"1px solid #253e7e", background:"#253e7e", color:"white", borderRadius:"4px", marginLeft:"10px"}} onClick={()=>{
@@ -580,19 +592,22 @@ const logoUpload = (e)=>{
 
                 </div>
                 <input className={dashStyles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
-                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder='To' autocomplete="off" onChange={e=>setTo(e.target.value)}/>
+                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder='To' autoComplete="off" onChange={e=>setTo(e.target.value)}/>
                 <datalist id="groups">
-                    {groups.map((grp)=>{
+                    {groups.map((grp,i)=>{
                         if(grp.hasName){
-                            return(<option value={grp.name}/>)
+                            return(<option value={grp.name} key={i}/>)
+                        }
+                        else{
+                            return <></>
                         }
                         
                     })}
                 </datalist>
-                <input value={templateName} list="templates" name="templates" autocomplete="off" className={dashStyles.fromto} placeholder='Select template' onChange={e=>setTemplateName(e.target.value)}/>
+                <input value={templateName} list="templates" name="templates" autoComplete="off" className={dashStyles.fromto} placeholder='Select template' onChange={e=>setTemplateName(e.target.value)}/>
                 <datalist id="templates">
-                    {templates.map((template)=>{
-                        return(<option value={template.name}/>)
+                    {templates.map((template,i)=>{
+                        return(<option value={template.name} key={i}/>)
                     })}
                 </datalist>
                 <label className={dashStyles.fromto} style={{borderBottom:"1px #253E7E solid", paddingLeft:"2px"}}> {pointer}
@@ -602,8 +617,10 @@ const logoUpload = (e)=>{
                         id="logoInput"
                         name="logo"
                         accept='image/*'
+                        // value={logo}
                         onChange={e=>logoUpload(e)}
                     />
+                <button onClick={deleteLogo} style={{display:"none"}} id="delLogo">&times;</button>
                     </label>
                 <input className={dashStyles.fromto} style={{marginBottom:"10px"}} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
                 
@@ -611,7 +628,7 @@ const logoUpload = (e)=>{
                 {attachFiles.map((file,index)=>{
                     return (
                         <>
-                            <span className={dashStyles.attachSpan}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
+                            <span className={dashStyles.attachSpan} key={index}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
                         </>)
                 })}
 
