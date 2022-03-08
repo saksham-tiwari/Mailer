@@ -180,6 +180,10 @@ const Login = () => {
             <MailGIF/>
             <FullPageLoader condition={loader}/>
             <div className={styles.rightBox}>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
                 <h1 className={styles.heading}>Welcome Back</h1>
                 <h2 className={styles.subHeading}>Log In to your account!</h2>
                 {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
@@ -259,14 +263,14 @@ const Login = () => {
                             <td style={{width:"49%"}}><hr/></td>
                         </tr>
                     </table>
-                    <div className={styles.center}>
+                    {/* <div className={styles.center}>
                         <Link to="/" className={styles.socialAuthLink}>
                             <img src={google} alt="google" style={{marginRight:"10px"}}/> 
                             Sign In using Google
                         </Link>
                     </div>
                     <br/>
-                    <br/>
+                    <br/> */}
                     <div className={styles.dontHave}>
                         Don't have an account? 
                         <Link to="/signup" className={styles.dontHaveLink}>

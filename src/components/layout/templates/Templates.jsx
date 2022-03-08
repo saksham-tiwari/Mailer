@@ -11,7 +11,6 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { attachFile, sendMail } from '../../../redux/actions/mails';
-// import FullPageLoader from '../Loaders/FullPageLoader';
 import Loader from "react-loader-spinner";
 import FullPageLoader from '../Loaders/FullPageLoader';
 import { useNavigate } from 'react-router';

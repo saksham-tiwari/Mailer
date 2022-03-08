@@ -5,12 +5,17 @@ import { Alert, Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import google from "../../assets/google.svg"
 import { useDispatch, useSelector } from 'react-redux'
-import { register } from '../../redux/actions/auth'
+import { register,oneTap } from '../../redux/actions/auth'
 import Loader from "react-loader-spinner";
 import { clearMessage } from '../../redux/actions/message'
 // import { setEmail } from '../../redux/actions/email'
 import { SET_EMAIL, SET_PERMISSION } from '../../redux/actions/types'
 import { validEmail } from './Regex'
+import googleOneTap from 'google-one-tap';
+import FullPageLoader from "../layout/Loaders/FullPageLoader"
+
+
+
 // import { resendOtp } from '../../redux/actions/auth'
 
 const SignUp = () => {
@@ -21,6 +26,7 @@ const SignUp = () => {
     const [alertMsg, setAlertMsg] = useState("");
     const [emailErr, setEmailErr]= useState(false);
     const [nameErr, setNameErr]= useState(false);
+    const [loader, setLoader] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -118,10 +124,41 @@ const SignUp = () => {
     const dismiss = ()=>{
         dispatch(clearMessage());
     }
+    const options = {
+        client_id: '852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com', // required
+        auto_select: false, // optional
+        cancel_on_tap_outside: false, // optional
+        context: 'signin', // optional
+    };
+
+    googleOneTap(options, (response) => {
+        setLoader(true);
+
+        // Send response to server
+        console.log(response.credential);
+        // axios.post("https://bulk-mailer-app.herokuapp.com/signup/google", {token:response.credential})
+        dispatch(oneTap(response.credential))
+        .then((resp)=>{
+            setLoader(false);
+            setTimeout(()=>{navigate("/")},2000)
+        })
+        .catch((err)=>{
+            setLoader(false);
+            setTimeout(()=>dismiss(),3000)
+
+        })
+    });
     return (
         <div>
+            <FullPageLoader condition={loader}/>
+
             <MailGIF/>
+            
             <div className={styles.rightBox}>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
                 <h1 className={styles.heading}>Let's Get Started</h1>
                 <h2 className={styles.subHeading}>Create your account!</h2>
                 {state.message?<Alert variant='danger' onClose={dismiss} className={styles.dismissAlert} dismissible>{state.message}</Alert>:<></>}
@@ -173,14 +210,14 @@ const SignUp = () => {
                             <td style={{width:"49%"}}><hr/></td>
                         </tr>
                     </table>
-                    <div className={styles.center}>
+                    {/* <div className={styles.center}>
                         <Link to="/" className={styles.socialAuthLink}>
                             <img src={google} alt="google" style={{marginRight:"10px"}}/> 
                             Sign Up using Google
                         </Link>
                     </div>
                     <br/>
-                    <br/>
+                    <br/> */}
                     <div className={styles.dontHave}>
                         Already have an account? 
                         <Link to="/login" className={styles.dontHaveLink}>
