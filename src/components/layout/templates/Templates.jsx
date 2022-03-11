@@ -63,11 +63,8 @@ const Templates = () => {
         groups.forEach(grp=>{
             console.log(grp.hasName);
           if(grp.hasName===true){
-              count=1;
+              count++;
               setCheck(true)
-          }
-          else{
-              count=0
           }
         })
         if(count===0){
