@@ -267,6 +267,9 @@ const Dashboard = () => {
     
 
     const fileUpload = (e)=>{
+        if(e.target.files.length===0){
+            return 0
+        }
         setFormDisabled(true)
         e.preventDefault();
         setLoading(true)

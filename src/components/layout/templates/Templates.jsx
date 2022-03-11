@@ -332,6 +332,10 @@ const send = ()=>{
 }
 
 const fileUpload = (e)=>{
+    console.log("entered", e.target.files);
+    if(e.target.files.length===0){
+        return 0
+    }
     setFormDisabled(true)
     e.preventDefault();
     setLoading(true)
@@ -382,6 +386,9 @@ useEffect(()=>{
 },[logo])
 
 const logoUpload = (e)=>{
+    if(e.target.files.length===0){
+        return 0
+    }
   setLogo(e.target.value)
   e.preventDefault();
   setFormDisabled(true)
@@ -675,9 +682,9 @@ const logoUpload = (e)=>{
                 <span style={{marginLeft:"2.5%"}}>Attachments:</span>
                 {attachFiles.map((file,index)=>{
                     return (
-                        <>
+                        <span key={index} >
                             <span className={dashStyles.attachSpan} key={index}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
-                        </>)
+                        </span>)
                 })}
 
             </div>
