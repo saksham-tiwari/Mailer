@@ -132,7 +132,7 @@
   .dropdownContent {
     display: none;
     position: absolute;
-    top: 25px;
+    top: 35px;
     background-color: #f1f1f1;
     /* min-width: 80px; */
     border-radius: 4px;

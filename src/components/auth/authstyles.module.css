@@ -6,9 +6,9 @@
 }
 
 .rightBox{
-    width: 50%;
+    width: 48%;
     position: absolute;
-    right: 0;
+    right: 10px;
     height: 75vh;
     top: 12.5vh;
     line-height: 15px;
@@ -103,7 +103,7 @@
     left: 92%;
     top: 32%; */
     float: right;
-    margin-top: -7%;
+    margin-top: -30px;
     margin-right: 10px;
     /* top: 10%; */
 }
