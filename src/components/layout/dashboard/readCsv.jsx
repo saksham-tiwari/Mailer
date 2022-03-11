@@ -3,16 +3,22 @@ import Papa from "papaparse"
 import { Form } from 'react-bootstrap';
 import styles from "./dashboard.module.css";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { validEmail } from '../../auth/Regex';
+
 
 const ReadCsv = (props) => {
     const finalArray = (arr)=>{
         let finalArr = []
         arr.forEach((mail)=>{
             if(mail.length===2){
-                finalArr.push({name:mail[0],email:mail[1]})
+                if(mail[0].trim()!==""&&validEmail.test(mail[1])){
+                    finalArr.push({name:mail[0],email:mail[1]})
+                }
             }
             else if(mail.length===1){
-                finalArr.push(mail[0])
+                if(validEmail.test(mail[0])){
+                    finalArr.push(mail[0])
+                }
             }
         })
 

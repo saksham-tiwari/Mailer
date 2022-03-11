@@ -91,7 +91,7 @@ const WithNames = () => {
         console.log(mails);
         // var finalArr = finalArray(mails)
 
-        if(grpName===""){
+        if(grpName.trim()===""){
             setNameErr(true)
             setAlertMsg("Name Required!")
             setLoader(false)
@@ -168,7 +168,7 @@ const WithNames = () => {
     }
     const singleAdd = (e)=>{
         e.preventDefault();
-        if(name===""){
+        if(name.trim()===""){
             setMemNameErr(true)
             setAlertMsg("Member should have a name")
             setLoader(false)
