@@ -40,9 +40,11 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    position: absolute;
-    right: 15vw;
-    top: 3px;
+    /* position: absolute;
+    right: 7vw; */
+    float: right;
+    margin-right: 20px;
+    margin-top: 3px;
 }
 
 .userName{
@@ -62,7 +64,7 @@
 }
 .menuHam{
     width: 100%;
-    height: 30vh;
+    height: 40vh;
     background-color: #253e7ead;
     position: absolute;
     top: 8vh;
@@ -120,9 +122,8 @@
 }
 
 .dropdown {
-    position: absolute;
-    right: 10%;
-    top: 12px;
+    float: right;
+    margin-top: 12px;
   }
   .dropdown:hover{
       cursor: pointer;
@@ -180,7 +181,7 @@
     }
 }
 
-@media only screen and (max-width: 565px){
+@media only screen and (max-width: 800px){
     .hamburger{
         visibility: visible;
         /* transition: visibility 0s linear 0s, opacity 300ms; */

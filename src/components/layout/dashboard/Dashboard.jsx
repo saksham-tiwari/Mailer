@@ -37,11 +37,36 @@ const Dashboard = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [isMobile, setIsMobile] = useState(false)
     const [formDisabled, setFormDisabled] = useState(false)
+    const [fromAlert, setFromAlert] = useState(false);
+    const [check, setCheck] = useState(true);
+    const [toAlert, setToAlert] = useState(false);
+
     var date = new Date();
     const auth = useSelector((state)=>state.auth)
     const navigate = useNavigate();
 
 
+    useEffect(()=>{
+        if(groups.length===0){
+            setCheck(false)
+        } else{
+            let count=0
+            groups.forEach(grp=>{
+                console.log(grp.hasName);
+              if(grp.hasName===false){
+                  count=1;
+                  setCheck(true)
+              }
+              else{
+                  count=0
+              }
+            })
+            if(count===0){
+                setCheck(false)
+            }
+        }
+    
+      },[])
     useEffect(()=>{
 
         if(!auth.isLoggedIn){
@@ -163,7 +188,19 @@ const Dashboard = () => {
     }   
 
     const send = ()=>{
-        document.querySelector(".mailPopup").classList.add("close");
+
+        if(from===""){
+            setFromAlert(true)
+            setTimeout(()=>{
+                setFromAlert(false)
+            },3000)
+        } else if(to===""){
+            setToAlert(true)
+            setTimeout(()=>{
+                setToAlert(false)
+            },3000)
+        } else{
+            document.querySelector(".mailPopup").classList.add("close");
         document.querySelector(".mailPopup").style.height="0px"
         document.querySelector(".mailPopup").style.transform="translate(0vw,0vh)"
 
@@ -226,6 +263,9 @@ const Dashboard = () => {
                  },2000)
             }
         })
+        }
+
+        
     }
     
 
@@ -404,8 +444,9 @@ const Dashboard = () => {
                     <button  onClick={send}><SendIcon/></button>
 
                 </div>
-                <input className={styles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
-                <input value={to} list="groups" autoComplete="off" name="group" className={styles.fromto} placeholder='To' onChange={e=>setTo(e.target.value)}/>
+                <input className={styles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)} style={fromAlert?{borderColor:"red"}:{}} ></input>
+                <p className={styles.alertsMail}>{fromAlert?"Required!":""}</p>
+                <input value={to} list="groups" autoComplete="off" name="group" className={styles.fromto} placeholder={check?"To":"Create a group with emails only before sending mail"} onChange={e=>setTo(e.target.value)} style={toAlert?{borderColor:"red"}:{}} disabled={check?false:true}/>
                 <datalist id="groups">
                 {groups.map((grp, i)=>{
                         if(!grp.hasName){
@@ -416,9 +457,10 @@ const Dashboard = () => {
                         }
                     })}
                 </datalist>
+                <p className={styles.alertsMail}>{toAlert?"Required!":""}</p>
+
                 <input className={styles.fromto} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
                 <textarea value={body} placeholder='Body' className={styles.emailtextarea} onChange={e=>setBody(e.target.value)}>
-
                 </textarea>
                 <span style={{marginLeft:"2.5%"}}>Attachments:</span>
                 {attachFiles.map((file,index)=>{

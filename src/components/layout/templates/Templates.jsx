@@ -45,11 +45,37 @@ const Templates = () => {
   const [isMobile, setIsMobile] = useState(false)
   const [delId, setDelId] = useState(null)
   const [formDisabled, setFormDisabled] = useState(false)
+  const [fromAlert, setFromAlert] = useState(false);
+  const [toAlert, setToAlert] = useState(false);
+  const [templateAlert, setTemplateAlert] = useState(false);
+  const [check, setCheck] = useState(true);
 
 
   const navigate = useNavigate();
 
   // const groups = useSelector((state)=>state.groups)
+
+  useEffect(()=>{
+    if(groups.length===0){
+        setCheck(false)
+    } else{
+        let count=0
+        groups.forEach(grp=>{
+            console.log(grp.hasName);
+          if(grp.hasName===true){
+              count=1;
+              setCheck(true)
+          }
+          else{
+              count=0
+          }
+        })
+        if(count===0){
+            setCheck(false)
+        }
+    }
+
+  },[])
 
   const templateUpload = (e)=>{
     e.preventDefault();
@@ -207,7 +233,24 @@ const Templates = () => {
 }   
 
 const send = ()=>{
-    document.querySelector(".mailPopup").classList.add("close");
+
+    if(from===""){
+        setFromAlert(true)
+        setTimeout(()=>{
+            setFromAlert(false)
+        },3000)
+    } else if(to===""){
+        setToAlert(true)
+        setTimeout(()=>{
+            setToAlert(false)
+        },3000)
+    } else if(templateName===""){
+        setTemplateAlert(true)
+        setTimeout(() => {
+            setTemplateAlert(false)
+        }, 3000);
+    } else {
+        document.querySelector(".mailPopup").classList.add("close");
     document.querySelector(".mailPopup").style.height="0px"
 
     var mailId;
@@ -284,6 +327,9 @@ const send = ()=>{
     setTimeout(()=>{
         setLoader(false)
     },10000)
+    }
+
+    
     
 
 }
@@ -408,7 +454,7 @@ const logoUpload = (e)=>{
             case "Delete":
                 return(
                     <>
-                        <h1 style={{textAlign:"center", marginTop:"60px"}}>Are you sure you want to delete this group?</h1>
+                        <h1 style={{textAlign:"center", marginTop:"60px"}}>Are you sure you want to delete this template?</h1>
                         <div style={{width:"100%", textAlign:"center"}}>
                             <button 
                             style={{border:"1px #253E7E solid", borderRadius:"4px", padding:"4px 10px", backgroundColor:"white", color:"#253E7E", marginRight:"2px"}} 
@@ -590,10 +636,12 @@ const logoUpload = (e)=>{
                     <button  onClick={send}><SendIcon/></button>
 
                 </div>
-                <input className={dashStyles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)}></input>
-                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder='To' autoComplete="off" onChange={e=>setTo(e.target.value)}/>
+                <input className={dashStyles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)} style={fromAlert?{borderColor:"red"}:{}}></input>
+                <p className={dashboardStyles.alertsMail}>{fromAlert?"Required!":""}</p>
+                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder={check?"To":"Create a group with names before sending mail with templates"} autoComplete="off" onChange={e=>setTo(e.target.value)} style={toAlert?{borderColor:"red"}:{}} disabled={check?false:true}/>
                 <datalist id="groups">
-                    {groups.map((grp,i)=>{
+                    {
+                        groups.map((grp,i)=>{
                         if(grp.hasName){
                             return(<option value={grp.name} key={i}/>)
                         }
@@ -603,12 +651,16 @@ const logoUpload = (e)=>{
                         
                     })}
                 </datalist>
-                <input value={templateName} list="templates" name="templates" autoComplete="off" className={dashStyles.fromto} placeholder='Select template' onChange={e=>setTemplateName(e.target.value)}/>
+                <p className={dashboardStyles.alertsMail}>{toAlert?"Required!":""}</p>
+
+                <input value={templateName} list="templates" name="templates" autoComplete="off" className={dashStyles.fromto} placeholder={templates.length>0?'Select template':"Upload a template before sending mail with template."} onChange={e=>setTemplateName(e.target.value)} disabled={templates.length>0?false:true} style={templateAlert?{borderColor:"red"}:{}}/>
                 <datalist id="templates">
                     {templates.map((template,i)=>{
                         return(<option value={template.name} key={i}/>)
                     })}
                 </datalist>
+                <p className={dashboardStyles.alertsMail}>{templateAlert?"Required!":""}</p>
+
                 <label className={dashStyles.fromto} style={{borderBottom:"1px #253E7E solid", paddingLeft:"2px"}}> {pointer}
                     <input
                         type="file" 

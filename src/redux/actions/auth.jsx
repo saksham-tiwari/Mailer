@@ -337,12 +337,19 @@ export const login = (username, password) => (dispatch) => {
   }
 
   export const oneTap = (token)=>(dispatch)=>{
-    return AuthService.oneTap()
+    return AuthService.oneTap(token)
     .then(res=>{
       dispatch({
         type: REGISTER_SUCCESS,
         payload: { user: res },
       });
+      AuthService.getUserInfo()
+      .then(()=>{
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: { user: res },
+        });
+      })
       return Promise.resolve();
     })
     .catch(err=>{

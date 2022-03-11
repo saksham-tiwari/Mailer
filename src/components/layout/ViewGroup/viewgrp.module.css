@@ -71,3 +71,15 @@
     background-color: white;
     color: #CD0000;
 }
+
+@media only screen and (max-width:600px){
+    .btnAdd{
+        margin-right: 0;
+    }
+    .delete{
+        position: relative;
+        left: 0;
+        top: -17.5px;
+        transform: translate(0);
+    }
+}
