@@ -7,17 +7,39 @@ import { validEmail } from '../../auth/Regex';
 
 
 const ReadCsv = (props) => {
-    const finalArray = (arr)=>{
+    const finalArray = (arr,mails)=>{
         let finalArr = []
         arr.forEach((mail)=>{
+            let counter = -1;
             if(mail.length===2){
                 if(mail[0].trim()!==""&&validEmail.test(mail[1])){
-                    finalArr.push({name:mail[0],email:mail[1]})
+                    console.log(mails.some(obj => obj.email === 'sakshamt234@gmail.com'))
+                    for(let i=0;i<finalArr.length;i++){
+                        if(mail[1]===finalArr[i].email||mails.some(obj => obj.email === mail[1])){
+                            break;
+                        } else {
+                            counter=i;
+                        }
+                    }
+                    if(counter===finalArr.length-1&&!mails.some(obj => obj.email === mail[1])){
+                        finalArr.push({name:mail[0],email:mail[1]})
+                    }
                 }
             }
             else if(mail.length===1){
+                let counter = -1;
                 if(validEmail.test(mail[0])){
-                    finalArr.push(mail[0])
+                    // finalArr.push(mail[0])
+                    for(let i=0;i<finalArr.length;i++){
+                        if(mail[0]===finalArr[i]||mails.includes(mail[0])){
+                            break;
+                        } else {
+                            counter=i;
+                        }
+                    }
+                    if(counter===finalArr.length-1&&!mails.includes(mail[0])){
+                        finalArr.push(mail[0])
+                    }
                 }
             }
         })
@@ -43,7 +65,7 @@ const ReadCsv = (props) => {
                     Papa.parse(files[0], {
                     complete: function(results) {
                         console.log("Finished:", results.data);
-                        props.setMails(prev=>[...prev, ...finalArray(results.data)]);
+                        props.setMails(prev=>[...prev, ...finalArray(results.data,props.mails)]);
                         setPointer(e.target.files[0].name);
                         
                         // let finalArr = finalArray(results.data);

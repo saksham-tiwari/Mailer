@@ -169,7 +169,18 @@ const WithEmails = () => {
             },2000)
         }
         else{
-            setMails(prev=>[...prev, email])
+            if(!mails.includes(email)){
+                setMails(prev=>[...prev, email])
+            }
+            else if(mails.includes(email)){
+                setEmailErr(true)
+                setAlertMsg("All emails shall be unique")
+                setLoader(false)
+                setTimeout(()=>{
+                    setEmailErr(false)
+                    setAlertMsg("")
+                },2000)
+            }
 
         }
         setEmail("")
@@ -214,7 +225,7 @@ const WithEmails = () => {
                         </tr>
                 </tbody>
             </table>
-            <ReadCsv setMails={setMails} active={true}/>
+            <ReadCsv setMails={setMails} mails={mails} active={true}/>
             <button type="submit" className={styles.submitBtn}>Submit</button>
         </form>
 

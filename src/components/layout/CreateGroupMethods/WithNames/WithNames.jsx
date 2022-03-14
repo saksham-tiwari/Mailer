@@ -185,10 +185,22 @@ const WithNames = () => {
                 setAlertMsg("")
             },2000)
         }else{
-            setMails(prev=>[...prev, {name,email}])
-            setEmail("")
-            setName("")
+            if(mails.some(obj => obj.email === email.trim())){
+                setEmailErr(true)
+                setAlertMsg("All emails shall be unique")
+                setLoader(false)
+                setTimeout(()=>{
+                    setEmailErr(false)
+                    setAlertMsg("")
+                },2000)
+            }
+            else{
+                setMails(prev=>[...prev, {name,email}])
+            }
         }
+        
+        setEmail("")
+        setName("")
     }
     const delMail = (index)=>{
         let tempMails = mails;
@@ -239,7 +251,7 @@ const WithNames = () => {
                         </tr>
                 </tbody>
             </table>
-            <ReadCsv setMails={setMails} active={true}/>
+            <ReadCsv setMails={setMails} mails={mails} active={true}/>
             <button type="submit" className={styles.submitBtn}>Submit</button>
         </form>
 
