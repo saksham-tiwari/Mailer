@@ -43,8 +43,21 @@
 }
 .viewBtn{
     position: relative;
-    left: 75%;
-    bottom: 60%;
+    width: 80px;
+    left: 49%;
+    bottom: 40%;
+    background-color: #253E7E;
+    border: 1px solid #253E7E;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+.useBtn{
+    position: relative;
+    width: 80px;
+    left: 70%;
+    bottom: 80%;
     background-color: #253E7E;
     border: 1px solid #253E7E;
     border: none;

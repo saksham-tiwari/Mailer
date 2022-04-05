@@ -49,7 +49,7 @@ const GroupsSection = (props) => {
                     if(count>6){
                         return null;
                     }
-                    return(<Capsule group={grp} key={i}/>)
+                    return(<Capsule group={grp} key={i} {...props}/>)
                 })}           
             </div>
         </>

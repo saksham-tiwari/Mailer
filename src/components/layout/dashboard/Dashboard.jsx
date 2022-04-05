@@ -165,6 +165,7 @@ const Dashboard = () => {
     // }
 
     const showMailBox = ()=>{
+        console.log("called");
         if(!isMobile){
             document.querySelector(".mailPopup").classList.remove("close");
             document.querySelector(".mailPopup").classList.remove("fullScreen");
@@ -358,7 +359,7 @@ const Dashboard = () => {
     return(
         <div style={formDisabled?{pointerEvents:"none"}:{}}>
             {/* <Navbar/> */}
-            <GroupsSection setModalCond = {setModalCond}/>
+            <GroupsSection setModalCond = {setModalCond} showMailBox={showMailBox} setTo={setTo}/>
             <FullPageLoader condition={loader}/>
             <Modal>
                 {switchModal()}

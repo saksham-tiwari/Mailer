@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import userImg from "../../../assets/userImg.png"
@@ -11,7 +12,9 @@ import { logout } from '../../../redux/actions/auth';
 
 const Navbar = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const name = JSON.parse(localStorage.getItem("info"))
+    const oneTap = localStorage.getItem("one-tap")
     useEffect(()=>{
         document.getElementById("collapse-menu").style.opacity="0";
     document.getElementById("collapse-menu").style.visibility="hidden";
@@ -55,6 +58,7 @@ const Navbar = () => {
                     </div>
                     <div className={styles.dropdownContent}>
                         <button onClick={()=>{dispatch(logout())}} className={styles.logoutbtn}>Logout</button>
+                        {!oneTap?<button onClick={()=>{navigate("/change-password")}} className={styles.logoutbtn}>Change Password</button>:<></>}
                     </div>
                 </div>
                 {/* Ham Menu */}
@@ -78,6 +82,10 @@ const Navbar = () => {
                                 toggle()
                                 dispatch(logout())
                                 }}>Logout</div>
+                            {!oneTap?<div className={styles.logoutDiv} onClick={()=>{
+                                toggle()
+                                navigate("change-password")
+                                }}>Change Password</div>:<></>}
                             </li>
                         </ul>
                     </div>
