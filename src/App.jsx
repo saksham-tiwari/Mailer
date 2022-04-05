@@ -17,6 +17,7 @@ import NavbarLogout from "./components/layout/navbar/NavbarLogout";
 import NotFound from "./components/layout/NotFound/NotFound";
 import WithEmails from "./components/layout/CreateGroupMethods/WithEmails/WithEmails";
 import WithNames from "./components/layout/CreateGroupMethods/WithNames/WithNames";
+import ChangePassword from "./components/auth/ChangePassword";
 
 // import {Switch} from "react-router"
 
@@ -32,6 +33,7 @@ function App() {
       <Route exact path="/otp" element={<Otp/>}/>
       <Route exact path="/verify-mail" element={<VerifyMail/>}/>
       <Route exact path="/create-password" element={<CreatePassword/>}/>
+      <Route exact path="/change-password" element={<ChangePassword/>}/>
       <Route exact path="/forgot-pass" element={<Forgot/>}/>
       <Route exact path="/dashboard" element={<Dashboard/>}/>
       <Route exact path="/view-group/:name/:id" element={<ViewGroup/>}/>

@@ -4,13 +4,19 @@ import { useNavigate } from 'react-router'
 // import { logout } from '../../../redux/actions/auth'
 import styles from "./home.module.css"
 import { Button } from "react-bootstrap"
+import googleOneTap from 'google-one-tap';
 import gif from "../../../assets/homepage.gif"
+import FullPageLoader from "../Loaders/FullPageLoader"
+import { oneTap } from '../../../redux/actions/auth'
+import { clearMessage } from '../../../redux/actions/message'
 
 const Home = () => {
     const auth = useSelector((state)=>state.auth)
     // const [main, setMain]=useState("Logged Out")
     // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loader, setLoader] = useState(false);
 
     useEffect(()=>{
         if(auth.isLoggedIn){
@@ -28,8 +34,47 @@ const Home = () => {
     const signUpBtn = ()=>{
         navigate("/signup")
     }
+    const onetapuser = localStorage.getItem("one-tap")
+    const [isOneTap, setIsOneTap] = useState(localStorage.getItem("one-tap"))
+    useEffect(()=>{
+        if(!isOneTap){
+            const options = {
+                client_id: '852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com', // required
+                auto_select: false, // optional
+                cancel_on_tap_outside: false, // optional
+                context: 'signin', // optional
+            };
+        
+            googleOneTap(options, (response) => {
+                setLoader(true);
+        
+                // Send response to server
+                console.log(response.credential);
+                // axios.post("https://bulk-mailer-app.herokuapp.com/signup/google", {token:response.credential})
+                dispatch(oneTap(response.credential))
+                .then((resp)=>{
+                    setLoader(false);
+                    setIsOneTap(true);
+                    setTimeout(()=>{navigate("/")},2000)
+                })
+                .catch((err)=>{
+                    setLoader(false);
+                    setTimeout(()=>dismiss(),3000)
+        
+                })
+            });
+        }
+        
+    },[isOneTap])
+    const dismiss = ()=>{
+        dispatch(clearMessage());
+    }
+
+    
     return (
         <div>
+            <FullPageLoader condition={loader}/>
+
             {/* {main} */}
             {/* {auth.isLoggedIn?<button onClick={logOut}>Logout</button>:<button onClick={()=>navigate("/login")}>Login</button>} */}
             <div className={styles.rightBlock}>

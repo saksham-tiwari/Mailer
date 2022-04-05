@@ -98,6 +98,16 @@ const ViewGroup = (props) => {
             
         })
     }
+    const checkDupli = ()=>{
+        let c=false;
+        for(let i=0;i<emails.length;i++){
+            if(emails[i].email===email){
+                c=true;
+                return c;
+            }
+        }
+        return c;
+    }
     const addMail = ()=>{
         setCondition(true);
         if(email===""){
@@ -117,7 +127,15 @@ const ViewGroup = (props) => {
                 setAlertMsg('')
             },2000)
             setCondition(false)
-        } else{
+        } else if(checkDupli()){
+            setAlertMsg("Enter unique email that's not already in group!");
+            setEmailErr(true);
+            setTimeout(()=>{
+                setEmailErr(false)
+                setAlertMsg('')
+            },2000)
+            setCondition(false)
+        }else{
         closeModal();
 
         dispatch(addEmail(id,[email]))

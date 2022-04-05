@@ -222,6 +222,7 @@ export const login = (username, password) => (dispatch) => {
   }
 
   export const logout = () => (dispatch) => {
+
     AuthService.logout();
   
     dispatch({
@@ -343,6 +344,7 @@ export const login = (username, password) => (dispatch) => {
         type: REGISTER_SUCCESS,
         payload: { user: res },
       });
+      localStorage.setItem("one-tap",true)
       AuthService.getUserInfo()
       .then(()=>{
         dispatch({
@@ -372,5 +374,15 @@ export const login = (username, password) => (dispatch) => {
         
       }
 
+    })
+  }
+
+  export const changePassword = (oldPassword,newPassword)=>dispatch=>{
+    return AuthService.changePassword(oldPassword,newPassword)
+    .then(()=>{
+
+    })
+    .catch(()=>{
+      
     })
   }

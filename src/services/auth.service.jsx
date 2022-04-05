@@ -21,6 +21,7 @@ class AuthService {
   logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("info")
+    localStorage.removeItem("one-tap");
   }
 
   async register(name, username) {
@@ -103,6 +104,11 @@ class AuthService {
 
       return response.data;
     });
+  }
+
+  async changePassword(oldPassword, newPassword){
+    return await axios
+    .post(BaseUrl()+"signup/changePassword",{oldPassword,newPassword},{headers:authHeader()})
   }
   // axios
   //   .post(BaseUrl()+"refreshToken",{
