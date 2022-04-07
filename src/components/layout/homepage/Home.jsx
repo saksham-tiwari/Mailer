@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router'
 // import { logout } from '../../../redux/actions/auth'
 import styles from "./home.module.css"
 import { Button } from "react-bootstrap"
-// import googleOneTap from 'google-one-tap';
 import gif from "../../../assets/homepage.gif"
 import FullPageLoader from "../Loaders/FullPageLoader"
 import { oneTap } from '../../../redux/actions/auth'

@@ -11,7 +11,6 @@ import { clearMessage } from '../../redux/actions/message'
 // import { setEmail } from '../../redux/actions/email'
 import { SET_EMAIL, SET_PERMISSION } from '../../redux/actions/types'
 import { validEmail } from './Regex'
-import googleOneTap from 'google-one-tap';
 import FullPageLoader from "../layout/Loaders/FullPageLoader"
 
 

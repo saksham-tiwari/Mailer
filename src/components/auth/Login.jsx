@@ -12,11 +12,7 @@ import { clearMessage } from '../../redux/actions/message'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { SET_MESSAGE, SET_PERMISSION } from '../../redux/actions/types'
-// import message from '../../redux/reducers/message'
-// import { useGoogleOneTapLogin } from "react-google-one-tap-login"
-import GoogleOneTapLogin from 'react-google-one-tap-login';
 import axios from 'axios'
-import googleOneTap from 'google-one-tap';
 import { source } from '../../services/source'
 import FullPageLoader from "../layout/Loaders/FullPageLoader"
 
