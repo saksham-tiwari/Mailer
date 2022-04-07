@@ -35,6 +35,11 @@ const SignUp = () => {
     useEffect(()=>{
         if(auth.isLoggedIn){
             navigate("/")
+        }else{
+            const el = document.createElement('script')
+        el.setAttribute('src', 'https://accounts.google.com/gsi/client')
+        el.onload = () => initializeGSI();
+        document.querySelector('body').appendChild(el)
         }
         window.scrollTo(1, 1);
 
@@ -125,39 +130,41 @@ const SignUp = () => {
         dispatch(clearMessage());
     }
 
-    const onetapuser = localStorage.getItem("one-tap")
-    const [isOneTap, setIsOneTap] = useState(localStorage.getItem("one-tap"))
-    useEffect(()=>{
-        setTimeout(()=>{setIsOneTap(true)},2000)
-        if(!isOneTap){
-            const options = {
-                client_id: '852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com', // required
-                auto_select: false, // optional
-                cancel_on_tap_outside: false, // optional
-                context: 'signin', // optional
-            };
-        
-            googleOneTap(options, (response) => {
-                setLoader(true);
-        
-                // Send response to server
-                console.log(response.credential);
-                // axios.post("https://bulk-mailer-app.herokuapp.com/signup/google", {token:response.credential})
-                dispatch(oneTap(response.credential))
-                .then((resp)=>{
-                    setLoader(false);
-                    setIsOneTap(true);
-                    setTimeout(()=>{navigate("/")},2000)
-                })
-                .catch((err)=>{
-                    setLoader(false);
-                    setTimeout(()=>dismiss(),3000)
-        
-                })
-            });
-        }
-        
-    },[isOneTap])
+    const onOneTapSignedIn = response => {
+        dispatch(oneTap(response.credential))
+        .then((resp)=>{
+            setLoader(false);
+            document.getElementById("credential_picker_container").remove();
+            // setIsOneTap(true);
+            setTimeout(()=>{navigate("/")},2000)
+        })
+        .catch((err)=>{
+            setLoader(false);
+            setTimeout(()=>dismiss(),3000)
+
+        })
+      }
+    
+
+    const initializeGSI = () => {
+        window.google.accounts.id.initialize({
+          client_id: '852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com',
+          cancel_on_tap_outside: false,
+          callback: onOneTapSignedIn,
+          context:"signup"
+        });
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed()) {
+            console.log(notification.getNotDisplayedReason())
+          } else if (notification.isSkippedMoment()) {
+            console.log(notification.getSkippedReason())
+          } else if(notification.isDismissedMoment()) {
+            console.log(notification.getDismissedReason())
+          }
+        });
+      }
+
+
     return (
         <div>
             <FullPageLoader condition={loader}/>
