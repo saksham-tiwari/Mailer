@@ -7,6 +7,7 @@ import { source } from '../../../services/source';
 import styles from "../dashboard/dashboard.module.css"
 import Capsule from '../dashboard/GroupsSection/Capsule';
 import FullPageLoader from '../Loaders/FullPageLoader';
+import noGroup from "../../../assets/noData.gif"
 import Modal, { openModal } from '../Modal/Modal';
 
 
@@ -80,6 +81,10 @@ const ViewAllGroups = () => {
                 setModalCond("Startup")
                 openModal()
             }} >+ Create New Group</button></div>
+            {grpArr.length===0?<div className={styles.noGroup}>
+                    <h3>No groups created.</h3>
+                    <img src={noGroup} alt="gif"/>
+                </div>:<></>}
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap", marginTop:"20px"}}>
                 {grpArr.map((grp, i)=>{
                     return(<Capsule group={grp} key={i}/>)

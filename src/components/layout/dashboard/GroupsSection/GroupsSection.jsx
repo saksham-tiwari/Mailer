@@ -6,6 +6,7 @@ import Capsule from './Capsule'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Modal, { openModal } from '../../Modal/Modal'
+import noGroup from "../../../../assets/noData.gif"
 const GroupsSection = (props) => {
     const groups = useSelector((state)=>state.groups)
     const grpArr = groups.groups
@@ -43,7 +44,12 @@ const GroupsSection = (props) => {
                 openModal()
             }} >+ Create New Group</button></div>
             <div className={styles.seeall}><Link to="/view-all-groups">See All...</Link></div>
+            {grpArr.length===0?<div className={styles2.noGroup}>
+                    <h3>No groups created.</h3>
+                    <img src={noGroup} alt="gif"/>
+                </div>:<></>}
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly", flexWrap:"wrap"}}>
+                
                 {grpArr.map((grp,i)=>{
                     count++;
                     if(count>6){

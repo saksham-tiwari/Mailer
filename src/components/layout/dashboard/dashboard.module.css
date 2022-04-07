@@ -189,3 +189,14 @@ input[type="file"] {
     margin-bottom: 3px;
 
 }
+
+.noGroup{
+    text-align: center;
+}
+.noGroup h3{
+    font-size: 24px;
+}
+
+.noGroup img{
+    width: 25%;
+}

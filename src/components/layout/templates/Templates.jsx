@@ -22,6 +22,8 @@ import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 import failed from "../../../assets/failed.png"
 import styles2 from "../CreateGroup/creategrp.module.css"
+import noGroup from "../../../assets/noData.gif"
+
 
 
 const Templates = () => {
@@ -449,9 +451,9 @@ const logoUpload = (e)=>{
             case "Failed":
                 return(
                     <>
-                        <img src={failed} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+                        <img src={failed} alt="success" style={{width:"20%",marginLeft:"40%", marginTop:"30px"}}/>
 
-                        <h2 style={{textAlign:"center"}}>Mail cannot be sent! Please check everything and try sending again.</h2>
+                        <h3 style={{textAlign:"center",padding:"10px"}}>Mail cannot be sent! Please check everything and try sending again.</h3>
 
                     </>
                 )
@@ -539,7 +541,10 @@ const logoUpload = (e)=>{
                     />
             </label>
             <div className={styles2.listBlock}>
-                {templates.length===0?<div style={{textAlign:"center", paddingTop:"20px"}}>No templates created yet.</div>:<></>}
+                {templates.length===0?<div className={dashStyles.noGroup}>
+                    <h3 style={{paddingTop:"10px"}}>No templates found...</h3>
+                    <img src={noGroup} alt="gif"/>
+                </div>:<></>}
                 {templates.map((template,i)=>{
                     return(
                         <>

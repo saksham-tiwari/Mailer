@@ -128,6 +128,7 @@ const SignUp = () => {
     const onetapuser = localStorage.getItem("one-tap")
     const [isOneTap, setIsOneTap] = useState(localStorage.getItem("one-tap"))
     useEffect(()=>{
+        setTimeout(()=>{setIsOneTap(true)},2000)
         if(!isOneTap){
             const options = {
                 client_id: '852195797172-d0qq3vi9erb2ep1ill5eilc65mdvmah9.apps.googleusercontent.com', // required

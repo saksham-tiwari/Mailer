@@ -346,9 +346,9 @@ const Dashboard = () => {
             case "Failed":
                 return(
                     <>
-                        <img src={failed} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
+                        <img src={failed} alt="success" style={{width:"20%",marginLeft:"40%", marginTop:"30px"}}/>
 
-                        <h2 style={{textAlign:"center"}}>Mail cannot be sent! Please check everything and try sending again.</h2>
+                        <h3 style={{textAlign:"center",padding:"10px"}}>Mail cannot be sent! Please check everything and try sending again.</h3>
 
                     </>
                 )

@@ -5,6 +5,7 @@ import { logout, refresh } from '../../../redux/actions/auth';
 import { previousMails } from '../../../redux/actions/mails';
 import { source } from '../../../services/source';
 import dashboardStyles from "../dashboard/dashboard.module.css"
+import noGroup from "../../../assets/noData.gif"
 import FullPageLoader from '../Loaders/FullPageLoader';
 
 const ViewRecord = () => {
@@ -78,7 +79,10 @@ const ViewRecord = () => {
                 })}
                 </tbody>
             </table>
-            {prevMails.length===0?<p style={{textAlign:"center",width:"100%"}}>No mails sent yet.</p>:<></>}
+            {prevMails.length===0?<div className={dashboardStyles.noGroup}>
+                    <h3 style={{paddingTop:"10px"}}>No mails sent</h3>
+                    <img src={noGroup} alt="gif"/>
+                </div>:<></>}
 
         </>
   );
