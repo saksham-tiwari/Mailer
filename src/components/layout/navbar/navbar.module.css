@@ -67,7 +67,7 @@
     height: 43vh;
     background-color: #253e7ead;
     position: absolute;
-    top: 8vh;
+    top: 50px;
     opacity: 0;
     padding: 5%;
     transition: opacity 0.3s ease-in-out;
@@ -79,7 +79,7 @@
     height: 15vh;
     background-color: #253e7ead;
     position: absolute;
-    top: 8vh;
+    top: 50px;
     opacity: 0;
     padding: 5%;
     visibility: hidden;
