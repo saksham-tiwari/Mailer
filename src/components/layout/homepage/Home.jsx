@@ -12,18 +12,16 @@ import { clearMessage } from '../../../redux/actions/message'
 
 const Home = () => {
     const auth = useSelector((state)=>state.auth)
-    // const [main, setMain]=useState("Logged Out")
-    // const dispatch = useDispatch();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
     const onOneTapSignedIn = response => {
+        setLoader(true)
         dispatch(oneTap(response.credential))
         .then((resp)=>{
             setLoader(false);
+            navigate("/")
             document.getElementById("credential_picker_container").remove();
-            // setIsOneTap(true);
-            setTimeout(()=>{navigate("/")},2000)
         })
         .catch((err)=>{
             setLoader(false);
