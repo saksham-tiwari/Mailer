@@ -23,7 +23,6 @@ import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 import failed from "../../../assets/failed.png"
 import styles2 from "../CreateGroup/creategrp.module.css"
 import noGroup from "../../../assets/noData.gif"
-import Pdf from '../PDF/Pdf';
 
 
 
@@ -808,7 +807,6 @@ const pdfUpload = (e)=>{
                 
 
             </div>
-            <Pdf/>
       </div>
   );
 };
