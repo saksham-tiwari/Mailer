@@ -138,9 +138,8 @@ const Login = () => {
             dispatch(login(email, password))
             .then(()=>{
                 // navigate("/");
-            document.getElementById("credential_picker_container").remove();
-
-                setTimeout(()=>{navigate("/")},2000)
+                document.getElementById("credential_picker_container").remove();
+                setTimeout(()=>navigate("/"),1000)
                 // else{
                     // dispatch(getUserInfo())
                     // .then(()=>{

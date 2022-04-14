@@ -110,7 +110,7 @@ const CreatePassword = () => {
                 document.getElementById("credential_picker_container").remove();
 
                 // dispatch(getUserInfo())
-                setTimeout(()=>{navigate("/")},2000)
+                setTimeout(()=>navigate("/"),1000)
 
             })
             .catch(()=>{

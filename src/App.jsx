@@ -11,13 +11,13 @@ import Navbar from "./components/layout/navbar/Navbar";
 import ViewGroup from "./components/layout/ViewGroup/ViewGroup";
 import ViewAllGroups from "./components/layout/ViewAllGroups/ViewAllGroups";
 import ViewRecord from "./components/layout/ViewRecord/ViewRecord";
-import Templates from "./components/layout/Templates/Templates";
 import { useSelector } from "react-redux";
 import NavbarLogout from "./components/layout/navbar/NavbarLogout";
 import NotFound from "./components/layout/NotFound/NotFound";
 import WithEmails from "./components/layout/CreateGroupMethods/WithEmails/WithEmails";
 import WithNames from "./components/layout/CreateGroupMethods/WithNames/WithNames";
 import ChangePassword from "./components/auth/ChangePassword";
+import Templates from "./components/layout/Templates/Templates";
 
 // import {Switch} from "react-router"
 
