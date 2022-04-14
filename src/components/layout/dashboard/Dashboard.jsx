@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router';
 import { source } from '../../../services/source';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+import ViewRecord from "../ViewRecord/ViewRecord"
 // import {  } from 'bootstrap';
 
 
@@ -479,6 +480,9 @@ const Dashboard = () => {
             <hr />
             <div id="dvCSV">
             </div> */}
+            <br/>
+            <br/>
+            <ViewRecord/>
         </div>
     )
 }
