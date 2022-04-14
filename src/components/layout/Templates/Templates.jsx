@@ -23,6 +23,7 @@ import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 import failed from "../../../assets/failed.png"
 import styles2 from "../CreateGroup/creategrp.module.css"
 import noGroup from "../../../assets/noData.gif"
+import { SET_TEMPLATE } from '../../../redux/actions/types';
 
 
 
@@ -57,7 +58,7 @@ const Templates = () => {
   const [check, setCheck] = useState(true);
   const [sentence, setSentence] = useState([]);
 
-
+  const isTemplate = useSelector((state)=>state.groups).isTemplate;
   const navigate = useNavigate();
 
   // const groups = useSelector((state)=>state.groups)
@@ -80,6 +81,18 @@ const Templates = () => {
     }
 
   },[groups])
+  useEffect(()=>{
+    if(isTemplate.isTemplate===true){
+        setTo(isTemplate.name)
+        showMailBox()
+        getGrpId(isTemplate.name)
+
+    }
+    dispatch({
+        type:SET_TEMPLATE,
+        payload:{isTemplate:false,name:null}
+    })
+  },[])
 
   const templateUpload = (e)=>{
     e.preventDefault();
@@ -600,7 +613,7 @@ const pdfUpload = (e)=>{
     const deleteLogo=()=>{
         document.querySelector("#delLogo").style.display="none"
         document.querySelector("#logoInput").value=""
-        setLogo("")
+        setLogo(null)
         setPointer("Insert Logo (optional)")
         
     }

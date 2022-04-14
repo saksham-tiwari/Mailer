@@ -23,6 +23,7 @@ export const GET_EMAILS = "GET_EMAILS";
 export const DELETE_EMAIL = "DELETE_EMAIL";
 export const ADD_EMAIL = "ADD_EMAIL";
 export const DELETE_GROUP = "DELETE_GROUP";
+export const SET_TEMPLATE = "SET_TEMPLATE";
 
 export const MAIL_SENT = "MAIL_SENT";
 export const ADD_ATTACHMENT = "ADD_ATTACHMENT";

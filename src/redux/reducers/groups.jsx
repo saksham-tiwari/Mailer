@@ -1,6 +1,6 @@
-import {ADD_EMAIL, CREATE_GROUP_SUCCESS, DELETE_EMAIL, DELETE_GROUP, GET_EMAILS, GET_GROUPS} from "../actions/types";
+import {ADD_EMAIL, CREATE_GROUP_SUCCESS, DELETE_EMAIL, DELETE_GROUP, GET_EMAILS, GET_GROUPS, SET_TEMPLATE} from "../actions/types";
 
-const initialState = {groups:[],emails:{emails:[{id:1,email:"sakshamt234@gmail.com"}],hasName:false,count:null}};
+const initialState = {groups:[],emails:{emails:[{id:1,email:"sakshamt234@gmail.com"}],hasName:false,count:null},isTemplate:{isTemplate:false,name:null}};
 
 const groupsReducer = (state = initialState, action)=>{
     const {type, payload} = action;
@@ -40,6 +40,12 @@ const groupsReducer = (state = initialState, action)=>{
                 ...state,
                 groups:state.groups.filter(group=>group.id!==payload)
             }
+        case SET_TEMPLATE:{
+            return{
+                ...state,
+                isTemplate:payload
+            }
+        }
          default:
              return state;
      }
