@@ -23,10 +23,10 @@ class TemplatesService{
             headers: authHeader()
         });
     }
-    async sendMailWithTemplate(from,subject,attachment,logo,templateId,groupId){
+    async sendMailWithTemplate(from,subject,attachment,logo,templateId,groupId,pdfName){
         return await axios
         .post(BaseUrl()+"mail/sendWithName",{
-            from,subject,attachment,logo,templateId,groupId
+            from,subject,attachment,logo,templateId,groupId,pdfName
         },
         {
             headers: authHeader()
@@ -38,6 +38,19 @@ class TemplatesService{
         .delete(BaseUrl()+"mail/deleteTemplate/"+id,{
             headers: authHeader()
         })
+    }
+    async attachPdf(fd){
+        const user = JSON.parse(localStorage.getItem("user"));
+    
+            return await axios
+            .post(BaseUrl()+"mail/uploadPdf/",fd,
+            {
+                
+                headers: { 
+                    "Content-Type": "multipart/form-data",
+                    Authorization: "Bearer " + user.access_token
+                 }
+            })
     }
 }
 

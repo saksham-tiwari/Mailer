@@ -12,7 +12,15 @@
 }
 .logo{
     margin-left: 15px;
-    margin-top: 3px;
+    margin-top: 5px;
+    margin-right: -10px;
+    width: 23%;
+}
+.logoMail{
+    margin-left: 15px;
+    margin-top: 12px;
+    margin-right: -10px;
+    width: 17%;
 }
 
 .fixingDiv{

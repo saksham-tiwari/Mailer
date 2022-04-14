@@ -11,7 +11,7 @@ import Navbar from "./components/layout/navbar/Navbar";
 import ViewGroup from "./components/layout/ViewGroup/ViewGroup";
 import ViewAllGroups from "./components/layout/ViewAllGroups/ViewAllGroups";
 import ViewRecord from "./components/layout/ViewRecord/ViewRecord";
-import Templates from "./components/layout/templates/Templates";
+import Templates from "./components/layout/Templates/Templates";
 import { useSelector } from "react-redux";
 import NavbarLogout from "./components/layout/navbar/NavbarLogout";
 import NotFound from "./components/layout/NotFound/NotFound";

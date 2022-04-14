@@ -14,7 +14,7 @@ const FullPageLoader = (props) => {
     
   return (
         <>
-            {props.condition?<MyComponent loaderType="line-spin-fade-rotating" fadeIn={true} wrapperBackgroundColor="#253E7E50" sentences={[]} style={{zIndex:"10000"}}/>:<></>}
+            {props.condition?<MyComponent loaderType="line-spin-fade-rotating" fadeIn={true} wrapperBackgroundColor="#253E7E50" sentences={!props.sentence?[]:props.sentence} style={{zIndex:"10000"}}/>:<></>}
         </>
     );
 };

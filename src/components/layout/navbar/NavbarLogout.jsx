@@ -3,6 +3,8 @@ import { Link, NavLink } from 'react-router-dom'
 import styles from "./navbar.module.css"
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from "../../../assets/logo.png"
+import logoMail from "../../../assets/logomail.png"
+
 // import { Collapse } from "reactstrap";
 
 
@@ -29,7 +31,7 @@ const NavbarLogout = () => {
     return (
         <>
             <div className={styles.navbarMain}>
-                <Link to="/" className={styles.navLogo}><img src={logo} alt="logo" className={styles.logo}/></Link>
+            <Link to="/" className={styles.navLogo}><img src={logoMail} alt="logo-mail" className={styles.logoMail}/><img src={logo} alt="logo" className={styles.logo}/></Link>
                 <div className={styles.menu}>
                     <ul>
                         <li>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dashboardStyles from "../dashboard/dashboard.module.css"
-import { uploadTemplate, getTemplates, sendMailWithTemplate, deleteTemplate } from '../../../redux/actions/templates';
+import { uploadTemplate, getTemplates, sendMailWithTemplate, deleteTemplate, attachPdf } from '../../../redux/actions/templates';
 import { logout, refresh } from '../../../redux/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from "./templates.module.css"
@@ -23,6 +23,7 @@ import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 import failed from "../../../assets/failed.png"
 import styles2 from "../CreateGroup/creategrp.module.css"
 import noGroup from "../../../assets/noData.gif"
+import Pdf from '../PDF/Pdf';
 
 
 
@@ -34,6 +35,8 @@ const Templates = () => {
   const [to,setTo] = useState("");
   const [from,setFrom] = useState("");
   const [templateName,setTemplateName] = useState("");
+  const [templateId, setTemplateId] = useState();
+  const [mailId, setMailId] = useState();
   const [subject,setSubject] = useState("");
   const groups = useSelector((state)=>state.groups).groups
   const [loader,setLoader] = useState(false)
@@ -41,7 +44,9 @@ const Templates = () => {
   const [attachments,setAttachments] = useState([]);
   const [attachFiles,setAttachFiles] = useState([]);
   const [pointer, setPointer] = useState("Insert Logo (optional)")
-  const [logo,setLogo] = useState("");
+  const [pointer2, setPointer2] = useState("Insert Customized PDF template (optional), must be HTML will all closed tags")
+  const [logo,setLogo] = useState(null);
+  const [pdf,setPdf] = useState(null);
   const auth = useSelector((state)=>state.auth)
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
@@ -51,6 +56,7 @@ const Templates = () => {
   const [toAlert, setToAlert] = useState(false);
   const [templateAlert, setTemplateAlert] = useState(false);
   const [check, setCheck] = useState(true);
+  const [sentence, setSentence] = useState([]);
 
 
   const navigate = useNavigate();
@@ -74,7 +80,7 @@ const Templates = () => {
         }
     }
 
-  },[])
+  },[groups])
 
   const templateUpload = (e)=>{
     e.preventDefault();
@@ -132,7 +138,7 @@ const Templates = () => {
       navigate("/")
   } 
   window.scrollTo(1, 1);
-
+  setPdf(null)
     dispatch(getTemplates())
     .then(()=>{
       console.log(templates)
@@ -146,7 +152,9 @@ const Templates = () => {
                 dispatch(refresh())
                 .then(()=>{
                     dispatch(getGroups())
-                    setLoader(false)
+                    .then((res)=>{
+                        setLoader(false)
+                    })
                 })
                 .catch((err)=>{
                     if(err.msg==="Refresh Fail"){
@@ -173,7 +181,9 @@ const Templates = () => {
                         dispatch(refresh())
                         .then(()=>{
                             dispatch(getGroups())
-                            setLoader(false)
+                            .then((res)=>{
+                                setLoader(false)
+                            })
                         })
                         .catch((err)=>{
                             if(err.msg==="Refresh Fail"){
@@ -252,20 +262,22 @@ const send = ()=>{
         document.querySelector(".mailPopup").classList.add("close");
     document.querySelector(".mailPopup").style.height="0px"
 
-    var mailId;
+    // var mailId;
     setLoader(true)
-    groups.forEach((grp)=>{
-        if(to===grp.name){
-            mailId= grp.id;
-        }
-    })
-    var templateId;
-    templates.forEach((template)=>{
-      if(templateName===template.name){
-        templateId=template.id;
-      }
-    })
-    dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId))
+    // groups.forEach((grp)=>{
+    //     if(to===grp.name){
+    //         mailId= grp.id;
+    //     }
+    // })
+    // var templateId;
+    // templates.forEach((template)=>{
+    //   if(templateName===template.name){
+    //     templateId=template.id;
+    //   }
+    // })
+    console.log(from,subject,attachments,logo,templateId,mailId);
+    setSentence(["This might take a while!","Pls be patient!","All mails will be sent soon"])
+    dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId,pdf))
     .then(()=>{
         setLoader(false)
         setModalCond("Success")
@@ -273,12 +285,14 @@ const send = ()=>{
         setTimeout(()=>{
           closeModal()
         },2000)
+        setSentence([])
+
     })
     .catch((err)=>{
         if(err.code===410){
             dispatch(refresh())
             .then(()=>{
-                dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId))
+                dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId,pdf))
                 .then(()=>{
                 setModalCond("Success")
                 openModal()
@@ -286,6 +300,7 @@ const send = ()=>{
                     closeModal()
                   },2000)
                   setLoader(false)
+                  setSentence([])
 
                 })
                 .catch(()=>{
@@ -295,6 +310,7 @@ const send = ()=>{
                     setTimeout(()=>{
                         closeModal(); 
                      },2000)
+                    setSentence([])
 
                 })
             })
@@ -302,12 +318,14 @@ const send = ()=>{
                 if(err.msg==="Refresh Fail"){
                     dispatch(logout())
                     setLoader(false)
+                    setSentence([])
                 }
             })
         }
         else{
             setLoader(false)
             setModalCond("Failed")
+            setSentence([])
             openModal();
             setTimeout(()=>{
                 closeModal(); 
@@ -322,15 +340,31 @@ const send = ()=>{
     setTo("");
     document.getElementById("logoInput").value="";
     setPointer("Insert Logo (optional)")
+    setPdf(null);
+    setPointer2("Insert Customized PDF template (optional), must be HTML will all closed tags")
+    document.getElementById("pdfInput").value="";
 
-    setTimeout(()=>{
-        setLoader(false)
-    },10000)
+    // deletePdf();
+
+    // setTimeout(()=>{
+    //     setLoader(false)
+    // },10000)
     }
+}
 
-    
-    
-
+const getTempId = (e)=>{
+    templates.forEach((template)=>{
+        if(e===template.name){
+          setTemplateId(template.id);
+        }
+      })
+}
+const getGrpId = (e)=>{
+    groups.forEach((grp)=>{
+        if(e===grp.name){
+            setMailId(grp.id);
+        }
+    })
 }
 
 const fileUpload = (e)=>{
@@ -381,11 +415,21 @@ useEffect(()=>{
         document.querySelector("#delLogo").style.display="inline"
         document.querySelector("#delLogo").classList.add("delLogo")
 
-    } else if(logo===""){
+    } else if(logo===null){
         document.querySelector("#delLogo").style.display="none"
 
     }
 },[logo])
+useEffect(()=>{
+    if(document.querySelector("#pdfInput").value!==""){
+        document.querySelector("#delPdf").style.display="inline"
+        document.querySelector("#delPdf").classList.add("delLogo")
+
+    } else if(pdf===null){
+        document.querySelector("#delPdf").style.display="none"
+
+    }
+},[pdf])
 
 const logoUpload = (e)=>{
     if(e.target.files.length===0){
@@ -412,6 +456,47 @@ const logoUpload = (e)=>{
                 dispatch(attachFile(fd))
                 .then((res)=>{
                     setLogo(fileName)
+                    setLoading(false)
+                    setFormDisabled(false)
+                })
+            })
+            .catch((err)=>{
+                if(err.msg==="Refresh Fail"){
+                    dispatch(logout())
+                    setLoading(false)
+                    setFormDisabled(false)
+                }
+            })
+        }
+
+})}
+
+const pdfUpload = (e)=>{
+    if(e.target.files.length===0){
+        return 0
+    }
+  setPdf(e.target.value)
+  e.preventDefault();
+  setFormDisabled(true)
+  setPointer2(e.target.files[0].name);
+  let fileName = e.target.files[0].name.split(".")[0].concat(JSON.stringify(date).replace(/"/g, ""));
+    var fd = new FormData();
+    fd.append("file",e.target.files[0])
+    fd.append("fileName",fileName)
+  dispatch(attachPdf(fd))
+    .then((res)=>{
+        setPdf(res.file)
+        console.log(res.file);
+        setLoading(false)
+        setFormDisabled(false)
+    })
+    .catch((err)=>{
+        if(err.refresh==='required'){
+            dispatch(refresh())
+            .then(()=>{
+                dispatch(attachPdf(fd))
+                .then((res)=>{
+                    setPdf(res.file)
                     setLoading(false)
                     setFormDisabled(false)
                 })
@@ -520,10 +605,17 @@ const logoUpload = (e)=>{
         setPointer("Insert Logo (optional)")
         
     }
+    const deletePdf=()=>{
+        document.querySelector("#delPdf").style.display="none"
+        document.querySelector("#pdfInput").value=""
+        setPdf(null)
+        setPointer2("Insert Customized PDF template (optional), must be HTML will all closed tags")
+        
+    }
   return (
       <div style={formDisabled?{pointerEvents:"none"}:{}}>
             <h1 className={dashboardStyles.dashHeading}>Templates</h1>
-            <FullPageLoader condition={loader}/>
+            <FullPageLoader condition={loader} sentence={sentence}/>
             <Modal>
                 {switchModal()}
             </Modal>
@@ -554,6 +646,7 @@ const logoUpload = (e)=>{
                                 <button style={{float:"right", border:"1px solid #253e7e", background:"white", color:"#253e7e", borderRadius:"4px", marginLeft:"10px"}} onClick={()=>{handleDel(template.id)}}>Delete</button>
                                 <button style={{float:"right", border:"1px solid #253e7e", background:"#253e7e", color:"white", borderRadius:"4px", marginLeft:"10px"}} onClick={()=>{
                                     setTemplateName(template.name)
+                                    getTempId(template.name)
                                     showMailBox()
                                 }
                                 }>Use</button>
@@ -647,7 +740,12 @@ const logoUpload = (e)=>{
                 </div>
                 <input className={dashStyles.fromto} type="text" placeholder='From' value={from} onChange={e=>setFrom(e.target.value)} style={fromAlert?{borderColor:"red"}:{}}></input>
                 <p className={dashboardStyles.alertsMail}>{fromAlert?"Required!":""}</p>
-                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder={check?"To":"Create a group with names before sending mail with templates"} autoComplete="off" onChange={e=>setTo(e.target.value)} style={toAlert?{borderColor:"red"}:{}} disabled={check?false:true}/>
+                <input value={to} list="groups" name="group" className={dashStyles.fromto} placeholder={check?"To":"Create a group with names before sending mail with templates"} autoComplete="off"
+                 onChange={(e)=>{
+                    setTo(e.target.value)
+                    getGrpId(e.target.value)
+                    }} 
+                 style={toAlert?{borderColor:"red"}:{}} disabled={check?false:true}/>
                 <datalist id="groups">
                     {
                         groups.map((grp,i)=>{
@@ -662,7 +760,12 @@ const logoUpload = (e)=>{
                 </datalist>
                 <p className={dashboardStyles.alertsMail}>{toAlert?"Required!":""}</p>
 
-                <input value={templateName} list="templates" name="templates" autoComplete="off" className={dashStyles.fromto} placeholder={templates.length>0?'Select template':"Upload a template before sending mail with template."} onChange={e=>setTemplateName(e.target.value)} disabled={templates.length>0?false:true} style={templateAlert?{borderColor:"red"}:{}}/>
+                <input value={templateName} list="templates" name="templates" autoComplete="off" className={dashStyles.fromto} placeholder={templates.length>0?'Select template':"Upload a template before sending mail with template."} 
+                onChange={e=>{
+                    setTemplateName(e.target.value)
+                    getTempId(e.target.value)
+                    }} 
+                disabled={templates.length>0?false:true} style={templateAlert?{borderColor:"red"}:{}}/>
                 <datalist id="templates">
                     {templates.map((template,i)=>{
                         return(<option value={template.name} key={i}/>)
@@ -670,7 +773,7 @@ const logoUpload = (e)=>{
                 </datalist>
                 <p className={dashboardStyles.alertsMail}>{templateAlert?"Required!":""}</p>
 
-                <label className={dashStyles.fromto} style={{borderBottom:"1px #253E7E solid", paddingLeft:"2px"}}> {pointer}
+                <label className={dashStyles.fromto} style={{borderBottom:"1px #253E7E solid", paddingLeft:"2px", cursor:"pointer"}}> {pointer}
                     <input
                         type="file" 
                         className={dashStyles.input}
@@ -680,10 +783,21 @@ const logoUpload = (e)=>{
                         // value={logo}
                         onChange={e=>logoUpload(e)}
                     />
-                <button onClick={deleteLogo} style={{display:"none"}} id="delLogo">&times;</button>
+                    <button onClick={deleteLogo} style={{display:"none"}} id="delLogo">&times;</button>
                     </label>
                 <input className={dashStyles.fromto} style={{marginBottom:"10px"}} type="text" placeholder='Subject' value={subject} onChange={e=>setSubject(e.target.value)}></input>
-                
+                <label className={dashStyles.fromto} style={{borderBottom:"1px #253E7E solid", paddingLeft:"2px", cursor:"pointer"}}> {pointer2}
+                    <input
+                        type="file" 
+                        className={dashStyles.input}
+                        id="pdfInput"
+                        name="pdf"
+                        accept=".html,.ftl"
+                        // value={logo}
+                        onChange={e=>pdfUpload(e)}
+                    />
+                    <button onClick={deletePdf} style={{display:"none"}} id="delPdf">&times;</button>
+                    </label>
                 <span style={{marginLeft:"2.5%"}}>Attachments:</span>
                 {attachFiles.map((file,index)=>{
                     return (
@@ -691,8 +805,10 @@ const logoUpload = (e)=>{
                             <span className={dashStyles.attachSpan} key={index}>{file.fileName.substring(0,5)+"..."+file.fileName.split(".")[file.fileName.split(".").length-1]} <button onClick={()=>{deleteAttachment(index)}}>&times;</button></span>,
                         </span>)
                 })}
+                
 
             </div>
+            <Pdf/>
       </div>
   );
 };

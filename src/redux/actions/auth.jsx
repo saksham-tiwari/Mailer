@@ -283,7 +283,15 @@ export const login = (username, password) => (dispatch) => {
           error.message ||
           error.toString();
 
-      dispatch({
+      if(error.response.status===404){
+        dispatch({
+          type: SET_MESSAGE,
+          payload: "Account does not exist, redirecting to signup.",
+      });
+      return Promise.reject({code:error.response.status})
+      }
+      else{
+        dispatch({
           type: OTP_SEND_FAIL,
       });
 
@@ -293,6 +301,8 @@ export const login = (username, password) => (dispatch) => {
       });
 
       return Promise.reject({code:error.response.status});
+      }
+      
     })
 
   }

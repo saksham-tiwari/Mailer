@@ -131,7 +131,10 @@ const Otp = () => {
                 )
 
             })
-            .catch(()=>{
+            .catch((err)=>{
+                if(err.code===404){
+                    setTimeout(()=>{navigate("/signup")},2000)
+                }
                 setLoading(false)
                 setTimeout(()=>dismiss(),3000)
             })

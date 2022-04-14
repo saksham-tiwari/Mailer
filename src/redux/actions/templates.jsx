@@ -21,6 +21,22 @@ export const uploadTemplate = (fd)=>(dispatch)=>{
         }
     })
 }
+export const attachPdf = (fd)=>(dispatch)=>{
+    return TemplatesService.attachPdf(fd)
+    .then(res=>{
+        console.log(res);
+        return Promise.resolve({file:res.data.fileName})
+    })
+    .catch(err=>{
+        if(err.response.status===400){
+            return Promise.reject({code:400,msg:"Cannot upload file. Try again later!"})
+        } else if(err.response.status===410){
+            return Promise.reject({refresh:"required"});
+        } else {
+            console.log(err.response);
+        }
+    })
+}
 export const getTemplates = ()=>(dispatch)=>{
     return TemplatesService.getTemplates()
     .then((res)=>{
@@ -40,12 +56,12 @@ export const getTemplates = ()=>(dispatch)=>{
     })
 }
 
-export const sendMailWithTemplate = (from,subject,attachment,logo,templateId,groupId)=>(dispatch)=>{
-    return TemplatesService.sendMailWithTemplate(from,subject,attachment,logo,templateId,groupId)
+export const sendMailWithTemplate = (from,subject,attachment,logo,templateId,groupId,pdfName)=>(dispatch)=>{
+    return TemplatesService.sendMailWithTemplate(from,subject,attachment,logo,templateId,groupId,pdfName)
     .then(res=>{
         dispatch({
             type: MAIL_SENT,
-            payload: {from,subject,attachment,logo,templateId,groupId}
+            payload: {from,subject,attachment,logo,templateId,groupId,pdfName}
         })
         return Promise.resolve({code:res.status})
     })

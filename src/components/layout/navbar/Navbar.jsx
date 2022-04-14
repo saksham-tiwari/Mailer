@@ -6,6 +6,7 @@ import userImg from "../../../assets/userImg.png"
 import MenuIcon from '@mui/icons-material/Menu';
 import { useDispatch } from 'react-redux';
 import logo from "../../../assets/logo.png"
+import logoMail from "../../../assets/logomail.png"
 import { logout } from '../../../redux/actions/auth';
 // import { Collapse } from "reactstrap";
 
@@ -37,7 +38,7 @@ const Navbar = () => {
     return (
         <>
             <div className={styles.navbarMain}>
-                <Link to="/" className={styles.navLogo}><img src={logo} alt="logo" className={styles.logo}/></Link>
+                <Link to="/" className={styles.navLogo}><img src={logoMail} alt="logo-mail" className={styles.logoMail}/><img src={logo} alt="logo" className={styles.logo}/></Link>
                 <div className={styles.menu}>
                     <ul>
                         <li>
