@@ -107,7 +107,7 @@ const CreatePassword = () => {
             dispatch(createPassword(email.mail,password))
             .then((res)=>{
                 console.log(res);
-            document.getElementById("credential_picker_container").remove();
+                document.getElementById("credential_picker_container").remove();
 
                 // dispatch(getUserInfo())
                 setTimeout(()=>{navigate("/")},2000)
