@@ -49,7 +49,7 @@ const CreatePassword = () => {
         } else{
             navigate("/")
         }
-    },[])
+    },[auth.isLoggedIn])
 
     const formSubmit = (e)=>{
         e.preventDefault();
