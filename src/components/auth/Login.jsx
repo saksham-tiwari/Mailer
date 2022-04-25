@@ -80,7 +80,7 @@ const Login = () => {
         return () => {
             source.cancel()
         };
-    },[])
+    },[auth.isLoggedIn])
     const formSubmit = (e)=>{
         e.preventDefault();
         setLoading(true);
