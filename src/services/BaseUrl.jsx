@@ -1,4 +1,4 @@
 export const BaseUrl = () => {
-    const baseUrl = "https://bulk-mailer-app.herokuapp.com/";
+    const baseUrl = "https://mailer.wiztex.in/";
     return baseUrl;
 }
