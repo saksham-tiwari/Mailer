@@ -252,7 +252,7 @@ const Templates = () => {
     }
     
 }   
-const [longTime,setLongTime]=useState(false);
+
 const send = ()=>{
 
     if(from===""){
@@ -287,15 +287,12 @@ const send = ()=>{
     //     templateId=template.id;
     //   }
     // })
-    console.log(from,subject,attachments,logo,templateId,mailId,pdf);
+    console.log(from,subject,attachments,logo,templateId,mailId);
     setSentence(["This might take a while!","Pls be patient!","All mails will be sent soon"])
-    setTimeout(()=>{
-        setLongTime(true)
-    },10000)
     dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId,pdf))
     .then(()=>{
         setLoader(false)
-        longTime?setModalCond("LongTime"):setModalCond("Success")
+        setModalCond("Success")
         openModal()
         setTimeout(()=>{
           closeModal()
@@ -309,7 +306,7 @@ const send = ()=>{
             .then(()=>{
                 dispatch(sendMailWithTemplate(from,subject,attachments,logo,templateId,mailId,pdf))
                 .then(()=>{
-                longTime?setModalCond("LongTime"):setModalCond("Success")
+                setModalCond("Success")
                 openModal()
                   setTimeout(()=>{
                     closeModal()
@@ -320,7 +317,7 @@ const send = ()=>{
                 })
                 .catch(()=>{
                     setLoader(false)
-                    longTime?setModalCond("LongTime"):setModalCond("Failed")
+                    setModalCond("Failed")
                     openModal();
                     setTimeout(()=>{
                         closeModal(); 
@@ -339,7 +336,7 @@ const send = ()=>{
         }
         else{
             setLoader(false)
-            longTime?setModalCond("LongTime"):setModalCond("Failed")
+            setModalCond("Failed")
             setSentence([])
             openModal();
             setTimeout(()=>{
@@ -490,25 +487,17 @@ const pdfUpload = (e)=>{
     if(e.target.files.length===0){
         return 0
     }
-    
-    
+  setPdf(e.target.value)
   e.preventDefault();
   setFormDisabled(true)
   setPointer2(e.target.files[0].name);
   let fileName = e.target.files[0].name.split(".")[0].concat(JSON.stringify(date).replace(/"/g, ""));
-//   console.log(e.target.files[0].name.split(".").pop());
-    var blob = e.target.files[0];
-    let newFile = new File([blob],fileName+".ftl",{type:"file"});
     var fd = new FormData();
-    console.log(newFile);
-    fd.append("file",newFile)
+    fd.append("file",e.target.files[0])
     fd.append("fileName",fileName)
-    console.log(fileName);
-    setPdf(fileName)
-
-  dispatch(attachFile(fd))
+  dispatch(attachPdf(fd))
     .then((res)=>{
-        setPdf(res.file.fileName)
+        setPdf(res.file)
         console.log(res.file);
         setLoading(false)
         setFormDisabled(false)
@@ -517,9 +506,9 @@ const pdfUpload = (e)=>{
         if(err.refresh==='required'){
             dispatch(refresh())
             .then(()=>{
-                dispatch(attachFile(fd))
+                dispatch(attachPdf(fd))
                 .then((res)=>{
-                    setPdf(res.file.fileName)
+                    setPdf(res.file)
                     setLoading(false)
                     setFormDisabled(false)
                 })
@@ -529,7 +518,6 @@ const pdfUpload = (e)=>{
                     dispatch(logout())
                     setLoading(false)
                     setFormDisabled(false)
-                    setPdf(null)
                 }
             })
         }
@@ -554,15 +542,6 @@ const pdfUpload = (e)=>{
                         <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
 
                         <h2 style={{textAlign:"center"}}>Mail sent successfully</h2>
-
-                    </>
-                )
-            case "LongTime":
-                return(
-                    <>
-                        <img src={success} alt="success" style={{width:"30%",marginLeft:"35%", marginTop:"30px"}}/>
-
-                        <h2 style={{textAlign:"center"}}>Mail will be sent soon.</h2>
 
                     </>
                 )
