@@ -1,4 +1,4 @@
 export const BaseUrl = () => {
-    const baseUrl = "https://bulk-mailer-production.up.railway.app/";
+    const baseUrl = "https://chithhi-api.onrender.com/";
     return baseUrl;
 }
